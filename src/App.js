@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import { Spinner } from 'flowbite-react';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import Login from './Pages/Login';
+import { userDataAtom } from './recoil/atom/userAtom';
+import Routes from './Routes/WebRoutes';
 
 function App() {
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useRecoilState(userDataAtom);
+
+  useEffect(() => {
+    axios.get('/check').then(res => {
+      setUserData(res.data);
+      setLoading(false);
+    }).catch(err => {
+      setUserData(null);
+      setLoading(false)
+    })
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {loading && <div className="flex justify-center items-center w-full min-h-screen">
+        <Spinner size={`xl`} />
+      </div >}
+      {userData && <Routes />}
+      {!userData && <Login />}
+    </>
   );
 }
 
