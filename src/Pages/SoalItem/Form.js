@@ -41,23 +41,30 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     status.disabled = true;
     status.error = null;
     setStatus({ ...status });
+
     form.type = ftemp.type;
     form.bobot = ftemp.bobot;
     form.corrects = ftemp.corrects;
+    form.options = ftemp.options;
+    form.relations = ftemp.relations;
+    form.labels = ftemp.labels;
     form.num = ftemp.num;
+    form.assets = [];
 
     const { text, assets } = handleImages(ftemp.text);
     form.text = text;
     if (assets.length) {
-      form.assets = [...form.assets, ...assets];
+      form.assets = [...assets, ...form.assets];
     }
 
     if (ftemp.type === 'U') {
-      const asst = handleImages(ftemp.text);
+      const asst = handleImages(ftemp.answer);
       form.answer = asst.text;
       if (asst.assets.length) {
         form.assets = [...form.assets, ...asst.assets];
       }
+    } if (ftemp.type === 'IS') {
+      form.answer = ftemp.answer;
     } else {
       form.answer = '';
     }
@@ -65,10 +72,10 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     if (ftemp.type === 'PG' || ftemp.type === 'PGK' || ftemp.type === 'BS' || ftemp.type === 'JD') {
       form.shuffle = ftemp.shuffle;
       ftemp.options.forEach((v, i) => {
-        const { text, assets } = handleImages(v);
-        form.options[i] = text;
+        const { text, assets } = handleImages(v.text);
+        form.options[i].text = text;
         if (assets.length) {
-          form.assets = [...form.assets, ...assets];
+          form.assets = [...assets, ...form.assets];
         }
       });
     } else {
@@ -77,23 +84,30 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
       form.shuffle = false;
     }
 
+    if (ftemp.type === 'BS' || ftemp.type === 'JD') {
+      form.labels = ftemp.labels;
+    } else {
+      form.labels = [];
+    }
+
     if (ftemp.type === 'JD') {
       ftemp.relations.forEach((v, i) => {
-        const { text, assets } = handleImages(v);
-        form.relations[i] = text;
+        const { text, assets } = handleImages(v.text);
+        form.relations[i].text = text;
         if (assets.length) {
-          form.assets = [...form.assets, ...assets];
+          form.assets = [...assets, ...form.assets];
         }
       });
     } else {
       form.relations = [];
     }
+
     try {
       let res;
       if (form.id) {
-        res = await axios.put(`/soal-items/${form.soalid}/${form.id}`, form);
+        res = await axios.put(`/soal-items/${form.soalId}/${form.id}`, form);
       } else {
-        res = await axios.post(`/soal-items/${form.soalid}`, form);
+        res = await axios.post(`/soal-items/${form.soalId}`, form);
       }
       onSubmit(res);
     } catch (error) {
@@ -110,18 +124,16 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
 
     imgs?.forEach(v => {
       if (isBase64(v, { allowMime: true })) {
-        const fileName = `${md5(Date.now())}.${base64Extension(v)}`;
+        const fileName = `/assets/${form.soalId}/${md5(Date.now())}.${base64Extension(v)}`;
         assets.push({
           filename: fileName,
           base64Data: getBuffer(v)
         });
-        text = text.replace(v, `/assets/${form.soalid}/${fileName}`);
-      }
-    });
-
-    form.assets.forEach((v, i) => {
-      if (!imgs.includes(`/assets/${form.soalid}/${v.filename}`)) {
-        form.assets.splice(i, 1);
+        text = text.replace(v, fileName);
+      } else {
+        assets.push({
+          filename: v
+        });
       }
     });
 
@@ -167,7 +179,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
                 {(ftemp.type !== 'U' && ftemp.type !== 'IS') && <ToggleSwitch checked={ftemp?.shuffle} onChange={e => {
                   ftemp.shuffle = e;
                   setFtemp({ ...ftemp });
-                }} label='Acak Pilihan' />}
+                }} label={ftemp.shuffle ? 'Acak Pilihan' : 'Pilihan Tidak Diacak'} />}
               </div>
             </div>
           </div>
@@ -176,7 +188,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
             <Editor
               theme='snow'
               value={ftemp?.text}
-              readOnly={status.disabled}
+              disabled={status.disabled}
               onChange={e => {
                 ftemp.text = e;
                 setFtemp({ ...ftemp });

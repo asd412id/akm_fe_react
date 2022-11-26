@@ -1,8 +1,9 @@
 import { Button, Table, TextInput, ToggleSwitch } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
+import { alphabetRange } from '../utils/Helpers';
 import Editor from './Editor';
 
-export default function BSInput({ options = [], corrects = [], labels = ['Pernyataan', 'Benar', 'Salah'], onChange }) {
+export default function BSInput({ options = [], corrects = [], labels = ['Pernyataan', 'Benar/Salah'], onChange }) {
   const [opts, setOpts] = useState(options);
   const [crts, setCrts] = useState(corrects);
   const [lbls, setLbls] = useState(labels)
@@ -10,15 +11,22 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
   useEffect(() => {
     setOpts(options);
     setCrts(corrects);
-    setLbls(labels.length ? labels : ['Pernyataan', 'Benar', 'Salah']);
+    setLbls(labels.length ? labels : ['Pernyataan', 'Benar/Salah']);
   }, [JSON.stringify(options), JSON.stringify(corrects), JSON.stringify(labels)]);
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex">
         <Button size={`xs`} onClick={() => {
-          opts.push('');
+          const k = alphabetRange('A', 'Z')[opts.length];
+          opts.push({
+            key: k,
+            text: null
+          });
+          crts[k] = false;
+          setCrts({ ...crts });
           setOpts([...opts]);
+          onChange(opts, crts, lbls);
         }}>Tambah Pilihan</Button>
       </div>
       <Table>
@@ -30,46 +38,29 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
               onChange(opts, crts, lbls);
             }} placeholder='Label Pernyataan' />
           </Table.HeadCell>
-          <Table.HeadCell>
+          <Table.HeadCell colSpan={2}>
             <TextInput value={lbls[1]} onChange={e => {
               lbls[1] = e.target.value;
               setLbls({ ...lbls });
               onChange(opts, crts, lbls);
-            }} placeholder='Label Benar' />
+            }} placeholder='Label Pernyataan Benar/Salah' />
           </Table.HeadCell>
-          <Table.HeadCell>
-            <TextInput value={lbls[2]} onChange={e => {
-              lbls[2] = e.target.value;
-              setLbls({ ...lbls });
-              onChange(opts, crts, lbls);
-            }} placeholder='Label Salah' />
-          </Table.HeadCell>
-          <Table.HeadCell></Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {opts.map((v, i) => {
-            return <Table.Row key={i} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                <Editor value={v} onChange={v => {
-                  opts[i] = v;
+            return <Table.Row key={v.key} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white w-6/12">
+                <Editor value={v.text} onChange={e => {
+                  opts[i].text = e;
                   setOpts([...opts]);
                   onChange(opts, crts, lbls);
                 }} />
               </Table.Cell>
-              <Table.Cell className="whitespace-nowrap  font-medium text-gray-900 dark:text-white">
-                <div className="flex justify-center">
-                  <ToggleSwitch checked={crts[i]} onChange={() => {
-                    crts[i] = true;
-                    setCrts([...crts]);
-                    onChange(opts, crts, lbls);
-                  }} />
-                </div>
-              </Table.Cell>
               <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                 <div className="flex justify-center">
-                  <ToggleSwitch checked={!crts[i]} onChange={() => {
-                    crts[i] = false;
-                    setCrts([...crts]);
+                  <ToggleSwitch label={crts[v.key] ? 'Benar' : 'Salah'} checked={crts[v.key]} onChange={e => {
+                    crts[v.key] = e;
+                    setCrts({ ...crts });
                     onChange(opts, crts, lbls);
                   }} />
                 </div>
@@ -78,9 +69,13 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
                 <div className="flex justify-center">
                   <Button size={'xs'} color='failure' pill={true} onClick={() => {
                     opts.splice(i, 1);
-                    crts.splice(i, 1);
+                    Object.keys(crts).forEach(k => delete crts[k]);
+                    opts.forEach((v, i) => {
+                      opts[i].key = alphabetRange('A', 'Z')[i];
+                      crts[v.key] = false;
+                    });
                     setOpts([...opts]);
-                    setCrts([...crts]);
+                    setCrts({ ...crts });
                     onChange(opts, crts, lbls);
                   }}>Hapus</Button>
                 </div>

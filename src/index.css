@@ -22,3 +22,8 @@
 .z-99999 {
   z-index: 99999;
 }
+
+html:has([role='dialog']),
+body:has([role='dialog']) {
+  overflow: hidden;
+}

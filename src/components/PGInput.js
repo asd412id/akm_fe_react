@@ -1,5 +1,6 @@
 import { Button, Label, ToggleSwitch } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
+import { alphabetRange } from '../utils/Helpers';
 import Editor from './Editor';
 
 export default function PGInput({ options = [], corrects = [], onChange }) {
@@ -15,34 +16,45 @@ export default function PGInput({ options = [], corrects = [], onChange }) {
     <div className="flex flex-col gap-2">
       <div className="flex">
         <Button size={`xs`} onClick={() => {
-          opts.push('');
+          const k = alphabetRange('A', 'Z')[opts.length];
+          opts.push({
+            key: k,
+            text: null
+          });
+          crts[k] = false;
+          setCrts({ ...crts });
           setOpts([...opts]);
+          onChange(opts, crts);
         }}>Tambah Pilihan</Button>
       </div>
       <div className="grid grid-cols-2 gap-4">
         {opts.map((v, i) => {
-          return <div key={i} className='flex flex-col w-full gap-1'>
+          return <div key={v.key} className='flex flex-col w-full gap-1'>
             <div className="flex justify-between">
               <Label className="flex gap-2 items-center">
-                <ToggleSwitch checked={crts[i]} onChange={() => {
-                  opts.forEach((vv, ii) => {
-                    crts[ii] = i === ii;
+                <ToggleSwitch checked={crts[v.key]} onChange={() => {
+                  opts.forEach((vv) => {
+                    crts[vv.key] = v.key === vv.key;
                   });
-                  setCrts([...crts]);
+                  setCrts({ ...crts });
                   onChange(opts, crts);
                 }} />
                 Pilihan Benar
               </Label>
               <Button size={'xs'} color='failure' pill={true} onClick={() => {
                 opts.splice(i, 1);
-                crts.splice(i, 1);
+                Object.keys(crts).forEach(k => delete crts[k]);
+                opts.forEach((v, i) => {
+                  opts[i].key = alphabetRange('A', 'Z')[i];
+                  crts[v.key] = false;
+                });
                 setOpts([...opts]);
-                setCrts([...crts]);
+                setCrts({ ...crts });
                 onChange(opts, crts);
               }}>Hapus</Button>
             </div>
-            <Editor value={v} onChange={v => {
-              opts[i] = v;
+            <Editor value={v.text} onChange={e => {
+              opts[i].text = e;
               setOpts([...opts]);
               onChange(opts, crts);
             }} />

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Alert, Button, Spinner, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
-import { GiNotebook } from 'react-icons/gi';
+import { FcViewDetails } from 'react-icons/fc';
 import { HiPencil, HiTrash } from 'react-icons/hi';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link, useParams } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { shortText } from "limit-text-js";
 import DeleteModal from '../../components/DeleteModal';
 import Auth from '../../layouts/Auth';
 import Form from './Form';
+import View from './View';
 
 export default function Index() {
   const { katid, soalid } = useParams();
@@ -19,6 +20,10 @@ export default function Index() {
     loaded: false,
     success: null,
     error: null,
+  })
+  const [view, setView] = useState({
+    show: false,
+    data: {},
   })
   const [tm, setTm] = useState(null)
   const [filters, setFilters] = useState({
@@ -35,11 +40,11 @@ export default function Index() {
     labels: [],
     options: [],
     relations: [],
-    corrects: [],
+    corrects: {},
     answer: '',
     assets: [],
     shuffle: false,
-    soalid: soalid
+    soalId: soalid
   };
   const [form, setForm] = useState({
     show: false,
@@ -56,7 +61,7 @@ export default function Index() {
     const soal = async () => {
       try {
         const res = await axios.get(`/soals/${katid}/${soalid}`);
-        setTitle(res.data.name);
+        setTitle(`${res.data.name} ${res.data.desc && ' (' + res.data.desc + ')'}`);
       } catch (error) {
         errorResponse('Tidak dapat memuat data: ' + error.response.data.message);
       }
@@ -73,9 +78,13 @@ export default function Index() {
     status.error = err.response.data.message;
     form.show = false;
     destroy.show = false;
+    form.data = initForm;
     setStatus({ ...status });
     setForm({ ...form });
     setDestroy({ ...destroy });
+    datas['datas'] = [];
+    setDatas({ ...datas });
+    getDatas();
     setTimeout(() => {
       status.error = null;
       setStatus({ ...status });
@@ -86,6 +95,7 @@ export default function Index() {
     status.success = res.data.message;
     form.show = false;
     destroy.show = false;
+    form.data = initForm;
     setStatus({ ...status });
     setForm({ ...form });
     setDestroy({ ...destroy });
@@ -139,11 +149,25 @@ export default function Index() {
         open={form.show}
         onClose={() => {
           form.show = false;
+          form.data = initForm;
+          datas['datas'] = [];
           setForm({ ...form });
+          setDatas({ ...datas });
+          getDatas();
         }}
         data={form.data}
         onSubmit={successResponse}
         title={form.title} />
+
+      <View
+        open={view.show}
+        data={view.data}
+        onClose={() => {
+          view.show = false;
+          view.data = {};
+          setView({ ...view });
+        }}
+      />
 
       <DeleteModal
         open={destroy.show}
@@ -189,8 +213,11 @@ export default function Index() {
                   <Table.HeadCell>
                     Soal
                   </Table.HeadCell>
+                  <Table.HeadCell className='whitespace-nowrap'>
+                    Tipe Soal
+                  </Table.HeadCell>
                   <Table.HeadCell>
-                    Type
+                    Bobot
                   </Table.HeadCell>
                   <Table.HeadCell>
                     <span className="sr-only">
@@ -201,23 +228,26 @@ export default function Index() {
                 <Table.Body className="divide-y">
                   {datas?.datas.length && datas?.datas.map((v) => {
                     return <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={v.id}>
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      <Table.Cell className="text-center whitespace-nowrap font-medium text-gray-900 dark:text-white">
                         {v.num}
                       </Table.Cell>
-                      <Table.Cell>
-                        {shortText(striptags(v.text, ['img']), 95, '...')}
-                      </Table.Cell>
+                      <Table.Cell dangerouslySetInnerHTML={{ __html: shortText(striptags(v.text, ['img', 'sup', 'sub']), 95, '...') }}></Table.Cell>
                       <Table.Cell>
                         {v.type}
                       </Table.Cell>
                       <Table.Cell>
+                        {v.bobot}
+                      </Table.Cell>
+                      <Table.Cell>
                         <div className="flex justify-end gap-1 whitespace-nowrap">
-                          <Link to={`/soal/${soalid}/${v.id}`}>
-                            <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Daftar Soal'><GiNotebook className='w-3 h-3' /></Button>
-                          </Link>
+                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Tampilkan Soal' onClick={() => {
+                            view.show = true;
+                            view.data = v;
+                            setView({ ...view });
+                          }}><FcViewDetails className='w-3 h-3' /></Button>
                           <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
                             onClick={() => {
-                              form.data = { ...initForm, ...v };
+                              form.data = { ...v };
                               form.show = true;
                               form.title = `Ubah Data Soal Nomor ${v.num}`;
                               setForm({ ...form });

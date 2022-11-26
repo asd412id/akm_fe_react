@@ -73,7 +73,7 @@ export default function Index() {
 
   const getDatas = async () => {
     try {
-      const res = await axios.get(`/kategori-soal?search=${filters.search}&page=${filters.page}&size=${filters.size}`);
+      const res = await axios.get(`/soal-kategories?search=${filters.search}&page=${filters.page}&size=${filters.size}`);
       const oldDatas = datas?.datas ?? [];
       const newDatas = res.data;
       newDatas['datas'] = [...oldDatas, ...newDatas.datas];
@@ -196,7 +196,7 @@ export default function Index() {
                             }}><HiPencil className='w-3 h-3' /></Button>
                           <Button className='py-1 px-0 rounded-full' size={`xs`} color='failure' title='Hapus'
                             onClick={() => {
-                              destroy.link = `/kategori-soal/${v.id}`;
+                              destroy.link = `/soal-kategories/${v.id}`;
                               destroy.title = v.name;
                               destroy.show = true;
                               setDestroy({ ...destroy });

@@ -34,9 +34,9 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     try {
       let res;
       if (form.id) {
-        res = await axios.put(`/kategori-soal/${form.id}`, form);
+        res = await axios.put(`/soal-kategories/${form.id}`, form);
       } else {
-        res = await axios.post(`/kategori-soal`, form);
+        res = await axios.post(`/soal-kategories`, form);
       }
       onSubmit(res);
     } catch (error) {

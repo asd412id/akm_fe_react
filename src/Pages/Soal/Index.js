@@ -45,7 +45,7 @@ export default function Index() {
   useEffect(() => {
     const kategori = async () => {
       try {
-        const res = await axios.get(`/kategori-soal/${katid}`);
+        const res = await axios.get(`/soal-kategories/${katid}`);
         setTitle(res.data.name);
       } catch (error) {
         errorResponse('Tidak dapat memuat data: ' + error.response.data.message);
