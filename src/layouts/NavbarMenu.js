@@ -50,11 +50,13 @@ export default function NavbarMenu() {
               {userData.email}
             </span>
           </Dropdown.Header>
-          <Link to={`/sekolah`}>
-            <Dropdown.Item>
-              Pengaturan Sekolah
-            </Dropdown.Item>
-          </Link>
+          {userData.role === 'OPERATOR' &&
+            <Link to={`/sekolah`}>
+              <Dropdown.Item>
+                Pengaturan Sekolah
+              </Dropdown.Item>
+            </Link>
+          }
           <Link to={`/akun`}>
             <Dropdown.Item>
               Pengaturan Akun

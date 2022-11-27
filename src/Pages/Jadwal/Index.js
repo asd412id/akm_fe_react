@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Alert, Badge, Button, Spinner, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
-import { GiNotebook } from 'react-icons/gi';
+import { MdMonitor } from 'react-icons/md';
 import { HiPencil, HiTrash } from 'react-icons/hi';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link, useParams } from 'react-router-dom';
@@ -236,8 +236,8 @@ export default function Index() {
                       </Table.Cell>
                       <Table.Cell>
                         <div className="flex justify-end gap-1 whitespace-nowrap">
-                          <Link to={`/jadwal/${jid}/${v.id}`}>
-                            <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Daftar Soal'><GiNotebook className='w-3 h-3' /></Button>
+                          <Link to={`/jadwal/${jid}/${v.id}/monitor`}>
+                            <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Monitor Peserta'><MdMonitor className='w-3 h-3' /></Button>
                           </Link>
                           <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
                             onClick={() => {

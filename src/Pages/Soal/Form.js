@@ -72,14 +72,6 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
         <Modal.Body className='flex flex-col gap-2'>
           {status.error && <Alert color={`failure`}>{status.error}</Alert>}
           <div className="flex flex-col">
-            <Label>Nama Soal</Label>
-            <TextInput name='name' value={form?.name} onChange={handleChange} disabled={status.disabled} required />
-          </div>
-          <div className="flex flex-col">
-            <Label>Deskripsi</Label>
-            <TextInput name='desc' value={form?.desc} onChange={handleChange} disabled={status.disabled} />
-          </div>
-          <div className="flex flex-col">
             <Label>Mata Pelajaran</Label>
             <Select name='mapelId' value={form?.mapelId} onChange={handleChange} disabled={status.disabled} required>
               <option value="">Pilih Mata Pelajaran</option>
@@ -87,6 +79,14 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
                 return <option key={v.id} value={v.id}>{v.name}</option>
               })}
             </Select>
+          </div>
+          <div className="flex flex-col">
+            <Label>Nama Soal</Label>
+            <TextInput name='name' value={form?.name} onChange={handleChange} disabled={status.disabled} required />
+          </div>
+          <div className="flex flex-col">
+            <Label>Deskripsi</Label>
+            <TextInput name='desc' value={form?.desc} onChange={handleChange} disabled={status.disabled} />
           </div>
         </Modal.Body>
         <Modal.Footer className='flex justify-end px-3 py-2'>

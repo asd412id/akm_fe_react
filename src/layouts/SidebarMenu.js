@@ -5,8 +5,11 @@ import { MdLibraryBooks, MdSchedule } from 'react-icons/md'
 import { ImBooks } from 'react-icons/im'
 import { GiGraduateCap } from 'react-icons/gi'
 import { Link, useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userDataAtom } from '../recoil/atom/userAtom';
 
 export default function SidebarMenu() {
+  const userData = useRecoilValue(userDataAtom);
   const location = useLocation();
   return (
     <div className="w-fit">
@@ -23,30 +26,34 @@ export default function SidebarMenu() {
             >
               Beranda
             </Sidebar.Item>
-            <Sidebar.Item
-              to='/mapel'
-              as={Link}
-              icon={ImBooks}
-              active={location.pathname === '/mapel'}
-            >
-              Mata Pelajaran
-            </Sidebar.Item>
-            <Sidebar.Item
-              to='/penilai'
-              as={Link}
-              icon={GiGraduateCap}
-              active={location.pathname === '/penilai'}
-            >
-              Penilai
-            </Sidebar.Item>
-            <Sidebar.Item
-              to='/peserta'
-              as={Link}
-              icon={HiUserGroup}
-              active={location.pathname === '/peserta'}
-            >
-              Peserta
-            </Sidebar.Item>
+            {userData.role === 'OPERATOR' &&
+              <>
+                <Sidebar.Item
+                  to='/mapel'
+                  as={Link}
+                  icon={ImBooks}
+                  active={location.pathname === '/mapel'}
+                >
+                  Mata Pelajaran
+                </Sidebar.Item>
+                <Sidebar.Item
+                  to='/penilai'
+                  as={Link}
+                  icon={GiGraduateCap}
+                  active={location.pathname === '/penilai'}
+                >
+                  Penilai
+                </Sidebar.Item>
+                <Sidebar.Item
+                  to='/peserta'
+                  as={Link}
+                  icon={HiUserGroup}
+                  active={location.pathname === '/peserta'}
+                >
+                  Peserta
+                </Sidebar.Item>
+              </>
+            }
             <Sidebar.Item
               to='/soal'
               as={Link}
