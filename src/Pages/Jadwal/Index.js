@@ -1,14 +1,19 @@
 import axios from 'axios';
 import { Alert, Badge, Button, Spinner, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
+import { GiNotebook } from 'react-icons/gi';
 import { HiPencil, HiTrash } from 'react-icons/hi';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { Link, useParams } from 'react-router-dom';
 import DeleteModal from '../../components/DeleteModal';
+import dateFormat from 'dateformat';
 import Auth from '../../layouts/Auth';
 import Form from './Form';
 
 export default function Index() {
+  const { jid } = useParams();
   const [datas, setDatas] = useState(null);
+  const [title, setTitle] = useState('...');
   const [status, setStatus] = useState({
     loaded: false,
     success: null,
@@ -23,10 +28,17 @@ export default function Index() {
   const initForm = {
     id: null,
     name: '',
-    email: '',
-    password: '',
-    confirm_password: '',
-    mapels: [],
+    desc: '',
+    start: new Date(),
+    end: new Date((new Date()).setMinutes((new Date()).getMinutes() + 60)),
+    duration: 60,
+    soals: [],
+    ruangs: [],
+    soal_count: 1,
+    shuffle: false,
+    show_score: false,
+    active: true,
+    jid: jid
   };
   const [form, setForm] = useState({
     show: false,
@@ -38,6 +50,19 @@ export default function Index() {
     title: '',
     link: null
   });
+
+  useEffect(() => {
+    const kategori = async () => {
+      try {
+        const res = await axios.get(`/jadwal-kategories/${jid}`);
+        setTitle(res.data.name);
+      } catch (error) {
+        errorResponse('Tidak dapat memuat data: ' + error.response.data.message);
+      }
+    }
+
+    kategori();
+  }, [title]);
 
   useEffect(() => {
     getDatas();
@@ -74,7 +99,7 @@ export default function Index() {
 
   const getDatas = async () => {
     try {
-      const res = await axios.get(`/penilais?search=${filters.search}&page=${filters.page}&size=${filters.size}`);
+      const res = await axios.get(`/jadwals/${jid}?search=${filters.search}&page=${filters.page}&size=${filters.size}`);
       const oldDatas = datas?.datas ?? [];
       const newDatas = res.data;
       newDatas['datas'] = [...oldDatas, ...newDatas.datas];
@@ -108,11 +133,14 @@ export default function Index() {
   };
 
   return (
-    <Auth title={`Daftar Penilai`} success={status.success} error={status.error}>
+    <Auth title={`Jadwal Ujian ${title}`} success={status.success} error={status.error}>
       <Form
         open={form.show}
         onClose={() => {
           form.show = false;
+          datas['datas'] = [];
+          setDatas({ ...datas });
+          getDatas();
           setForm({ ...form });
         }}
         data={form.data}
@@ -157,13 +185,22 @@ export default function Index() {
               <Table hoverable={true}>
                 <Table.Head>
                   <Table.HeadCell>
-                    Nama
+                    Nama Jadwal
                   </Table.HeadCell>
                   <Table.HeadCell>
-                    Email
+                    Peserta
                   </Table.HeadCell>
                   <Table.HeadCell>
-                    Mata Pelajaran
+                    Soal
+                  </Table.HeadCell>
+                  <Table.HeadCell>
+                    Waktu
+                  </Table.HeadCell>
+                  <Table.HeadCell>
+                    Durasi
+                  </Table.HeadCell>
+                  <Table.HeadCell>
+                    Status
                   </Table.HeadCell>
                   <Table.HeadCell>
                     <span className="sr-only">
@@ -178,27 +215,43 @@ export default function Index() {
                         {v.name}
                       </Table.Cell>
                       <Table.Cell>
-                        {v.email}
+                        {v.pesertas.length}
                       </Table.Cell>
                       <Table.Cell>
-                        <div className="flex flex-wrap gap-1">
-                          {v.mapels.map(vv => {
-                            return <Badge key={vv.id} className='whitespace-nowrap'>{vv.text}</Badge>
-                          })}
+                        {v.soal_count}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div className="flex gap-1 flex-wrap">
+                          <Badge className='whitespace-nowrap' color={`success`}>{dateFormat(v.start, 'dd-mmm-yyyy HH:MM')}</Badge>
+                          <Badge className='whitespace-nowrap' color={`failure`}>{dateFormat(v.end, 'dd-mmm-yyyy HH:MM')}</Badge>
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell>
+                        {v.duration}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div className="flex">
+                          {v.active ? <Badge className='whitespace-nowrap' color={`success`}>Aktif</Badge> : <Badge className='whitespace-nowrap' color={`failure`}>Tidak Aktif</Badge>}
                         </div>
                       </Table.Cell>
                       <Table.Cell>
                         <div className="flex justify-end gap-1 whitespace-nowrap">
+                          <Link to={`/jadwal/${jid}/${v.id}`}>
+                            <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Daftar Soal'><GiNotebook className='w-3 h-3' /></Button>
+                          </Link>
                           <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
                             onClick={() => {
                               form.data = { ...initForm, ...v };
+                              form.data.start = new Date(v.start);
+                              form.data.end = new Date(v.end);
+                              form.data.ruangs = v.pesertas;
                               form.show = true;
                               form.title = `Ubah Data ${v.name}`;
                               setForm({ ...form });
                             }}><HiPencil className='w-3 h-3' /></Button>
                           <Button className='py-1 px-0 rounded-full' size={`xs`} color='failure' title='Hapus'
                             onClick={() => {
-                              destroy.link = `/penilais/${v.id}`;
+                              destroy.link = `/jadwals/${jid}/${v.id}`;
                               destroy.title = v.name;
                               destroy.show = true;
                               setDestroy({ ...destroy });

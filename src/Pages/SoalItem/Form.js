@@ -24,6 +24,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     status.show = open;
     status.title = title;
     status.disabled = false;
+    status.error = false;
     setStatus({ ...status });
     setForm(data);
     setFtemp(data);

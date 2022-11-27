@@ -59,7 +59,7 @@ export default function SidebarMenu() {
               to='/jadwal'
               as={Link}
               icon={MdSchedule}
-              active={location.pathname === '/jadwal'}
+              active={location.pathname.startsWith('/jadwal')}
             >
               Jadwal Ujian
             </Sidebar.Item>

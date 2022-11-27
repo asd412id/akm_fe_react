@@ -10,6 +10,7 @@ import IndexSoalKategori from '../Pages/SoalKategori/Index'
 import IndexSoal from '../Pages/Soal/Index'
 import IndexSoalItem from '../Pages/SoalItem/Index'
 import IndexJadwalKategori from '../Pages/JadwalKategori/Index'
+import IndexJadwal from '../Pages/Jadwal/Index'
 
 export default function WebRoutes() {
   return (
@@ -26,6 +27,7 @@ export default function WebRoutes() {
         <Route path='/soal/:katid' element={<IndexSoal />} />
         <Route path='/soal/:katid/:soalid' element={<IndexSoalItem />} />
         <Route exact path='/jadwal' element={<IndexJadwalKategori />} />
+        <Route path='/jadwal/:jid' element={<IndexJadwal />} />
       </Routes>
     </BrowserRouter >
   )

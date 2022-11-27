@@ -11,17 +11,19 @@ export default function PengaturanSekolah() {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    axios.get('/sekolah')
-      .then(res => {
-        res.data.opt = JSON.parse(res.data.opt);
+    const getData = async () => {
+      try {
+        const res = await axios.get('/sekolah');
         setData(res.data);
         setLoading(false);
         setLoaded(true);
-      })
-      .catch(err => {
-        setError(err.response.data.message)
+      } catch (error) {
+        setError(error.response.data.message)
         setLoading(false);
-      })
+      }
+
+    }
+    getData();
   }, [])
 
   const handleChange = (e) => {
@@ -41,24 +43,23 @@ export default function PengaturanSekolah() {
     setData({ ...data, ...newData });
   }
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    axios.put('/sekolah', data)
-      .then(res => {
-        setNotifSuccess(res.data.message);
-        setTimeout(() => {
-          setNotifSuccess(null);
-        }, 3000);
-        setLoading(false);
-      })
-      .catch(err => {
-        setLoading(false);
-        setError(err.response.data.message)
-        setTimeout(() => {
-          setError(null);
-        }, 3000);
-      })
+    try {
+      const res = await axios.put('/sekolah', data);
+      setNotifSuccess(res.data.message);
+      setTimeout(() => {
+        setNotifSuccess(null);
+      }, 3000);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setError(error.response.data.message)
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+    }
   }
 
   return (

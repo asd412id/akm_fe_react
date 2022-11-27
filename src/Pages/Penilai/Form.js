@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Alert, Button, Label, Modal, TextInput } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
+import SelectSearch from '../../components/SelectSearch';
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
   const [form, setForm] = useState(data);
@@ -15,6 +16,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     status.show = open;
     status.title = title;
     status.disabled = false;
+    status.error = false;
     setStatus({ ...status });
     setForm(data);
   }, [open, title, data]);
@@ -72,6 +74,13 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
           <div className="flex flex-col">
             <Label>Ulang Password</Label>
             <TextInput type='password' name='confirm_password' value={form?.confirm_password} onChange={handleChange} disabled={status.disabled} required={form?.id === null} />
+          </div>
+          <div className="flex flex-col">
+            <Label>Mata Pelajaran</Label>
+            <SelectSearch value={form.mapels} url='/search/mapel' onSelect={(v) => {
+              form.mapels = v;
+              setForm({ ...form });
+            }} />
           </div>
         </Modal.Body>
         <Modal.Footer className='flex justify-end px-3 py-2'>
