@@ -106,7 +106,7 @@ export default function View({ open = false, data = {}, onClose }) {
                           </Table.Head>
                           <Table.Body>
                             <Table.Row>
-                              <Table.Cell className='align-top'>
+                              <Table.Cell className='align-top w-6/12'>
                                 <div className='flex flex-col gap-5'>
                                   {dta.options.map(v => {
                                     return <div key={v.key} className="flex justify-center gap-2 items-center">
@@ -118,7 +118,7 @@ export default function View({ open = false, data = {}, onClose }) {
                                   })}
                                 </div>
                               </Table.Cell>
-                              <Table.Cell className='align-top'>
+                              <Table.Cell className='align-top w-6/12'>
                                 <div className='flex flex-col gap-5'>
                                   {dta.relations.map(v => {
                                     return <div key={v.key} className="flex justify-center gap-2 items-center">

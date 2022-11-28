@@ -64,9 +64,13 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
       if (asst.assets.length) {
         form.assets = [...form.assets, ...asst.assets];
       }
-    } if (ftemp.type === 'IS') {
+    }
+
+    if (ftemp.type === 'IS') {
       form.answer = ftemp.answer;
-    } else {
+    }
+
+    if (ftemp.type !== 'IS' && ftemp.type !== 'U') {
       form.answer = '';
     }
 
@@ -174,7 +178,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
               </div>
             </div>
             <div className="flex flex-col">
-              <Label>Bobot</Label>
+              <Label>Skor Per Soal</Label>
               <div className="flex gap-3 items-center">
                 <TextInput type={`number`} name='bobot' value={ftemp?.bobot} onChange={handleChange} disabled={status.disabled} required />
                 {(ftemp.type !== 'U' && ftemp.type !== 'IS') && <ToggleSwitch checked={ftemp?.shuffle} onChange={e => {
@@ -199,7 +203,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
           {ftemp.type === 'JD' ?
             <div className="flex flex-col">
               <Label>Pilihan</Label>
-              <JDInput options={ftemp.options} corrects={ftemp.corrects} labels={ftemp.labels} relations={ftemp.relations} onChange={(options, relations, corrects, labels) => {
+              <JDInput options={ftemp.options} id={form.id} corrects={ftemp.corrects} labels={ftemp.labels} relations={ftemp.relations} onChange={(options, relations, corrects, labels) => {
                 ftemp.options = options;
                 ftemp.corrects = corrects;
                 ftemp.labels = labels;
@@ -213,7 +217,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
                 <Editor value={ftemp?.answer} onChange={e => {
                   ftemp.answer = e;
                   setFtemp({ ...ftemp });
-                }} readOnly={status.disabled} />
+                }} />
               </div>
               : ftemp.type === 'PG' ?
                 <div className="flex flex-col">

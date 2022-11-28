@@ -5,11 +5,14 @@ import { GiNotebook } from 'react-icons/gi';
 import { HiPencil, HiTrash } from 'react-icons/hi';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import DeleteModal from '../../components/DeleteModal';
 import Auth from '../../layouts/Auth';
+import { userDataAtom } from '../../recoil/atom/userAtom';
 import Form from './Form';
 
 export default function Index() {
+  const userData = useRecoilValue(userDataAtom);
   const [datas, setDatas] = useState(null);
   const [status, setStatus] = useState({
     loaded: false,
@@ -130,14 +133,16 @@ export default function Index() {
         url={destroy.link} />
 
       <div className="flex flex-col gap-1">
-        <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
-          <Button type='button' size={`sm`}
-            onClick={() => {
-              form.data = initForm;
-              form.title = 'Data Baru';
-              form.show = true;
-              setForm({ ...form });
-            }}>Tambah Data</Button>
+        <div className={`flex gap-1 flex-wrap justify-center items-center ` + (userData.role === 'OPERATOR' ? 'md:justify-between' : 'md:justify-end')}>
+          {userData.role === 'OPERATOR' &&
+            <Button type='button' size={`sm`}
+              onClick={() => {
+                form.data = initForm;
+                form.title = 'Data Baru';
+                form.show = true;
+                setForm({ ...form });
+              }}>Tambah Data</Button>
+          }
           <div className="flex gap-1">
             <TextInput type='search' placeholder='Cari data ...' size={`sm`} onChange={searchData}
             />
@@ -187,20 +192,24 @@ export default function Index() {
                           <Link to={`/soal/${v.id}`}>
                             <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Daftar Soal'><GiNotebook className='w-3 h-3' /></Button>
                           </Link>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
-                            onClick={() => {
-                              form.data = { ...initForm, ...v };
-                              form.show = true;
-                              form.title = `Ubah Data ${v.name}`;
-                              setForm({ ...form });
-                            }}><HiPencil className='w-3 h-3' /></Button>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='failure' title='Hapus'
-                            onClick={() => {
-                              destroy.link = `/soal-kategories/${v.id}`;
-                              destroy.title = v.name;
-                              destroy.show = true;
-                              setDestroy({ ...destroy });
-                            }}><HiTrash className='w-3 h-3' /></Button>
+                          {userData.role === 'OPERATOR' &&
+                            <>
+                              <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
+                                onClick={() => {
+                                  form.data = { ...initForm, ...v };
+                                  form.show = true;
+                                  form.title = `Ubah Data ${v.name}`;
+                                  setForm({ ...form });
+                                }}><HiPencil className='w-3 h-3' /></Button>
+                              <Button className='py-1 px-0 rounded-full' size={`xs`} color='failure' title='Hapus'
+                                onClick={() => {
+                                  destroy.link = `/soal-kategories/${v.id}`;
+                                  destroy.title = v.name;
+                                  destroy.show = true;
+                                  setDestroy({ ...destroy });
+                                }}><HiTrash className='w-3 h-3' /></Button>
+                            </>
+                          }
                         </div>
                       </Table.Cell>
                     </Table.Row>

@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { Alert, Button, Label, Modal, Textarea, TextInput, ToggleSwitch } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
+import { useRecoilValue } from 'recoil';
 import DateTimePicker from '../../components/DateTimePicker';
 import SelectSearch from '../../components/SelectSearch';
+import { userDataAtom } from '../../recoil/atom/userAtom';
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
+  const dataUser = useRecoilValue(userDataAtom);
   const [form, setForm] = useState(data);
   const [status, setStatus] = useState({
     show: open,
@@ -120,6 +123,15 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
                   setForm({ ...form });
                 }} url='/search/ruang' />
               </div>
+              {dataUser.role === 'OPERATOR' &&
+                <div className="flex flex-col">
+                  <Label htmlFor='ruangs'>Pilih Penilai</Label>
+                  <SelectSearch value={form.penilais} onSelect={e => {
+                    form.penilais = e;
+                    setForm({ ...form });
+                  }} url='/search/penilai' />
+                </div>
+              }
               <ToggleSwitch name='shuffle' label='Acak  Soal' checked={form.shuffle} onChange={(e) => {
                 form.shuffle = e;
                 setForm({ ...form });

@@ -49,14 +49,14 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
         <Table.Body className="divide-y">
           {opts.map((v, i) => {
             return <Table.Row key={v.key} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white w-6/12">
+              <Table.Cell className="font-medium text-gray-900 dark:text-white w-6/12">
                 <Editor value={v.text} onChange={e => {
                   opts[i].text = e;
                   setOpts([...opts]);
                   onChange(opts, crts, lbls);
                 }} />
               </Table.Cell>
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              <Table.Cell className="font-medium text-gray-900 dark:text-white">
                 <div className="flex justify-center">
                   <ToggleSwitch label={crts[v.key] ? 'Benar' : 'Salah'} checked={crts[v.key]} onChange={e => {
                     crts[v.key] = e;
@@ -65,7 +65,7 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
                   }} />
                 </div>
               </Table.Cell>
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              <Table.Cell className="font-medium text-gray-900 dark:text-white">
                 <div className="flex justify-center">
                   <Button size={'xs'} color='failure' pill={true} onClick={() => {
                     opts.splice(i, 1);

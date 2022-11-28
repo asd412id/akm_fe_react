@@ -228,10 +228,10 @@ export default function Index() {
                 <Table.Body className="divide-y">
                   {datas?.datas.length && datas?.datas.map((v) => {
                     return <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={v.id}>
-                      <Table.Cell className="text-center whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                         {v.num}
                       </Table.Cell>
-                      <Table.Cell dangerouslySetInnerHTML={{ __html: shortText(striptags(v.text, ['img', 'sup', 'sub']), 95, '...') }}></Table.Cell>
+                      <Table.Cell dangerouslySetInnerHTML={{ __html: shortText(striptags(v.text, ['sup', 'sub']), 95, '...') }}></Table.Cell>
                       <Table.Cell>
                         {v.type}
                       </Table.Cell>

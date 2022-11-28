@@ -61,7 +61,7 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
         </Table.Head>
         <Table.Body className="divide-y">
           <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white md:pr-16 pr-5  items-start align-top">
+            <Table.Cell className="font-medium text-gray-900 dark:text-white md:pr-16 pr-5  items-start align-top">
               <div className="flex flex-col gap-4">
                 <div className="flex">
                   <div className="flex">
@@ -119,7 +119,7 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
                 })}
               </div>
             </Table.Cell>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white md:pl-16 pl-5  items-start align-top">
+            <Table.Cell className="font-medium text-gray-900 dark:text-white md:pl-16 pl-5  items-start align-top">
               <div className="flex flex-col gap-4">
                 <div className="flex justify-end">
                   <div className="flex">

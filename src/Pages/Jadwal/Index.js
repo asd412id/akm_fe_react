@@ -9,8 +9,11 @@ import DeleteModal from '../../components/DeleteModal';
 import dateFormat from 'dateformat';
 import Auth from '../../layouts/Auth';
 import Form from './Form';
+import { useRecoilValue } from 'recoil';
+import { userDataAtom } from '../../recoil/atom/userAtom';
 
 export default function Index() {
+  const userData = useRecoilValue(userDataAtom);
   const { jid } = useParams();
   const [datas, setDatas] = useState(null);
   const [title, setTitle] = useState('...');
@@ -34,6 +37,7 @@ export default function Index() {
     duration: 60,
     soals: [],
     ruangs: [],
+    penilais: [],
     soal_count: 1,
     shuffle: false,
     show_score: false,
@@ -163,6 +167,11 @@ export default function Index() {
           <Button type='button' size={`sm`}
             onClick={() => {
               form.data = initForm;
+              if (userData.role !== 'OPERATOR') {
+                form.data.penilais = [
+                  { id: userData.id, text: userData.name }
+                ];
+              }
               form.title = 'Data Baru';
               form.show = true;
               setForm({ ...form });
@@ -245,6 +254,7 @@ export default function Index() {
                               form.data.start = new Date(v.start);
                               form.data.end = new Date(v.end);
                               form.data.ruangs = v.pesertas;
+                              form.data.penilais = v.users;
                               form.show = true;
                               form.title = `Ubah Data ${v.name}`;
                               setForm({ ...form });
