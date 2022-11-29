@@ -12,6 +12,7 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
   const [rlts, setRlts] = useState(relations);
   const [lbls, setLbls] = useState(labels)
   const [ready, setReady] = useState(null);
+  const [rerender, setRerender] = useState('')
 
   useEffect(() => {
     setOpts(options);
@@ -19,6 +20,10 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
     setRlts(relations);
     setLbls(labels.length ? labels : ['', '']);
   }, [JSON.stringify(options), JSON.stringify(corrects), JSON.stringify(labels), JSON.stringify(relations)]);
+
+  useEffect(() => {
+    setRerender('render');
+  }, [crts])
 
   return (
     <div className="flex flex-col gap-2">
@@ -146,7 +151,7 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
         </Table.Body>
       </Table>
       {Object.keys(crts).map(k => {
-        return crts[k] !== null && <Xarrow key={k} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${crts[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
+        return crts[k] !== null && <Xarrow key={k + rerender} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${crts[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
       })}
     </div>
   )

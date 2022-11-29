@@ -9,11 +9,16 @@ import md5 from 'md5';
 export default function View({ open = false, data = {}, onClose }) {
   const [dta, setDta] = useState(data);
   const [show, setShow] = useState(open);
+  const [rerender, setRerender] = useState('');
 
   useEffect(() => {
     setShow(open);
     setDta(data);
   }, [open, data]);
+
+  useEffect(() => {
+    setRerender(dta.id);
+  }, [dta.id])
 
   return (
     <Modal
@@ -115,7 +120,7 @@ export default function View({ open = false, data = {}, onClose }) {
                             </Table.Body>
                           </Table>
                           {Object.keys(dta.corrects).map(k => {
-                            return dta.corrects[k] !== null && <Xarrow key={k} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${dta.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
+                            return dta.corrects[k] !== null && <Xarrow key={k + rerender} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${dta.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
                           })}
                         </>
                         : null
