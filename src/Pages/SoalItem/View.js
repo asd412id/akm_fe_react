@@ -96,7 +96,7 @@ export default function View({ open = false, data = {}, onClose }) {
                                   <div className='flex flex-col gap-5'>
                                     {dta.options.map(v => {
                                       return <div key={v.key} className="flex justify-center gap-2 items-center">
-                                        <div className="bg-blue-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: v.text }}></div>
+                                        <div className="bg-blue-50 p-2 rounded w-8/12 shadow justify-center" dangerouslySetInnerHTML={{ __html: v.text }}></div>
                                         <span id={`opt-${v.key}`}>
                                           <TbCircleDot className='w-7 h-7 text-blue-700' />
                                         </span>
@@ -111,7 +111,7 @@ export default function View({ open = false, data = {}, onClose }) {
                                         <span id={`rel-${v.key}`}>
                                           <TbCircleDot className='w-7 h-7 text-red-700' />
                                         </span>
-                                        <div className="flex bg-red-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: v.text }}></div>
+                                        <div className="flex bg-red-50 p-2 rounded w-8/12 shadow justify-center" dangerouslySetInnerHTML={{ __html: v.text }}></div>
                                       </div>
                                     })}
                                   </div>
