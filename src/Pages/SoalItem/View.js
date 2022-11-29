@@ -56,8 +56,8 @@ export default function View({ open = false, data = {}, onClose }) {
                   : dta.type === 'PGK' ?
                     <div className="flex flex-col gap-1">
                       {dta.options.map(v => {
-                        return <div key={v.key} className={`flex gap-2 items-center ${dta.corrects[v.key] ? 'text-green-600' : 'text-red-600'}`}>
-                          <span>{dta.corrects[v.key] ? <FaCheck className='w-4 h-4' /> : <FaTimes className='w-4 h-4' />}</span>
+                        return <div key={v.key} className={`flex gap-2 ${dta.corrects[v.key] ? 'text-green-600' : 'text-red-600'}`}>
+                          <span className={dta.corrects[v.key] ? 'pt-1' : 'pt-1.5'}>{dta.corrects[v.key] ? <FaCheck className='w-4 h-4' /> : <FaTimes className='w-4 h-4' />}</span>
                           <div dangerouslySetInnerHTML={{ __html: v.text }}></div>
                         </div>
                       })}
