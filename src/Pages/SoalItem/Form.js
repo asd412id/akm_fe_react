@@ -10,7 +10,7 @@ import PGKInput from '../../components/PGKInput';
 import BSInput from '../../components/BSInput';
 import JDInput from '../../components/JDInput';
 import { useRecoilState } from 'recoil';
-import { lInterval } from '../../recoil/atom/Interval';
+import { lID, lInterval } from '../../recoil/atom/LineHelper';
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
   const [form, setForm] = useState(data);
@@ -22,6 +22,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     error: false
   });
   const [lint, setLint] = useRecoilState(lInterval);
+  const [lineID, setLineId] = useRecoilState(lID);
 
   useEffect(() => {
     status.show = open;
@@ -121,6 +122,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
         clearInterval(lint);
         setLint(null);
       }
+      setLineId(null);
       onSubmit(res);
     } catch (error) {
       status.error = error.response.data.message;
@@ -159,6 +161,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
           clearInterval(lint);
           setLint(null);
         }
+        setLineId(null);
         onClose();
       }}
       size='6xl'

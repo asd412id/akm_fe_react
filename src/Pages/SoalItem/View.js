@@ -3,15 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { TbCircleDot } from 'react-icons/tb';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { generateColor } from '../../utils/Helpers';
-import Xarrow, { useXarrow } from "react-xarrows";
+import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import md5 from 'md5';
 import { useRecoilState } from 'recoil';
-import { lInterval } from '../../recoil/atom/Interval';
+import { lID, lInterval } from '../../recoil/atom/LineHelper';
 
 export default function View({ open = false, data = {}, onClose }) {
   const [dta, setDta] = useState(data);
   const [show, setShow] = useState(open);
   const [lint, setLint] = useRecoilState(lInterval)
+  const [lineId, setLineId] = useRecoilState(lID);
   const updateXarrow = useXarrow();
 
   useEffect(() => {
@@ -24,7 +25,9 @@ export default function View({ open = false, data = {}, onClose }) {
       if (lint) {
         clearInterval(lint);
         setLint(null);
+        setLineId(null);
       }
+      setLineId('line');
       setLint(setInterval(updateXarrow, 100));
     }
   }, [dta.id, dta.type])
@@ -37,6 +40,7 @@ export default function View({ open = false, data = {}, onClose }) {
           clearInterval(lint);
           setLint(null);
         }
+        setLineId(null);
         onClose();
       }}
       size='4xl'
@@ -134,9 +138,11 @@ export default function View({ open = false, data = {}, onClose }) {
                               </Table.Row>
                             </Table.Body>
                           </Table>
-                          {Object.keys(dta.corrects).map(k => {
-                            return dta.corrects[k] !== null && <Xarrow key={k} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${dta.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
-                          })}
+                          <Xwrapper>
+                            {Object.keys(dta.corrects).map(k => {
+                              return dta.corrects[k] !== null && <Xarrow key={k + lineId} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${dta.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
+                            })}
+                          </Xwrapper>
                         </>
                         : null
             }
