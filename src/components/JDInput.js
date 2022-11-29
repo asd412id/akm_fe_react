@@ -2,17 +2,16 @@ import { Button, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useRef, useState } from 'react'
 import { TbCircleDot } from 'react-icons/tb';
 import Editor from './Editor';
-import { alphabetRange, generateLine, removeLine } from '../utils/Helpers';
+import { alphabetRange, generateColor } from '../utils/Helpers';
+import Xarrow from "react-xarrows";
+import md5 from 'md5';
 
 export default function JDInput({ options = [], corrects = [], relations = [], labels = ['', ''], onChange }) {
   const [opts, setOpts] = useState(options);
   const [crts, setCrts] = useState(corrects);
   const [rlts, setRlts] = useState(relations);
   const [lbls, setLbls] = useState(labels)
-  const [lines, setLines] = useState([]);
   const [ready, setReady] = useState(null);
-  const optReff = useRef([]);
-  const relReff = useRef([]);
 
   useEffect(() => {
     setOpts(options);
@@ -20,25 +19,6 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
     setRlts(relations);
     setLbls(labels.length ? labels : ['', '']);
   }, [JSON.stringify(options), JSON.stringify(corrects), JSON.stringify(labels), JSON.stringify(relations)]);
-
-  useEffect(() => {
-    Object.keys(crts).forEach(k => {
-      if (crts[k] !== null) {
-        if (lines[k] === undefined) {
-          try {
-            lines[k] = generateLine(optReff.current[k], relReff.current[crts[k]], k);
-          } catch { }
-        }
-      } else {
-        try {
-          removeLine(lines[k], k);
-          delete lines[k];
-        } catch { }
-      }
-    });
-    setLines(lines);
-    onChange(opts, rlts, crts, lbls);
-  }, [ready, JSON.stringify(corrects)]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -83,18 +63,11 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
                     <div className="flex">
                       <Button size={'xs'} color='failure' pill={true} onClick={() => {
                         opts.splice(i, 1);
-                        Object.keys(crts).forEach(k => {
-                          try {
-                            removeLine(lines[k], k);
-                          } catch { }
-                          delete lines[k];
-                          delete crts[k];
-                        });
+                        Object.keys(crts).forEach(k => delete crts[k]);
                         opts.forEach((v, i) => {
                           opts[i].key = alphabetRange('A', 'Z')[i];
                           crts[v.key] = null;
                         });
-                        setLines(lines);
                         setOpts([...opts]);
                         setCrts({ ...crts });
                         onChange(opts, rlts, crts, lbls);
@@ -107,7 +80,7 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
                         setOpts([...opts]);
                         onChange(opts, rlts, crts, lbls);
                       }} />
-                      <span ref={e => optReff.current[v.key] = e} className={`cursor-pointer ` + (v.key === ready && 'ring-2 rounded-full ring-yellow-300 bg-yellow-200')} onClick={() => {
+                      <span id={`opt-${v.key}`} className={`cursor-pointer ` + (v.key === ready && 'ring-2 rounded-full ring-yellow-300 bg-yellow-200')} onClick={() => {
                         crts[v.key] = null;
                         setCrts({ ...crts });
                         setReady(v.key);
@@ -139,25 +112,18 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
                     <div className="flex justify-end">
                       <Button size={'xs'} color='failure' pill={true} onClick={() => {
                         rlts.splice(i, 1);
-                        Object.keys(crts).forEach(k => {
-                          try {
-                            removeLine(lines[k], k);
-                          } catch { }
-                          delete lines[k];
-                          delete crts[k];
-                        });
+                        Object.keys(crts).forEach(k => delete crts[k]);
                         opts.forEach((v, i) => {
                           opts[i].key = alphabetRange('A', 'Z')[i];
                           crts[v.key] = null;
                         });
-                        setLines(lines);
                         setRlts([...rlts]);
                         setCrts({ ...crts });
                         onChange(opts, rlts, crts, lbls);
                       }}>Hapus</Button>
                     </div>
                     <div className="flex gap-2 items-center">
-                      <span ref={e => relReff.current[v.key] = e} className='cursor-pointer' onClick={() => {
+                      <span id={`rel-${v.key}`} className='cursor-pointer' onClick={() => {
                         if (ready !== null) {
                           crts[ready] = v.key;
                           setCrts({ ...crts });
@@ -179,6 +145,9 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
           </Table.Row>
         </Table.Body>
       </Table>
+      {Object.keys(crts).map(k => {
+        return crts[k] !== null && <Xarrow key={k} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${crts[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
+      })}
     </div>
   )
 }

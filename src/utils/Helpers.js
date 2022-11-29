@@ -1,6 +1,3 @@
-import md5 from "md5";
-import LeaderLine from "react-leader-line";
-
 export const imgTags = (html) => {
   return html?.match(/<img [^>]*src="[^"]*"[^>]*>/gm) ?? [];
 };
@@ -38,46 +35,4 @@ export const numberRange = (start, end) => {
 }
 export const alphabetRange = (start, end) => {
   return new Array(end.charCodeAt(0) - start.charCodeAt(0) + 1).fill().map((d, i) => String.fromCharCode(i + start.charCodeAt(0)));
-}
-
-const linterval = {};
-
-export const generateLine = (start, end, id = 'color') => {
-  const line = new LeaderLine(start, end, {
-    startPlug: 'disc',
-    endPlug: 'disc',
-    color: generateColor('ujianq' + md5(id).toString()),
-    startSocket: 'right',
-    endSocket: 'left'
-  });
-
-  if (linterval[id] !== undefined) {
-    clearInterval(linterval[id]);
-    delete linterval[id];
-  }
-
-  linterval[id] = setInterval(() => {
-    try {
-      line.position();
-    } catch {
-      try {
-        removeLine(line, id);
-      } catch { }
-    };
-  }, 10);
-
-  return line;
-}
-
-export const removeLine = (line, id = 'color') => {
-  if (line !== undefined) {
-    if (linterval[id] !== undefined) {
-      clearInterval(linterval[id]);
-      delete linterval[id];
-    }
-    try {
-      line.remove();
-    } catch { }
-  }
-  return null;
 }

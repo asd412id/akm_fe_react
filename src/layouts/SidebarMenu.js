@@ -14,7 +14,7 @@ export default function SidebarMenu() {
   return (
     <div className="w-fit">
       <Sidebar aria-label="Sidebar with logo branding example"
-        className='w-56 h-full min-h-screen fixed z-40 top-12'
+        className='w-56 left-0 bottom-0 fixed z-40 top-12'
         style={{ boxShadow: '0 2px -4px 4px gray' }}>
         <Sidebar.Items>
           <Sidebar.ItemGroup>

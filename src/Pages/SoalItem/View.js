@@ -1,39 +1,19 @@
 import { Badge, Modal, Table } from 'flowbite-react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TbCircleDot } from 'react-icons/tb';
 import { FaCheck, FaTimes } from 'react-icons/fa';
-import { generateLine, removeLine } from '../../utils/Helpers';
+import { generateColor } from '../../utils/Helpers';
+import Xarrow from "react-xarrows";
+import md5 from 'md5';
 
 export default function View({ open = false, data = {}, onClose }) {
   const [dta, setDta] = useState(data);
   const [show, setShow] = useState(open);
-  const [lines, setLines] = useState({})
-  const optRef = useRef({});
-  const relRef = useRef({});
 
   useEffect(() => {
     setShow(open);
     setDta(data);
   }, [open, data]);
-
-  useEffect(() => {
-    if (dta.type === 'JD') {
-      const oref = optRef.current;
-      const rref = relRef.current;
-      Object.keys(dta.corrects).forEach(k => {
-        if (lines[k] !== undefined) {
-          removeLine(lines[k], k);
-          delete lines[k];
-        }
-        if (dta.corrects[k] !== null) {
-          try {
-            lines[k] = generateLine(oref[k], rref[dta.corrects[k]], k);
-          } catch { }
-        }
-      });
-      setLines(lines);
-    }
-  }, [show, dta.type]);
 
   return (
     <Modal
@@ -99,40 +79,46 @@ export default function View({ open = false, data = {}, onClose }) {
                         </Table.Body>
                       </Table>
                       : dta.type === 'JD' ?
-                        <Table className='w-full'>
-                          <Table.Head>
-                            <Table.HeadCell className='text-center'>{dta.labels[0]}</Table.HeadCell>
-                            <Table.HeadCell className='text-center'>{dta.labels[1]}</Table.HeadCell>
-                          </Table.Head>
-                          <Table.Body>
-                            <Table.Row>
-                              <Table.Cell className='align-top w-6/12'>
-                                <div className='flex flex-col gap-5'>
-                                  {dta.options.map(v => {
-                                    return <div key={v.key} className="flex justify-center gap-2 items-center">
-                                      <div className="bg-blue-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: v.text }}></div>
-                                      <span ref={e => optRef.current[v.key] = e}>
-                                        <TbCircleDot className='w-7 h-7 text-blue-700' />
-                                      </span>
-                                    </div>
-                                  })}
-                                </div>
-                              </Table.Cell>
-                              <Table.Cell className='align-top w-6/12'>
-                                <div className='flex flex-col gap-5'>
-                                  {dta.relations.map(v => {
-                                    return <div key={v.key} className="flex justify-center gap-2 items-center">
-                                      <span ref={e => relRef.current[v.key] = e}>
-                                        <TbCircleDot className='w-7 h-7 text-red-700' />
-                                      </span>
-                                      <div className="flex bg-red-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: v.text }}></div>
-                                    </div>
-                                  })}
-                                </div>
-                              </Table.Cell>
-                            </Table.Row>
-                          </Table.Body>
-                        </Table> : null
+                        <>
+                          <Table className='w-full'>
+                            <Table.Head>
+                              <Table.HeadCell className='text-center'>{dta.labels[0]}</Table.HeadCell>
+                              <Table.HeadCell className='text-center'>{dta.labels[1]}</Table.HeadCell>
+                            </Table.Head>
+                            <Table.Body>
+                              <Table.Row>
+                                <Table.Cell className='align-top w-6/12'>
+                                  <div className='flex flex-col gap-5'>
+                                    {dta.options.map(v => {
+                                      return <div key={v.key} className="flex justify-center gap-2 items-center">
+                                        <div className="bg-blue-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: v.text }}></div>
+                                        <span id={`opt-${v.key}`}>
+                                          <TbCircleDot className='w-7 h-7 text-blue-700' />
+                                        </span>
+                                      </div>
+                                    })}
+                                  </div>
+                                </Table.Cell>
+                                <Table.Cell className='align-top w-6/12'>
+                                  <div className='flex flex-col gap-5'>
+                                    {dta.relations.map(v => {
+                                      return <div key={v.key} className="flex justify-center gap-2 items-center">
+                                        <span id={`rel-${v.key}`}>
+                                          <TbCircleDot className='w-7 h-7 text-red-700' />
+                                        </span>
+                                        <div className="flex bg-red-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: v.text }}></div>
+                                      </div>
+                                    })}
+                                  </div>
+                                </Table.Cell>
+                              </Table.Row>
+                            </Table.Body>
+                          </Table>
+                          {Object.keys(dta.corrects).map(k => {
+                            return dta.corrects[k] !== null && <Xarrow key={k} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${dta.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
+                          })}
+                        </>
+                        : null
             }
           </div>
         </div>
