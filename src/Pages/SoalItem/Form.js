@@ -9,6 +9,8 @@ import PGInput from '../../components/PGInput';
 import PGKInput from '../../components/PGKInput';
 import BSInput from '../../components/BSInput';
 import JDInput from '../../components/JDInput';
+import { useRecoilState } from 'recoil';
+import { lInterval } from '../../recoil/atom/Interval';
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
   const [form, setForm] = useState(data);
@@ -19,6 +21,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     disabled: false,
     error: false
   });
+  const [lint, setLint] = useRecoilState(lInterval);
 
   useEffect(() => {
     status.show = open;
@@ -114,6 +117,10 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
       } else {
         res = await axios.post(`/soal-items/${form.soalId}`, form);
       }
+      if (lint) {
+        clearInterval(lint);
+        setLint(null);
+      }
       onSubmit(res);
     } catch (error) {
       status.error = error.response.data.message;
@@ -147,7 +154,13 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
   return (
     <Modal
       show={status.show}
-      onClose={onClose}
+      onClose={() => {
+        if (lint) {
+          clearInterval(lint);
+          setLint(null);
+        }
+        onClose();
+      }}
       size='6xl'
       position={'top-center'}
     >

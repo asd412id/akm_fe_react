@@ -3,13 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { TbCircleDot } from 'react-icons/tb';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { generateColor } from '../../utils/Helpers';
-import Xarrow from "react-xarrows";
+import Xarrow, { useXarrow } from "react-xarrows";
 import md5 from 'md5';
+import { useRecoilState } from 'recoil';
+import { lInterval } from '../../recoil/atom/Interval';
 
 export default function View({ open = false, data = {}, onClose }) {
   const [dta, setDta] = useState(data);
   const [show, setShow] = useState(open);
-  const [rerender, setRerender] = useState('');
+  const [lint, setLint] = useRecoilState(lInterval)
+  const updateXarrow = useXarrow();
 
   useEffect(() => {
     setShow(open);
@@ -17,13 +20,25 @@ export default function View({ open = false, data = {}, onClose }) {
   }, [open, data]);
 
   useEffect(() => {
-    setRerender(dta.id);
-  }, [dta.id])
+    if (dta.type === 'JD') {
+      if (lint) {
+        clearInterval(lint);
+        setLint(null);
+      }
+      setLint(setInterval(updateXarrow, 100));
+    }
+  }, [dta.id, dta.type])
 
   return (
     <Modal
       show={show}
-      onClose={onClose}
+      onClose={() => {
+        if (lint) {
+          clearInterval(lint);
+          setLint(null);
+        }
+        onClose();
+      }}
       size='4xl'
       position={'top-center'}
     >
@@ -120,7 +135,7 @@ export default function View({ open = false, data = {}, onClose }) {
                             </Table.Body>
                           </Table>
                           {Object.keys(dta.corrects).map(k => {
-                            return dta.corrects[k] !== null && <Xarrow key={k + rerender} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${dta.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
+                            return dta.corrects[k] !== null && <Xarrow key={k} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${dta.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
                           })}
                         </>
                         : null

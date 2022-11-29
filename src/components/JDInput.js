@@ -3,8 +3,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TbCircleDot } from 'react-icons/tb';
 import Editor from './Editor';
 import { alphabetRange, generateColor } from '../utils/Helpers';
-import Xarrow from "react-xarrows";
+import Xarrow, { useXarrow } from "react-xarrows";
 import md5 from 'md5';
+import { useRecoilState } from 'recoil';
+import { lInterval } from '../recoil/atom/Interval';
 
 export default function JDInput({ options = [], corrects = [], relations = [], labels = ['', ''], onChange }) {
   const [opts, setOpts] = useState(options);
@@ -12,7 +14,8 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
   const [rlts, setRlts] = useState(relations);
   const [lbls, setLbls] = useState(labels)
   const [ready, setReady] = useState(null);
-  const [rerender, setRerender] = useState('')
+  const [lint, setLint] = useRecoilState(lInterval);
+  const updateXarrow = useXarrow();
 
   useEffect(() => {
     setOpts(options);
@@ -22,7 +25,11 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
   }, [JSON.stringify(options), JSON.stringify(corrects), JSON.stringify(labels), JSON.stringify(relations)]);
 
   useEffect(() => {
-    setRerender('render');
+    if (lint) {
+      clearInterval(lint);
+      setLint(null);
+    }
+    setLint(setInterval(updateXarrow, 100));
   }, [crts])
 
   return (
@@ -151,7 +158,7 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
         </Table.Body>
       </Table>
       {Object.keys(crts).map(k => {
-        return crts[k] !== null && <Xarrow key={k + rerender} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${crts[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
+        return crts[k] !== null && <Xarrow key={k} startAnchor='right' endAnchor='left' start={`opt-${k}`} end={`rel-${crts[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
       })}
     </div>
   )
