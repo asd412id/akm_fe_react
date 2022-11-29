@@ -153,17 +153,20 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
 
     return { text, assets };
   }
+
+  const closeForm = () => {
+    if (lint) {
+      clearInterval(lint);
+      setLint(null);
+    }
+    setLineId(null);
+    onClose();
+  }
+
   return (
     <Modal
       show={status.show}
-      onClose={() => {
-        if (lint) {
-          clearInterval(lint);
-          setLint(null);
-        }
-        setLineId(null);
-        onClose();
-      }}
+      onClose={closeForm}
       size='6xl'
       position={'top-center'}
     >
@@ -276,7 +279,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
           <Button
             color="gray"
             type='button'
-            onClick={onClose}
+            onClick={closeForm}
             disabled={status.disabled}
           >
             BATAL
