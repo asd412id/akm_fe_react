@@ -2,12 +2,13 @@ import axios from 'axios'
 import { Avatar, Dropdown, Navbar } from 'flowbite-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
+import { expandSidebar } from '../recoil/atom/navigation'
 import { userDataAtom } from '../recoil/atom/userAtom'
 
 export default function NavbarMenu() {
-  const userData = useRecoilValue(userDataAtom);
-  const [_, setUserData] = useRecoilState(userDataAtom);
+  const [userData, setUserData] = useRecoilState(userDataAtom);
+  const [sidebarToggle, setSidebarToggle] = useRecoilState(expandSidebar);
 
   const logout = () => {
     axios.post('/logout')
@@ -36,7 +37,7 @@ export default function NavbarMenu() {
           {process.env.REACT_APP_APPNAME}
         </span>
       </Navbar.Brand>
-      <div className="flex md:order-2">
+      <div className="flex md:order-2 gap-2">
         <Dropdown
           arrowIcon={false}
           inline={true}
@@ -67,7 +68,9 @@ export default function NavbarMenu() {
             Keluar
           </Dropdown.Item>
         </Dropdown>
-        <Navbar.Toggle />
+        <Navbar.Toggle onClick={() => {
+          setSidebarToggle(!sidebarToggle);
+        }} />
       </div>
     </Navbar >
   )

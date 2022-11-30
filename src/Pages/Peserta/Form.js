@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Alert, Button, Label, Modal, TextInput } from 'flowbite-react'
+import { Alert, Button, Label, Modal, Select, TextInput } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
@@ -69,6 +69,13 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
           <div className="flex flex-col">
             <Label>Password</Label>
             <TextInput type='password' name='password' value={form?.password} onChange={handleChange} disabled={status.disabled} required={form?.id === null} />
+          </div>
+          <div className="flex flex-col">
+            <Label>Jenis Kelamin</Label>
+            <Select name='jk' value={form?.jk} onChange={handleChange} disabled={status.disabled}>
+              <option value="L">Laki-Laki</option>
+              <option value="P">Perempuan</option>
+            </Select>
           </div>
           <div className="flex flex-col">
             <Label>Ruang</Label>

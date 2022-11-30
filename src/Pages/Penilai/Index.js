@@ -64,6 +64,8 @@ export default function Index() {
     setForm({ ...form });
     setDestroy({ ...destroy });
     datas['datas'] = [];
+    filters.page = 0;
+    setFilters({ ...filters });
     setDatas({ ...datas });
     getDatas();
     setTimeout(() => {

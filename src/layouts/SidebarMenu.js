@@ -5,16 +5,18 @@ import { MdLibraryBooks, MdSchedule } from 'react-icons/md'
 import { ImBooks } from 'react-icons/im'
 import { GiGraduateCap } from 'react-icons/gi'
 import { Link, useLocation } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { userDataAtom } from '../recoil/atom/userAtom';
+import { expandSidebar } from '../recoil/atom/navigation';
 
 export default function SidebarMenu() {
   const userData = useRecoilValue(userDataAtom);
+  const [sidebarToggle, setSidebarToggle] = useRecoilState(expandSidebar)
   const location = useLocation();
   return (
     <div className="w-fit">
       <Sidebar aria-label="Sidebar with logo branding example"
-        className='w-56 left-0 bottom-0 fixed z-40 top-12'
+        className={'w-56 md:block left-0 bottom-0 fixed z-10 top-12 shadow-lg ' + (!sidebarToggle && 'hidden')}
         style={{ boxShadow: '0 2px -4px 4px gray' }}>
         <Sidebar.Items>
           <Sidebar.ItemGroup>

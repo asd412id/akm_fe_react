@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { Alert, Button, Spinner, Table, TextInput } from 'flowbite-react';
-import React, { useEffect, useState } from 'react'
-import { HiPencil, HiTrash } from 'react-icons/hi';
+import React, { useEffect, useRef, useState } from 'react'
+import { HiCloudDownload, HiCloudUpload, HiPencil, HiTrash } from 'react-icons/hi';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import DeleteModal from '../../components/DeleteModal';
 import Auth from '../../layouts/Auth';
 import Form from './Form';
+import Excel from 'exceljs';
 
 export default function Index() {
   const [datas, setDatas] = useState(null);
@@ -25,6 +26,7 @@ export default function Index() {
     name: '',
     username: '',
     password: '',
+    jk: 'L',
     ruang: ''
   };
   const [form, setForm] = useState({
@@ -37,6 +39,7 @@ export default function Index() {
     title: '',
     link: null
   });
+  const uexcel = useRef(null);
 
   useEffect(() => {
     getDatas();
@@ -63,6 +66,8 @@ export default function Index() {
     setForm({ ...form });
     setDestroy({ ...destroy });
     datas['datas'] = [];
+    filters.page = 0;
+    setFilters({ ...filters });
     setDatas({ ...datas });
     getDatas();
     setTimeout(() => {
@@ -106,6 +111,61 @@ export default function Index() {
     }
   };
 
+  const importExcel = async (e) => {
+    if (e.target.files[0] !== undefined) {
+      status.loaded = false;
+      setStatus({ ...status });
+      const workbook = new Excel.Workbook();
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(e.target.files[0]);
+      reader.onload = async () => {
+        const buffer = reader.result;
+        try {
+          const wb = await workbook.xlsx.load(buffer);
+          const sheet = wb.getWorksheet('Peserta');
+          const dp = [];
+          for (let i = 1; i <= sheet.rowCount; i++) {
+            if (i > 1) {
+              const row = sheet.getRow(i);
+              const val = {
+                username: String(row.getCell('B').value),
+                name: String(row.getCell('C').value),
+                jk: String(row.getCell('D').value),
+                password: String(row.getCell('E').value),
+                ruang: String(row.getCell('F').value),
+              };
+              dp.push(val);
+            }
+          }
+          uexcel.current.value = ''
+          saveImported(dp);
+        } catch (error) {
+          uexcel.current.value = ''
+          status.error = 'Format file excel tidak dikenali!';
+          status.loaded = true;
+          setStatus({ ...status });
+          setTimeout(() => {
+            status.error = null;
+            setStatus({ ...status });
+          }, 3000);
+        }
+      }
+    }
+  }
+
+  const saveImported = async (data) => {
+    try {
+      const res = await axios.post('/pesertas/import', data);
+      status.loaded = true;
+      setStatus({ ...status });
+      successResponse(res);
+    } catch (error) {
+      status.loaded = true;
+      setStatus({ ...status });
+      errorResponse(error);
+    }
+  }
+
   return (
     <Auth title={`Daftar Peserta`} success={status.success} error={status.error}>
       <Form
@@ -131,13 +191,23 @@ export default function Index() {
 
       <div className="flex flex-col gap-1">
         <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
-          <Button type='button' size={`sm`}
-            onClick={() => {
-              form.data = initForm;
-              form.title = 'Data Baru';
-              form.show = true;
-              setForm({ ...form });
-            }}>Tambah Data</Button>
+          <div className="flex flex-col md:flex-row gap-1">
+            <Button type='button' size={`sm`}
+              onClick={() => {
+                form.data = initForm;
+                form.title = 'Data Baru';
+                form.show = true;
+                setForm({ ...form });
+              }} disabled={!status.loaded}>Tambah Data</Button>
+            <a href="/assets/template_peserta.xlsx">
+              <Button type='button' size={`sm`} color='purple' className='flex items-center'><HiCloudDownload className='w-5 h-5 mr-1' /> <span>Download Template Excel</span></Button>
+            </a>
+            <Button type='button' color={'success'} size={`sm`}
+              onClick={() => {
+                uexcel.current.click();
+              }} disabled={!status.loaded} className='flex items-center'><HiCloudUpload className='w-5 h-5 mr-1' /><span>Import Excel</span></Button>
+            <input type="file" ref={uexcel} className='hidden' accept='.xls,.xlsx,.ods' onChange={importExcel} />
+          </div>
           <div className="flex gap-1">
             <TextInput type='search' placeholder='Cari data ...' size={`sm`} onChange={searchData}
             />
@@ -162,6 +232,9 @@ export default function Index() {
                     Username
                   </Table.HeadCell>
                   <Table.HeadCell>
+                    Jenis Kelamin
+                  </Table.HeadCell>
+                  <Table.HeadCell>
                     Ruang
                   </Table.HeadCell>
                   <Table.HeadCell>
@@ -178,6 +251,9 @@ export default function Index() {
                       </Table.Cell>
                       <Table.Cell>
                         {v.username}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {v.jk === 'L' ? 'Laki-Laki' : 'Perempuan'}
                       </Table.Cell>
                       <Table.Cell>
                         {v.ruang}
