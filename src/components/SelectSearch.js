@@ -69,7 +69,7 @@ export default function SelectSearch({ url, value, labelValue = 'id', labelText 
       </div>
       {!fetching ?
         (results.length ?
-          <div className="border border-gray-300 rounded-lg shadow absolute top-full mt-1 left-0 w-full z-10 bg-white">
+          <div className="border border-gray-300 rounded-lg shadow absolute top-full mt-1 left-0 w-full z-10 bg-white max-h-56 overflow-y-auto">
             {results.map(v => {
               return <div key={v[labelValue]} className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => {
                 setInputText('');
@@ -79,11 +79,11 @@ export default function SelectSearch({ url, value, labelValue = 'id', labelText 
               }}>{v[labelText]}</div>
             })}
           </div> : inputText !== '' &&
-          <div className="border border-gray-300 rounded-lg shadow absolute top-full mt-1 left-0 w-full z-10 bg-white">
+          <div className="border border-gray-300 rounded-lg shadow absolute top-full mt-1 left-0 w-full z-10 bg-white max-h-56 overflow-y-auto">
             <div className="p-2">Data tidak ditemukan</div>
           </div>
         )
-        : <div className="border border-gray-300 rounded-lg shadow absolute top-full mt-1 left-0 w-full z-10 bg-white">
+        : <div className="border border-gray-300 rounded-lg shadow absolute top-full mt-1 left-0 w-full z-10 bg-white max-h-56 overflow-y-auto">
           <div className="p-2">Mencari data ...</div>
         </div>
       }

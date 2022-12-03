@@ -22,7 +22,7 @@ function App() {
 
   return (
     <>
-      {loading ? <div className="flex justify-center items-center fixed inset-0 w-full min-h-screen">
+      {loading ? <div className="flex bg-white backdrop-blur-md justify-center items-center fixed inset-0 w-full min-h-screen">
         <Spinner size={`xl`} />
       </div > : userData ? <Routes /> : <Login />}
     </>

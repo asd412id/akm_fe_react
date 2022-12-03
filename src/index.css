@@ -27,3 +27,12 @@ html:has([role='dialog']),
 body:has([role='dialog']) {
   overflow: hidden;
 }
+
+.no-v-scroll>div {
+  overflow-y: visible !important;
+  position: static;
+}
+
+.infinite-scroll-component {
+  padding-bottom: 0.75rem;
+}

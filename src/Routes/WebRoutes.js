@@ -11,6 +11,10 @@ import IndexSoal from '../Pages/Soal/Index'
 import IndexSoalItem from '../Pages/SoalItem/Index'
 import IndexJadwalKategori from '../Pages/JadwalKategori/Index'
 import IndexJadwal from '../Pages/Jadwal/Index'
+import PageNotFound from '../Pages/PageNotFound'
+import Ujian from '../Pages/Ujian/Index'
+import Tes from '../Pages/Ujian/Tes'
+import Monitor from '../Pages/Jadwal/Monitor'
 
 export default function WebRoutes() {
   return (
@@ -28,6 +32,12 @@ export default function WebRoutes() {
         <Route path='/soal/:katid/:soalid' element={<IndexSoalItem />} />
         <Route exact path='/jadwal' element={<IndexJadwalKategori />} />
         <Route path='/jadwal/:jid' element={<IndexJadwal />} />
+        <Route path='/jadwal/:jid/:id/monitor' element={<Monitor />} />
+
+        <Route exact path='/ujian' element={<Ujian />} />
+        <Route path='/ujian/tes' element={<Tes />} />
+
+        <Route path='*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter >
   )

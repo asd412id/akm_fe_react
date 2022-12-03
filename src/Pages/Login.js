@@ -4,12 +4,12 @@ import React, { useState } from 'react'
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: ''
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null)
-  document.title = document.title = 'Halaman Login - ' + (process.env.REACT_APP_APPNAME || 'UjianQ');;
+  const [error, setError] = useState(null);
+  document.title = 'Selamat Datang - ' + (process.env.REACT_APP_APPNAME || 'UjianQ');;
 
   const handleChange = (e) => {
     formData[e.target.name] = e.target.value;
@@ -36,16 +36,16 @@ export default function Login() {
         <div>
           <div className="mb-2 block">
             <Label
-              htmlFor="email1"
-              value="Alamat Email"
+              htmlFor="username"
+              value="Alamat Email/ID Peserta"
             />
           </div>
           <TextInput
-            id="email1"
-            type="email"
-            name='email'
-            value={formData.email}
-            placeholder="email@mail.com"
+            id="username"
+            type="text"
+            name='username'
+            value={formData.username}
+            placeholder="Masukkan alamat email atau ID Peserta"
             required={true}
             onChange={handleChange}
             disabled={loading}
@@ -62,6 +62,7 @@ export default function Login() {
             id="password1"
             type="password"
             name='password'
+            placeholder='******************'
             value={formData.password}
             required={true}
             onChange={handleChange}

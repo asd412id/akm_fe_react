@@ -21,6 +21,15 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     status.title = title;
     status.disabled = false;
     status.error = false;
+    const r = [];
+    const rs = [];
+    data.ruangs?.forEach((v) => {
+      if (!r.includes(v.text)) {
+        r.push(v.text);
+        rs.push(v);
+      }
+    });
+    data.ruangs = [...rs];
     setStatus({ ...status });
     setForm(data);
   }, [open, title, data]);

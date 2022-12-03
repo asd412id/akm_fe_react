@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { Alert, Badge, Button, Spinner, Table, TextInput } from 'flowbite-react';
+import { Alert, Badge, Button, Dropdown, Spinner, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { MdMonitor } from 'react-icons/md';
-import { HiPencil, HiTrash } from 'react-icons/hi';
+import { HiCog, HiPencil, HiTrash } from 'react-icons/hi';
+import { BsUiChecks } from 'react-icons/bs';
+import { GoChecklist, GoCloudDownload } from 'react-icons/go';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link, useParams } from 'react-router-dom';
 import DeleteModal from '../../components/DeleteModal';
@@ -193,87 +195,112 @@ export default function Index() {
               className='w-full'
               loader={<div className='flex justify-center p-2'><Spinner /></div>}
             >
-              <Table hoverable={true}>
-                <Table.Head>
-                  <Table.HeadCell>
-                    Nama Jadwal
-                  </Table.HeadCell>
-                  <Table.HeadCell>
-                    Peserta
-                  </Table.HeadCell>
-                  <Table.HeadCell>
-                    Soal
-                  </Table.HeadCell>
-                  <Table.HeadCell>
-                    Waktu
-                  </Table.HeadCell>
-                  <Table.HeadCell>
-                    Durasi
-                  </Table.HeadCell>
-                  <Table.HeadCell>
-                    Status
-                  </Table.HeadCell>
-                  <Table.HeadCell>
-                    <span className="sr-only">
-                      Edit
-                    </span>
-                  </Table.HeadCell>
-                </Table.Head>
-                <Table.Body className="divide-y">
-                  {datas?.datas.length && datas?.datas.map((v) => {
-                    return <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={v.id}>
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        {v.name}
-                      </Table.Cell>
-                      <Table.Cell>
-                        {v.pesertas.length}
-                      </Table.Cell>
-                      <Table.Cell>
-                        {v.soal_count}
-                      </Table.Cell>
-                      <Table.Cell>
-                        <div className="flex gap-1 flex-wrap">
-                          <Badge className='whitespace-nowrap' color={`success`}>{dateFormat(v.start, 'dd-mmm-yyyy HH:MM')}</Badge>
-                          <Badge className='whitespace-nowrap' color={`failure`}>{dateFormat(v.end, 'dd-mmm-yyyy HH:MM')}</Badge>
-                        </div>
-                      </Table.Cell>
-                      <Table.Cell>
-                        {v.duration}
-                      </Table.Cell>
-                      <Table.Cell>
-                        <div className="flex">
-                          {v.active ? <Badge className='whitespace-nowrap' color={`success`}>Aktif</Badge> : <Badge className='whitespace-nowrap' color={`failure`}>Tidak Aktif</Badge>}
-                        </div>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <div className="flex justify-end gap-1 whitespace-nowrap">
-                          <Link to={`/jadwal/${jid}/${v.id}/monitor`}>
-                            <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Monitor Peserta'><MdMonitor className='w-3 h-3' /></Button>
-                          </Link>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
-                            onClick={() => {
-                              form.data = { ...initForm, ...v };
-                              form.data.start = new Date(v.start);
-                              form.data.end = new Date(v.end);
-                              form.data.ruangs = v.pesertas;
-                              form.data.penilais = v.users;
-                              form.show = true;
-                              form.title = `Ubah Data ${v.name}`;
-                              setForm({ ...form });
-                            }}><HiPencil className='w-3 h-3' /></Button>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='failure' title='Hapus'
-                            onClick={() => {
-                              destroy.link = `/jadwals/${jid}/${v.id}`;
-                              destroy.title = v.name;
-                              destroy.show = true;
-                              setDestroy({ ...destroy });
-                            }}><HiTrash className='w-3 h-3' /></Button>
-                        </div>
-                      </Table.Cell>
-                    </Table.Row>
-                  })}
-                </Table.Body>
-              </Table>
+              <div className="no-v-scroll">
+                <Table hoverable={true}>
+                  <Table.Head>
+                    <Table.HeadCell>
+                      Nama Jadwal
+                    </Table.HeadCell>
+                    <Table.HeadCell>
+                      Peserta
+                    </Table.HeadCell>
+                    <Table.HeadCell>
+                      Soal
+                    </Table.HeadCell>
+                    <Table.HeadCell>
+                      Waktu
+                    </Table.HeadCell>
+                    <Table.HeadCell>
+                      Durasi
+                    </Table.HeadCell>
+                    <Table.HeadCell>
+                      Status
+                    </Table.HeadCell>
+                    <Table.HeadCell>
+                      <span className="sr-only">
+                        Edit
+                      </span>
+                    </Table.HeadCell>
+                  </Table.Head>
+                  <Table.Body className="divide-y">
+                    {datas?.datas.length && datas?.datas.map((v) => {
+                      return <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={v.id}>
+                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                          {v.name}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {v.pesertas.length}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {v.soal_count}
+                        </Table.Cell>
+                        <Table.Cell>
+                          <div className="flex gap-1 flex-wrap">
+                            <Badge className='whitespace-nowrap' color={`success`}>{dateFormat(v.start, 'dd-mmm-yyyy HH:MM')}</Badge>
+                            <Badge className='whitespace-nowrap' color={`failure`}>{dateFormat(v.end, 'dd-mmm-yyyy HH:MM')}</Badge>
+                          </div>
+                        </Table.Cell>
+                        <Table.Cell>
+                          {v.duration} Menit
+                        </Table.Cell>
+                        <Table.Cell>
+                          <div className="flex">
+                            {v.active ? <Badge className='whitespace-nowrap' color={`success`}>Aktif</Badge> : <Badge className='whitespace-nowrap' color={`failure`}>Tidak Aktif</Badge>}
+                          </div>
+                        </Table.Cell>
+                        <Table.Cell>
+                          <div className="flex justify-end whitespace-nowrap">
+                            <Dropdown
+                              label={<HiCog className='w-4 h-4' />}
+                              dismissOnClick={false}
+                              size='xs'
+                              color={'gray'}
+                              placement='bottom-end'
+                            >
+                              <Dropdown.Item icon={GoChecklist}>
+                                Daftar Hadir
+                              </Dropdown.Item>
+                              <Link to={`/jadwal/${jid}/${v.id}/monitor`}>
+                                <Dropdown.Item icon={MdMonitor}>
+                                  Monitoring Peserta
+                                </Dropdown.Item>
+                              </Link>
+                              <Link to={`/jadwal/${jid}/${v.id}/penilaian`}>
+                                <Dropdown.Item icon={BsUiChecks}>
+                                  Periksa Ujian
+                                </Dropdown.Item>
+                              </Link>
+                              <Dropdown.Item icon={GoCloudDownload}>
+                                Download Nilai
+                              </Dropdown.Item>
+                              <Dropdown.Item icon={HiPencil} onClick={() => {
+                                form.data = { ...initForm, ...v };
+                                form.data.start = new Date(v.start);
+                                form.data.end = new Date(v.end);
+                                form.data.ruangs = v.pesertas;
+                                form.data.penilais = v.users;
+                                form.show = true;
+                                form.title = `Ubah Data ${v.name}`;
+                                setForm({ ...form });
+                              }}>
+                                Edit
+                              </Dropdown.Item>
+                              <Dropdown.Item icon={HiTrash} onClick={() => {
+                                destroy.link = `/jadwals/${jid}/${v.id}`;
+                                destroy.title = v.name;
+                                destroy.show = true;
+                                setDestroy({ ...destroy });
+                              }}>
+                                Hapus
+                              </Dropdown.Item>
+                            </Dropdown>
+                          </div>
+                        </Table.Cell>
+                      </Table.Row>
+                    })}
+                  </Table.Body>
+                </Table>
+              </div>
             </InfiniteScroll>
             : <Alert>Data tidak tersedia</Alert>}
         </div>

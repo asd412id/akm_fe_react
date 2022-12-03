@@ -8,7 +8,7 @@ import Auth from '../../layouts/Auth';
 import Form from './Form';
 import Excel from 'exceljs';
 
-export default function Index() {
+export default function Monitor() {
   const [datas, setDatas] = useState(null);
   const [status, setStatus] = useState({
     loaded: false,

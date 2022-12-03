@@ -6,7 +6,7 @@ import { expandSidebar } from '../recoil/atom/navigation';
 import { userDataAtom } from '../recoil/atom/userAtom';
 import NavbarMenu from './NavbarMenu';
 import SidebarMenu from './SidebarMenu';
-export default function Auth({ title, children, success = null, error = null }) {
+export default function AuthPeserta({ title, children, success = null, error = null }) {
   const [notifSuccess, setNotifSuccess] = useState(null);
   const [notifError, setNotifError] = useState(null);
   const [sidebarToggle, setSidebarToggle] = useRecoilState(expandSidebar);
@@ -23,12 +23,12 @@ export default function Auth({ title, children, success = null, error = null }) 
   }, [error]);
 
   useEffect(() => {
-    if (!userData?.role) {
-      navigate('/ujian');
+    if (!userData?.username) {
+      navigate('/');
     }
   }, []);
 
-  if (userData?.role) {
+  if (userData?.username) {
     return (
       <>
         {notifSuccess && <Notifications message={notifSuccess} />}
@@ -41,7 +41,6 @@ export default function Auth({ title, children, success = null, error = null }) 
         }}>
           <SidebarMenu />
           <div className='md:px-10 px-5 py-5 flex flex-col gap-7 min-h-screen w-full md:pl-72 md:-ml-3 pt-20'>
-            <h2 className='font-bold text-2xl'>{title}</h2>
             <div className="relative">{children}</div>
           </div>
         </div>
