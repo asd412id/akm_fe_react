@@ -13,6 +13,7 @@ import Auth from '../../layouts/Auth';
 import Form from './Form';
 import { useRecoilValue } from 'recoil';
 import { userDataAtom } from '../../recoil/atom/userAtom';
+import DaftarHadir from './DaftarHadir';
 
 export default function Index() {
   const userData = useRecoilValue(userDataAtom);
@@ -55,6 +56,11 @@ export default function Index() {
     show: false,
     title: '',
     link: null
+  });
+
+  const [printDaftarHadir, setprintDaftarHadir] = useState({
+    show: false,
+    data: {}
   });
 
   useEffect(() => {
@@ -166,6 +172,16 @@ export default function Index() {
         text={destroy.title}
         url={destroy.link} />
 
+      <DaftarHadir
+        open={printDaftarHadir.show}
+        jadwal={printDaftarHadir.data}
+        onClose={() => {
+          printDaftarHadir.show = false;
+          printDaftarHadir.data = {};
+          setprintDaftarHadir({ ...printDaftarHadir });
+        }}
+      />
+
       <div className="flex flex-col gap-1">
         <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
           <Button type='button' size={`sm`}
@@ -252,12 +268,15 @@ export default function Index() {
                           <div className="flex justify-end whitespace-nowrap">
                             <Dropdown
                               label={<HiCog className='w-4 h-4' />}
-                              dismissOnClick={false}
                               size='xs'
                               color={'gray'}
                               placement='bottom-end'
                             >
-                              <Dropdown.Item icon={GoChecklist}>
+                              <Dropdown.Item icon={GoChecklist} onClick={() => {
+                                printDaftarHadir.show = true;
+                                printDaftarHadir.data = v;
+                                setprintDaftarHadir({ ...printDaftarHadir });
+                              }}>
                                 Daftar Hadir
                               </Dropdown.Item>
                               <Link to={`/jadwal/${jid}/${v.id}/monitor`}>

@@ -36,3 +36,8 @@ body:has([role='dialog']) {
 .infinite-scroll-component {
   padding-bottom: 0.75rem;
 }
+
+.h-modal {
+  position: fixed;
+  height: 100%;
+}

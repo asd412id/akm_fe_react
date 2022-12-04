@@ -83,7 +83,7 @@ export default function SidebarMenu() {
               {(dataUjian?.peserta_tests.length > 0) ? <SoalNumber />
                 : <div className='flex flex-col gap-3'>
                   <p className='font-bold text-sky-600'>Silahkan cek kembali data ujian Anda!</p>
-                  <p className='font-bold text-amber-600'>Pada sisi kanan/bawah biodata akan muncul ujian yang akan Anda ikuti. Klik ujian yang ingin diikuti dan lakukan konfirmasi</p>
+                  <p className='font-bold text-amber-600'>Kotak hijau adalah biodata Anda. Kotak jingga adalah ujian yang telah Anda ikuti. Kotak biru adalah ujian yang akan Anda ikuti. Klik ujian yang ingin diikuti pada kotak biru dan lakukan konfirmasi untuk memulai ujian</p>
                   <p className='font-bold text-red-600'>Timer ujian akan mulai berjalan saat Anda melakukan konfirmasi ujian! Ujian akan otomatis selesai ketika waktu yang diberikan telah habis</p>
                 </div>}
             </>}

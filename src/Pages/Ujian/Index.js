@@ -103,7 +103,7 @@ export default function Index() {
         </TestConfirmationModal>
 
         <div className="flex flex-col md:flex-row gap-3 md:gap-5">
-          <div className="w-full flex flex-col gap-3">
+          <div className="md:w-8/12 w-full flex flex-col gap-3">
             <div className="w-full p-5 border rounded-lg shadow-md bg-emerald-50 border-emerald-100 text-emerald-600">
               <div className="-mb-1 italic text-lg">Selamat Datang,</div>
               <div className="text-3xl font-bold">{userData.name}</div>
@@ -143,7 +143,7 @@ export default function Index() {
                 {dataLogin?.datas.length ? dataLogin.datas.map((v, i) => {
                   return <Card key={i} className='bg-amber-100 text-amber-700 rounded-lg'>
                     <div>
-                      <span style={{ lineHeight: '1em' }} className="italic font-semibold text-sm">{v.jadwal.jadwal_kategory.name + (v.jadwal.jadwal_kategory.desc ? ' (' + v.jadwal.jadwal_kategory.desc + ')' : '')}</span>
+                      <div style={{ lineHeight: '1.1em' }} className="italic font-semibold text-sm">{v.jadwal.jadwal_kategory.name + (v.jadwal.jadwal_kategory.desc ? ' (' + v.jadwal.jadwal_kategory.desc + ')' : '')}</div>
                       <h5 style={{ lineHeight: '1em' }} className="text-lg font-semibold">{v.jadwal.name}</h5>
                       <span style={{ lineHeight: '1em' }} className="italic text-sm whitespace-normal">{v.jadwal.desc}</span>
                     </div>
@@ -173,7 +173,7 @@ export default function Index() {
               </InfiniteScroll>
             }
           </div>
-          <div className="md:whitespace-nowrap w-full md:w-auto relative flex flex-col gap-2">
+          <div className="md:whitespace-nowrap w-full md:w-4/12 relative flex flex-col gap-2">
             {ujians.loading ?
               <div className="flex absolute justify-center inset-0 bg-white backdrop-blur-md items-center"><Spinner size={'xl'} color={'success'} /></div>
               : ujians.datas.length ? ujians.datas.map((v, i) => {
@@ -182,7 +182,7 @@ export default function Index() {
                   setOpenDialog(true);
                 }}>
                   <div>
-                    <span style={{ lineHeight: '1em' }} className="italic font-semibold text-sm">{v.jadwal_kategory.name + (v.jadwal_kategory.desc ? ' (' + v.jadwal_kategory.desc + ')' : '')}</span>
+                    <div style={{ lineHeight: '1.1em' }} className="italic font-semibold text-sm whitespace-normal">{v.jadwal_kategory.name + (v.jadwal_kategory.desc ? ' (' + v.jadwal_kategory.desc + ')' : '')}</div>
                     <h5 style={{ lineHeight: '1em' }} className="text-lg font-semibold">{v.name}</h5>
                     <span style={{ lineHeight: '1em' }} className="italic text-sm whitespace-normal">{v.desc}</span>
                   </div>
