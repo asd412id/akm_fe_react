@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Alert, Button, Card, Checkbox, Radio, Spinner, table, Textarea, TextInput, ToggleSwitch } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import AuthPeserta from '../../layouts/AuthPeserta'
 import TestConfirmationModal from './TestConfirmationModal';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ export default function Tes() {
   const navigate = useNavigate();
   const [lint, setLint] = useRecoilState(lInterval)
   const [lineId, setLineId] = useRecoilState(lID);
-  const [stopUjian, setStopUjian] = useRecoilState(StopUjian);
+  const stopUjian = useRecoilValue(StopUjian);
   const [ready, setReady] = useState(null);
   const updateXarrow = useXarrow();
 

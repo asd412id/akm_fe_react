@@ -6,10 +6,12 @@ import { expandSidebar } from '../recoil/atom/navigation';
 import { userDataAtom } from '../recoil/atom/userAtom';
 import NavbarMenu from './NavbarMenu';
 import SidebarMenu from './SidebarMenu';
+import { MonitoringInterval } from '../recoil/atom/MonitoringInterval';
 export default function Auth({ title, children, success = null, error = null }) {
   const [notifSuccess, setNotifSuccess] = useState(null);
   const [notifError, setNotifError] = useState(null);
   const [sidebarToggle, setSidebarToggle] = useRecoilState(expandSidebar);
+  const [monitoringPeserta, setMonitoringPeserta] = useRecoilState(MonitoringInterval);
   const userData = useRecoilValue(userDataAtom);
   const navigate = useNavigate();
   document.title = (title || 'Selamat Datang') + ' - ' + (process.env.REACT_APP_APPNAME || 'UjianQ');
@@ -23,6 +25,10 @@ export default function Auth({ title, children, success = null, error = null }) 
   }, [error]);
 
   useEffect(() => {
+    if (monitoringPeserta) {
+      clearTimeout(monitoringPeserta);
+      setMonitoringPeserta(null);
+    }
     if (!userData?.role) {
       navigate('/ujian');
     }

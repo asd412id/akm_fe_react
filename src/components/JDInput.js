@@ -99,6 +99,7 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
                         crts[v.key] = null;
                         setCrts({ ...crts });
                         setReady(v.key);
+                        onChange(opts, rlts, crts, lbls);
                       }}>
                         <TbCircleDot className='w-7 h-7 text-blue-700' />
                       </span>
@@ -143,6 +144,7 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
                           crts[ready] = v.key;
                           setCrts({ ...crts });
                           setReady(null);
+                          onChange(opts, rlts, crts, lbls);
                         }
                       }}>
                         <TbCircleDot className='w-7 h-7 text-red-700' />

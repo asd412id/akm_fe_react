@@ -221,7 +221,7 @@ export default function Index() {
                     Tipe Soal
                   </Table.HeadCell>
                   <Table.HeadCell>
-                    Bobot
+                    Nilai
                   </Table.HeadCell>
                   <Table.HeadCell>
                     <span className="sr-only">

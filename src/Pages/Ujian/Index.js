@@ -9,6 +9,7 @@ import TestConfirmationModal from './TestConfirmationModal';
 import { useNavigate } from 'react-router-dom';
 import { DataUjian } from '../../recoil/atom/DataUjian';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { MonitoringInterval } from '../../recoil/atom/MonitoringInterval';
 
 export default function Index() {
   const userData = useRecoilValue(userDataAtom);
@@ -23,7 +24,7 @@ export default function Index() {
   });
   const [isLogin, setIsLogin] = useState(true);
   const [dataUjian, setDataUjian] = useRecoilState(DataUjian);
-  const [tm, setTm] = useState(null);
+  const [tm, setTm] = useRecoilState(MonitoringInterval);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,6 +44,7 @@ export default function Index() {
       } else {
         if (tm) {
           clearTimeout(tm);
+          setTm(null);
         }
         navigate('/ujian/tes');
       }
@@ -54,6 +56,7 @@ export default function Index() {
         setError(null);
       }, 3000);
     }
+    if (tm) clearTimeout(tm);
     setTm(setTimeout(getUjian, 60000));
   }
 
@@ -91,9 +94,6 @@ export default function Index() {
             }, 3000);
           }}
           onSubmit={() => {
-            if (tm) {
-              clearTimeout(tm);
-            }
             navigate('/ujian/tes');
           }}
         >
@@ -166,7 +166,7 @@ export default function Index() {
                       </div>
                     </div>
                     <div style={{ lineHeight: '1.3em' }} className='-mt-2'>
-                      {v.jadwal.show_score && <div className="font-bold italic">#NILAI: {v.nilai}</div>}
+                      {v.jadwal.show_score && <div className="font-bold italic">#NILAI: {parseFloat(v.nilai).toFixed(2)}</div>}
                     </div>
                   </Card>
                 }) : <Alert className='text-lg shadow-md shadow-gray-300'>Anda belum mengerjakan ujian</Alert>}

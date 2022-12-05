@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useRecoilValue } from 'recoil';
 import { userDataAtom } from '../../recoil/atom/userAtom';
 import html2pdf from 'html2pdf.js';
-import { BsFilePdf } from 'react-icons/bs';
+import printElement from 'print-html-element';
+import { BsFilePdf, BsPrinter } from 'react-icons/bs';
 
 export default function DaftarHadir({ jadwal, open, onClose }) {
   const [show, setShow] = useState(false);
@@ -11,7 +12,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
   const userData = useRecoilValue(userDataAtom);
   const [process, setProcess] = useState(false);
   const [ruangs, setRuangs] = useState([]);
-  const [ruang, setRuang] = useState(null);
+  const [ruang, setRuang] = useState('');
   const pdf = useRef(null);
 
   useEffect(() => {
@@ -24,19 +25,28 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
       }
     });
     setRuangs([...r]);
-    setRuang(r[0]);
+    if (r.length) {
+      setRuang(r[0]);
+    }
   }, [open]);
 
-  const printPdf = () => {
+  const downloadPdf = () => {
     setProcess(true);
     var opt = {
       margin: 10,
-      filename: (('daftar hadir ' + jadwal?.name + '(' + ruang + ')').toUpperCase()) + '.pdf',
+      filename: (('daftar hadir ' + data?.name + ' (' + ruang + ')').toUpperCase()) + '.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'mm', format: [215, 330], orientation: 'portrait' }
     };
     html2pdf().set(opt).from(pdf.current).save().then(() => setProcess(false));
+  }
+
+  const printData = () => {
+    const opts = {
+      pageTitle: (('daftar hadir ' + data?.name + ' (' + ruang + ')').toUpperCase())
+    };
+    printElement.printElement(pdf.current, opts);
   }
 
   return (
@@ -59,7 +69,8 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                 return <option key={i} value={v}>{v}</option>
               })}
             </Select>
-            <Button size='sm' onClick={() => printPdf()} disabled={process} className='flex items-center' color={'gray'}><BsFilePdf className='w-4 h-4 text-red-600 mr-1' /> Download PDF</Button>
+            <Button size='sm' onClick={() => downloadPdf()} disabled={process} className='flex items-center' color={'gray'}><BsFilePdf className='w-4 h-4 text-red-600 mr-1' /> Download PDF</Button>
+            <Button size='sm' onClick={() => printData()} disabled={process} className='flex items-center' color={'gray'}><BsPrinter className='w-4 h-4 text-purple-600 mr-1' /> Print</Button>
           </div>
           <table ref={pdf} className='w-full' style={{ lineHeight: '0.95em' }}>
             <tbody>
@@ -127,11 +138,11 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                 </td>
               </tr>
               <tr>
-                <td colSpan={2} className={'pt-1 ' + (process && 'pt-3')}>
+                <td colSpan={2} className={'pt-1 ' + (process && 'pt-4')}>
                   <table className='w-full'>
                     <thead>
                       <tr className='bg-gray-100'>
-                        <th className={'border border-gray-600 p-2 max-w-0 ' + (process && 'border-black pt-1 pb-5')}>NO.</th>
+                        <th className={'border border-gray-600 ' + (process && 'border-black pt-1 pb-5')}>NO.</th>
                         <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>ID PESERTA</th>
                         <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>NAMA</th>
                         <th className={'border border-gray-600 p-2 w-3/12 ' + (process && 'border-black pt-1 pb-5')} colSpan={2}>TTD</th>
@@ -140,7 +151,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                     <tbody>
                       {data?.pesertas?.filter(e => { return e.text === ruang }).map((v, i) => {
                         return <tr key={i} className='break-inside-avoid-page'>
-                          <td className={'border border-gray-600 p-2 text-center ' + (process && 'border-black pt-1 pb-5')}>{i + 1}.</td>
+                          <td className={'border border-gray-600 p-2 px-1 max-w-0 text-center ' + (process && 'border-black pt-1 pb-5')}>{i + 1}.</td>
                           <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.username}</td>
                           <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.name}</td>
                           <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{(i + 1) % 2 !== 0 ? (i + 1) + '.' : ''}</td>

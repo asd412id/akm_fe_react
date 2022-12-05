@@ -1,12 +1,16 @@
 import axios from 'axios';
-import { Alert, Button, Spinner, Table, TextInput } from 'flowbite-react';
+import { Alert, Button, Dropdown, Spinner, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useRef, useState } from 'react'
 import { HiCloudDownload, HiCloudUpload, HiPencil, HiTrash } from 'react-icons/hi';
+import { FaIdCard } from 'react-icons/fa';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import DeleteModal from '../../components/DeleteModal';
 import Auth from '../../layouts/Auth';
 import Form from './Form';
 import Excel from 'exceljs';
+import { BsFileSpreadsheet } from 'react-icons/bs';
+import { DropdownItem } from 'flowbite-react/lib/esm/components/Dropdown/DropdownItem';
+import KartuPeserta from './KartuPeserta';
 
 export default function Index() {
   const [datas, setDatas] = useState(null);
@@ -40,6 +44,7 @@ export default function Index() {
     link: null
   });
   const uexcel = useRef(null);
+  const [kartuPeserta, setkartuPeserta] = useState(false);
 
   useEffect(() => {
     getDatas();
@@ -166,6 +171,10 @@ export default function Index() {
     }
   }
 
+  const downloadKartu = () => {
+    setkartuPeserta(true);
+  }
+
   return (
     <Auth title={`Daftar Peserta`} success={status.success} error={status.error}>
       <Form
@@ -189,6 +198,11 @@ export default function Index() {
         text={destroy.title}
         url={destroy.link} />
 
+      <KartuPeserta
+        open={kartuPeserta}
+        onClose={() => setkartuPeserta(false)}
+      />
+
       <div className="flex flex-col gap-1">
         <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
           <div className="flex flex-col md:flex-row gap-1">
@@ -199,13 +213,26 @@ export default function Index() {
                 form.show = true;
                 setForm({ ...form });
               }} disabled={!status.loaded}>Tambah Data</Button>
-            <a href="/assets/template_peserta.xlsx">
-              <Button type='button' size={`sm`} color='purple' className='flex items-center'><HiCloudDownload className='w-5 h-5 mr-1' /> <span>Download Template Excel</span></Button>
-            </a>
-            <Button type='button' color={'success'} size={`sm`}
-              onClick={() => {
-                uexcel.current.click();
-              }} disabled={!status.loaded} className='flex items-center'><HiCloudUpload className='w-5 h-5 mr-1' /><span>Impor Excel</span></Button>
+            {datas?.datas?.length &&
+              <Button type='button' size={`sm`} color='purple' onClick={() => downloadKartu()} disabled={!status.loaded}><FaIdCard className='w-4 h-4 mr-1' /> Download Kartu</Button>
+            }
+            <Dropdown
+              size={'sm'}
+              color='gray'
+              label={<div className='flex items-center text-green-600'><BsFileSpreadsheet className='w-4 h-4 mr-1' /> Excel</div>}
+            >
+              <a href="/assets/template_peserta.xlsx">
+                <DropdownItem icon={HiCloudDownload}>
+                  Download Template Excel
+                </DropdownItem>
+              </a>
+              <DropdownItem icon={HiCloudUpload}
+                onClick={() => {
+                  uexcel.current.click();
+                }} disabled={!status.loaded}>
+                Impor Excel
+              </DropdownItem>
+            </Dropdown>
             <input type="file" ref={uexcel} className='hidden' accept='.xls,.xlsx,.ods' onChange={importExcel} />
           </div>
           <div className="flex gap-1">
