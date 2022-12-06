@@ -5,13 +5,10 @@ import { useParams } from 'react-router-dom';
 import Auth from '../../layouts/Auth';
 import dateFormat from 'dateformat';
 import { HiCog } from 'react-icons/hi';
-import { BiReset } from 'react-icons/bi';
-import { BsStopCircle } from 'react-icons/bs';
-import { useRecoilState } from 'recoil';
-import { MonitoringInterval } from '../../recoil/atom/MonitoringInterval';
-import MonitorConfirm from './MonitorConfirm';
+import { FiEdit } from 'react-icons/fi';
+import InputNilai from './InputNilai';
 
-export default function Monitor() {
+export default function Penilaian() {
   const { jid, id } = useParams();
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
@@ -21,7 +18,6 @@ export default function Monitor() {
   const [pesertas, setPesertas] = useState([]);
   const [search, setSearch] = useState('');
   const [tm, setTm] = useState(null);
-  const [queryPeserta, setQueryPeserta] = useRecoilState(MonitoringInterval);
   const [searchValue, setSearchValue] = useState('');
   const [confirm, setConfirm] = useState({
     show: false,
@@ -79,8 +75,6 @@ export default function Monitor() {
     try {
       const res = await axios.get(`/jadwals/${jid}/${id}/ruangs/${ruang}?search=${search}`);
       setPesertas(res.data);
-      if (queryPeserta) clearTimeout(queryPeserta);
-      setQueryPeserta(setTimeout(getPesertas, 10000));
     } catch (error) {
       errorResponse('Tidak dapat memuat data');
     }
@@ -94,13 +88,10 @@ export default function Monitor() {
     }, 500));
   }
   return (
-    <Auth title={`Monitoring Ujian ${title}`} success={success} error={error}>
-      <MonitorConfirm
+    <Auth title={`Penilaian Ujian ${title}`} success={success} error={error}>
+      <InputNilai
         open={confirm.show}
-        url={confirm.url}
-        onError={(e) => {
-          errorResponse(e.response.data.message);
-        }}
+        id={confirm.id}
         onClose={() => {
           confirm.show = false;
           setConfirm({ ...confirm });
@@ -111,9 +102,7 @@ export default function Monitor() {
           successResponse(e.data.message);
           getPesertas();
         }}
-      >
-        <div dangerouslySetInnerHTML={{ __html: confirm.text }}></div>
-      </MonitorConfirm>
+      />
 
       <div className="flex flex-col gap-1">
         <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
@@ -159,7 +148,7 @@ export default function Monitor() {
               </Table.Head>
               <Table.Body className="divide-y">
                 {pesertas?.map((v, i) => {
-                  return <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={v.id}>
+                  return <Table.Row className={"bg-white dark:border-gray-700 dark:bg-gray-800 " + ((v?.peserta_logins.length > 0 && v?.peserta_logins[0]?.checked) && '!bg-yellow-100')} key={v.id}>
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       {i + 1}.
                     </Table.Cell>
@@ -185,30 +174,19 @@ export default function Monitor() {
                     </Table.Cell>
                     <Table.Cell>
                       <div className="flex justify-end whitespace-nowrap">
-                        {v?.peserta_logins.length > 0 &&
+                        {(v?.peserta_logins.length > 0 && v?.peserta_logins[0].end) &&
                           <Dropdown
                             label={<HiCog className='w-4 h-4' />}
                             size='xs'
                             color={'gray'}
                             placement='bottom-end'
                           >
-                            {v?.peserta_logins[0].end === null &&
-                              <Dropdown.Item icon={BsStopCircle} onClick={() => {
-                                confirm.text = `Yakin ingin menghentikan ujian<br/><b>${v.name}</b>?`;
-                                confirm.url = `/jadwals/${jid}/${id}/stop/${v?.peserta_logins[0].id}`
-                                confirm.show = true;
-                                setConfirm({ ...confirm });
-                              }}>
-                                Hentikan Ujian
-                              </Dropdown.Item>
-                            }
-                            <Dropdown.Item icon={BiReset} onClick={() => {
-                              confirm.text = `Yakin ingin mereset ujian<br/><b>${v.name}</b>?<br/>Ujian yang telah dikerjakan pada jadwal ini akan dihapus!`;
-                              confirm.url = `/jadwals/${jid}/${id}/reset/${v?.peserta_logins[0].id}`
+                            <Dropdown.Item icon={FiEdit} onClick={() => {
                               confirm.show = true;
+                              confirm.id = v?.peserta_logins[0].id;
                               setConfirm({ ...confirm });
                             }}>
-                              Reset Ujian
+                              Input Nilai
                             </Dropdown.Item>
                           </Dropdown>
                         }

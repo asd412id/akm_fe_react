@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Alert, Button, Spinner, Table, TextInput } from 'flowbite-react';
+import { Alert, Badge, Button, Spinner, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { MdSchedule } from 'react-icons/md';
 import { HiPencil, HiTrash } from 'react-icons/hi';
@@ -28,7 +28,8 @@ export default function Index() {
   const initForm = {
     id: null,
     name: '',
-    desc: ''
+    desc: '',
+    soal_kategories: [],
   };
   const [form, setForm] = useState({
     show: false,
@@ -169,6 +170,9 @@ export default function Index() {
                     Deskripsi
                   </Table.HeadCell>
                   <Table.HeadCell>
+                    Kategori Soal
+                  </Table.HeadCell>
+                  <Table.HeadCell>
                     Jumlah Jadwal
                   </Table.HeadCell>
                   <Table.HeadCell>
@@ -187,7 +191,14 @@ export default function Index() {
                         {v.desc}
                       </Table.Cell>
                       <Table.Cell>
-                        {v.jadwal_count}
+                        <div className="flex flex-wrap gap-1">
+                          {v.soal_kategories.map(v => {
+                            return <div key={v.id} className="flex"><Badge color={'purple'}>{`${v.name}${v.desc ? ' (' + v.desc + ')' : ''}`}</Badge></div>
+                          })}
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell>
+                        {v.jadwals[0]?.count}
                       </Table.Cell>
                       <Table.Cell>
                         <div className="flex justify-end gap-1 whitespace-nowrap">

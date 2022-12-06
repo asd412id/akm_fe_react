@@ -1,0 +1,59 @@
+import axios from 'axios';
+import { Button, Modal } from 'flowbite-react'
+import React, { useEffect, useState } from 'react'
+import { HiOutlineQuestionMarkCircle } from 'react-icons/hi'
+
+export default function MonitorConfirm({ open = false, children, url = null, onClose, onSubmit, onError }) {
+  const [show, setShow] = useState(open);
+  const [link, setLink] = useState(url);
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    setShow(open);
+    setLink(url);
+    setDisabled(false);
+  }, [open, url])
+
+  const submit = async () => {
+    try {
+      const res = await axios.patch(link);
+      onSubmit(res);
+    } catch (error) {
+      onError(error);
+    }
+  }
+  return (
+    <Modal
+      show={show}
+      size="md"
+      popup={true}
+      onClose={onClose}
+    >
+      <Modal.Header />
+      <Modal.Body>
+        <div className="text-center">
+          <HiOutlineQuestionMarkCircle className="mx-auto mb-4 h-14 w-14 text-red-600 dark:text-red-200" />
+          <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            {children}
+          </h3>
+          <div className="flex justify-center gap-4">
+            <Button
+              color="failure"
+              onClick={submit}
+              disabled={disabled}
+            >
+              Ya, Saya Yakin
+            </Button>
+            <Button
+              color="gray"
+              onClick={onClose}
+              disabled={disabled}
+            >
+              Tidak
+            </Button>
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
+  )
+}

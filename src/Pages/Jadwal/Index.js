@@ -14,6 +14,7 @@ import Form from './Form';
 import { useRecoilValue } from 'recoil';
 import { userDataAtom } from '../../recoil/atom/userAtom';
 import DaftarHadir from './DaftarHadir';
+import DaftarNilai from './DaftarNilai';
 
 export default function Index() {
   const userData = useRecoilValue(userDataAtom);
@@ -59,6 +60,10 @@ export default function Index() {
   });
 
   const [printDaftarHadir, setprintDaftarHadir] = useState({
+    show: false,
+    data: {}
+  });
+  const [printNilai, setprintNilai] = useState({
     show: false,
     data: {}
   });
@@ -181,6 +186,15 @@ export default function Index() {
           setprintDaftarHadir({ ...printDaftarHadir });
         }}
       />
+      <DaftarNilai
+        open={printNilai.show}
+        jadwal={printNilai.data}
+        onClose={() => {
+          printNilai.show = false;
+          printNilai.data = {};
+          setprintNilai({ ...printNilai });
+        }}
+      />
 
       <div className="flex flex-col gap-1">
         <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
@@ -279,19 +293,29 @@ export default function Index() {
                               }}>
                                 Daftar Hadir
                               </Dropdown.Item>
-                              <Link to={`/jadwal/${jid}/${v.id}/monitor`}>
-                                <Dropdown.Item icon={MdMonitor}>
-                                  Monitoring Peserta
-                                </Dropdown.Item>
-                              </Link>
-                              <Link to={`/jadwal/${jid}/${v.id}/penilaian`}>
-                                <Dropdown.Item icon={BsUiChecks}>
-                                  Periksa Ujian
-                                </Dropdown.Item>
-                              </Link>
-                              <Dropdown.Item icon={GoCloudDownload}>
-                                Download Nilai
-                              </Dropdown.Item>
+                              {v.active &&
+                                <Link to={`/jadwal/${jid}/${v.id}/monitor`}>
+                                  <Dropdown.Item icon={MdMonitor}>
+                                    Monitoring Peserta
+                                  </Dropdown.Item>
+                                </Link>
+                              }
+                              {!v.active &&
+                                <>
+                                  <Link to={`/jadwal/${jid}/${v.id}/penilaian`}>
+                                    <Dropdown.Item icon={BsUiChecks}>
+                                      Periksa Ujian
+                                    </Dropdown.Item>
+                                  </Link>
+                                  <Dropdown.Item icon={GoCloudDownload} onClick={() => {
+                                    printNilai.show = true;
+                                    printNilai.data = v;
+                                    setprintNilai({ ...printNilai });
+                                  }}>
+                                    Download Nilai
+                                  </Dropdown.Item>
+                                </>
+                              }
                               <Dropdown.Item icon={HiPencil} onClick={() => {
                                 form.data = { ...initForm, ...v };
                                 form.data.start = new Date(v.start);

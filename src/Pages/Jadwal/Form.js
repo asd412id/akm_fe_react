@@ -119,7 +119,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
                 <SelectSearch value={form.soals} onSelect={e => {
                   form.soals = e;
                   setForm({ ...form });
-                }} url='/search/soal' />
+                }} url={'/search/soal/' + form.jid} />
               </div>
               <div className="flex flex-col">
                 <Label htmlFor='soal_count'>Jumlah Soal</Label>

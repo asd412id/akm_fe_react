@@ -5,14 +5,16 @@ import { userDataAtom } from '../../recoil/atom/userAtom';
 import html2pdf from 'html2pdf.js';
 import printElement from 'print-html-element';
 import { BsFilePdf, BsPrinter } from 'react-icons/bs';
+import axios from 'axios';
 
-export default function DaftarHadir({ jadwal, open, onClose }) {
+export default function DaftarNilai({ jadwal, open, onClose }) {
   const [show, setShow] = useState(false);
   const [data, setData] = useState(null);
   const userData = useRecoilValue(userDataAtom);
   const [process, setProcess] = useState(false);
   const [ruangs, setRuangs] = useState([]);
   const [ruang, setRuang] = useState('');
+  const [datas, setDatas] = useState([]);
   const pdf = useRef(null);
 
   useEffect(() => {
@@ -30,11 +32,24 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
     }
   }, [open]);
 
+  useEffect(() => {
+    if (ruang !== '' && jadwal?.id) getPesertas();
+  }, [ruang]);
+
+  const getPesertas = async () => {
+    try {
+      const res = await axios.get(`/nilais/${jadwal.id}/${ruang}`);
+      setDatas(res.data);
+    } catch (error) {
+      console.log(error?.response?.data?.message ?? error.message);
+    }
+  }
+
   const downloadPdf = () => {
     setProcess(true);
     var opt = {
       margin: 10,
-      filename: (('daftar hadir ' + data?.name + ' (' + ruang + ')').toUpperCase()) + '.pdf',
+      filename: (('daftar nilai ' + data?.name + ' (' + ruang + ')').toUpperCase()) + '.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'mm', format: [215, 330], orientation: 'portrait' }
@@ -44,7 +59,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
 
   const printData = () => {
     const opts = {
-      pageTitle: (('daftar hadir ' + data?.name + ' (' + ruang + ')').toUpperCase())
+      pageTitle: (('daftar nilai ' + data?.name + ' (' + ruang + ')').toUpperCase())
     };
     printElement.printElement(pdf.current, opts);
   }
@@ -86,7 +101,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                   <table className='w-full'>
                     <tbody>
                       <tr>
-                        <td className='text-center font-bold pt-3'>DAFTAR HADIR</td>
+                        <td className='text-center font-bold pt-3'>DAFTAR NILAI</td>
                       </tr>
                       <tr>
                         <td className='text-center font-bold uppercase'>{data?.jadwal_kategory?.name}</td>
@@ -145,18 +160,17 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                         <th className={'border border-gray-600 ' + (process && 'border-black pt-1 pb-5')}>NO.</th>
                         <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>ID PESERTA</th>
                         <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>NAMA</th>
-                        <th className={'border border-gray-600 p-2 w-3/12 ' + (process && 'border-black pt-1 pb-5')} colSpan={2}>TTD</th>
-                        <th className={'border border-gray-600 p-2 w-1/12 ' + (process && 'border-black pt-1 pb-5')}>KETERANGAN</th>
+                        <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>NILAI</th>
+                        <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>KETERANGAN</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {data?.pesertas?.filter(e => { return e.text === ruang }).map((v, i) => {
+                      {datas.map((v, i) => {
                         return <tr key={i} className='break-inside-avoid-page'>
                           <td className={'border border-gray-600 p-2 px-1 max-w-0 text-center ' + (process && 'border-black pt-1 pb-5')}>{i + 1}.</td>
                           <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.username}</td>
                           <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.name}</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{(i + 1) % 2 !== 0 ? (i + 1) + '.' : ''}</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{(i + 1) % 2 === 0 ? (i + 1) + '.' : ''}</td>
+                          <td className={'border border-gray-600 p-2 text-center ' + (process && 'border-black pt-1 pb-5')}>{(v.peserta_logins.length && v.peserta_logins[0].peserta_tests.length) ? v.peserta_logins[0]?.peserta_tests[0]?.nilai : 0}</td>
                           <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}></td>
                         </tr>
                       })}
@@ -176,7 +190,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                                 <td className="pt-5">......................, ................................... {new Date(data?.start).getFullYear()}</td>
                               </tr>
                               <tr>
-                                <td align="left">Pengawas Ujian,</td>
+                                <td align="left">Guru Mata Pelajaran,</td>
                               </tr>
                               <tr>
                                 <td height="100"></td>

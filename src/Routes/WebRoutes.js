@@ -15,6 +15,7 @@ import PageNotFound from '../Pages/PageNotFound'
 import Ujian from '../Pages/Ujian/Index'
 import Tes from '../Pages/Ujian/Tes'
 import Monitor from '../Pages/Jadwal/Monitor'
+import Penilaian from '../Pages/Jadwal/Penilaian'
 
 export default function WebRoutes() {
   return (
@@ -33,6 +34,7 @@ export default function WebRoutes() {
         <Route exact path='/jadwal' element={<IndexJadwalKategori />} />
         <Route path='/jadwal/:jid' element={<IndexJadwal />} />
         <Route path='/jadwal/:jid/:id/monitor' element={<Monitor />} />
+        <Route path='/jadwal/:jid/:id/penilaian' element={<Penilaian />} />
 
         <Route exact path='/ujian' element={<Ujian />} />
         <Route path='/ujian/tes' element={<Tes />} />
