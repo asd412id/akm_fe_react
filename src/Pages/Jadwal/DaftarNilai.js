@@ -4,7 +4,8 @@ import { useRecoilValue } from 'recoil';
 import { userDataAtom } from '../../recoil/atom/userAtom';
 import html2pdf from 'html2pdf.js';
 import printElement from 'print-html-element';
-import { BsFilePdf, BsPrinter } from 'react-icons/bs';
+import excel from 'exceljs';
+import { BsFileExcel, BsFilePdf, BsPrinter } from 'react-icons/bs';
 import axios from 'axios';
 
 export default function DaftarNilai({ jadwal, open, onClose }) {
@@ -57,6 +58,71 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
     html2pdf().set(opt).from(pdf.current).save().then(() => setProcess(false));
   }
 
+  const downloadExcel = () => {
+    setProcess(true);
+    const filename = ('daftar nilai ' + data?.name + ' (' + ruang + ')').toUpperCase();
+    const wb = new excel.Workbook();
+    const sheet = wb.addWorksheet(ruang.toUpperCase());
+    sheet.addRow(['NO', 'ID PESERTA', 'NAMA', 'RUANG/KELAS', 'NILAI', 'KETERANGAN']);
+
+    sheet.getColumn('A').width = 5;
+    sheet.getColumn('B').width = 20;
+    sheet.getColumn('C').width = 30;
+    sheet.getColumn('D').width = 20;
+    sheet.getColumn('E').width = 10;
+    sheet.getColumn('F').width = 20;
+
+    sheet.getCell('A1').font = { bold: true };
+    sheet.getCell('B1').font = { bold: true };
+    sheet.getCell('C1').font = { bold: true };
+    sheet.getCell('D1').font = { bold: true };
+    sheet.getCell('E1').font = { bold: true };
+    sheet.getCell('F1').font = { bold: true };
+
+    sheet.getCell('A1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('B1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('C1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('D1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('E1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('F1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
+
+    sheet.getCell('A1').border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    sheet.getCell('B1').border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    sheet.getCell('C1').border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    sheet.getCell('D1').border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    sheet.getCell('E1').border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    sheet.getCell('F1').border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+
+    sheet.getColumn('A').alignment = { vertical: 'middle', horizontal: 'center' };
+    sheet.getCell('B1').alignment = { vertical: 'middle', horizontal: 'center' };
+    sheet.getCell('C1').alignment = { vertical: 'middle', horizontal: 'center' };
+    sheet.getColumn('D').alignment = { vertical: 'middle', horizontal: 'center' };
+    sheet.getColumn('E').alignment = { vertical: 'middle', horizontal: 'center' };
+    sheet.getCell('F1').alignment = { vertical: 'middle', horizontal: 'center' };
+
+    datas?.forEach((v, i) => {
+      sheet.addRow([(i + 1), v.username, v.name, v.ruang, ((v.peserta_logins.length && v.peserta_logins[0].peserta_tests.length) ? v.peserta_logins[0]?.peserta_tests[0]?.nilai : 0), '']);
+      sheet.getCell('A' + (i + 2)).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      sheet.getCell('B' + (i + 2)).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      sheet.getCell('C' + (i + 2)).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      sheet.getCell('D' + (i + 2)).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      sheet.getCell('E' + (i + 2)).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      sheet.getCell('F' + (i + 2)).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    });
+
+    wb.xlsx.writeBuffer().then(function (data) {
+      const blob = new Blob([data],
+        { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `${filename}.xlsx`;
+      anchor.dispatchEvent(new MouseEvent('click'));
+      window.URL.revokeObjectURL(url);
+      setProcess(false);
+    });
+  }
+
   const printData = () => {
     const opts = {
       pageTitle: (('daftar nilai ' + data?.name + ' (' + ruang + ')').toUpperCase())
@@ -72,7 +138,7 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
       onClose={onClose}
     >
       <Modal.Header className='px-3 py-2'>
-        Daftar Hadir {data?.name}
+        Daftar Nilai {data?.name}
       </Modal.Header>
       <Modal.Body>
         <div className="flex flex-col gap-5">
@@ -85,6 +151,7 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
               })}
             </Select>
             <Button size='sm' onClick={() => downloadPdf()} disabled={process} className='flex items-center' color={'gray'}><BsFilePdf className='w-4 h-4 text-red-600 mr-1' /> Download PDF</Button>
+            <Button size='sm' onClick={() => downloadExcel()} disabled={process} className='flex items-center' color={'gray'}><BsFileExcel className='w-4 h-4 text-green-600 mr-1' /> Download Excel</Button>
             <Button size='sm' onClick={() => printData()} disabled={process} className='flex items-center' color={'gray'}><BsPrinter className='w-4 h-4 text-purple-600 mr-1' /> Print</Button>
           </div>
           <table ref={pdf} className='w-full' style={{ lineHeight: '0.95em' }}>
