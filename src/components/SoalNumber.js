@@ -34,7 +34,7 @@ export default function SoalNumber() {
             }}>{i + 1}</Button>
           })}
         </div>
-        <Button color={'failure'} className="mt-3 shadow-md shadow-gray-400 active:shadow-none" onClick={() => setOpenDialog(true)}>SELESAI UJIAN</Button>
+        <Button color={'failure'} className="mt-3 shadow-md shadow-gray-400 active:shadow-none" onClick={() => setOpenDialog(true)} disabled={Object.keys(jawaban)?.filter(e => jawaban[e].sent === false) > 0}>SELESAI UJIAN</Button>
       </div>
     </>
   )

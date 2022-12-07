@@ -28,9 +28,10 @@ export default function Tes() {
   const navigate = useNavigate();
   const [lint, setLint] = useRecoilState(lInterval)
   const [lineId, setLineId] = useRecoilState(lID);
-  const stopUjian = useRecoilValue(StopUjian);
+  const [stopUjian, setStopUjian] = useRecoilState(StopUjian);
   const [ready, setReady] = useState(null);
   const updateXarrow = useXarrow();
+  const [autoSave, setAutoSave] = useState(null);
 
   useEffect(() => {
     getUjian();
@@ -57,7 +58,7 @@ export default function Tes() {
         setIsLogin(true);
       }
     } catch (error) {
-      setError(error?.response?.message ? error.response.message : 'Gagal mengambil data ujian');
+      setError(error?.response?.data.message ? error.response.data.message : 'Gagal mengambil data ujian');
       setTimeout(() => {
         setError(null);
       }, 3000);
@@ -74,6 +75,10 @@ export default function Tes() {
   }, [number, dataUjian]);
 
   const updateAnswer = async () => {
+    if (autoSave) {
+      clearTimeout(autoSave);
+      setAutoSave(null);
+    }
     let filter = Object.entries(jawaban).filter(([i, v]) => v.sent === false);
     filter = Object.fromEntries(filter);
     try {
@@ -91,8 +96,16 @@ export default function Tes() {
         setJawaban({ ...jawaban, ...f });
       }
     } catch (error) {
-      console.log(error.message);
-      setTimeout(updateAnswer, 15000);
+      if (error.response.status === 401) {
+        setStopUjian(true);
+        window.location.reload();
+      } else if (error.response.status === 406) {
+        setStopUjian(true);
+        navigate('/ujian');
+      } else {
+        console.log(error.message);
+        setAutoSave(setTimeout(updateAnswer, 15000));
+      }
     }
   }
 
@@ -136,6 +149,14 @@ export default function Tes() {
         })
     }
   }, [stopUjian]);
+
+  useEffect(() => {
+    if (autoSave) {
+      clearTimeout(autoSave);
+      setAutoSave(null);
+    }
+    setAutoSave(setTimeout(updateAnswer, 15000));
+  }, [jawaban])
 
   if (isLogin) {
     return (

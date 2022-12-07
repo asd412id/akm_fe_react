@@ -29,6 +29,7 @@ export default function Index() {
 
   useEffect(() => {
     getUjian();
+    console.log(tm);
   }, []);
 
   const getUjian = async () => {
@@ -48,20 +49,26 @@ export default function Index() {
         }
         navigate('/ujian/tes');
       }
+      if (tm) clearTimeout(tm);
+      setTm(setTimeout(getUjian, 60000));
     } catch (error) {
-      ujians.loading = false;
-      setUjians({ ...ujians });
-      setError(error?.response?.message ? error.response.message : 'Gagal mengambil data ujian');
-      setTimeout(() => {
-        setError(null);
-      }, 3000);
+      if (error.response.status === 401) {
+        window.location.reload();
+      } else {
+        ujians.loading = false;
+        setUjians({ ...ujians });
+        setError(error?.response?.data.message ? error.response.data.message : 'Gagal mengambil data ujian');
+        setTimeout(() => {
+          setError(null);
+        }, 3000);
+      }
     }
-    if (tm) clearTimeout(tm);
-    setTm(setTimeout(getUjian, 60000));
   }
 
   useEffect(() => {
     getLogin();
+    if (tm) clearTimeout(tm);
+    setTm(setTimeout(getUjian, 60000));
   }, [page]);
 
   const getLogin = async () => {
