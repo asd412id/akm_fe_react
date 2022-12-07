@@ -56,7 +56,7 @@ export default function NavbarMenu() {
           </div>
         </div>
       }
-      <div className="flex md:order-2 gap-2">
+      <div className="flex md:order-2 gap-2 items-center">
         <Dropdown
           arrowIcon={false}
           inline={true}
