@@ -4,10 +4,13 @@ import { GiGraduateCap } from 'react-icons/gi'
 import { HiUserGroup } from 'react-icons/hi'
 import { ImBooks } from 'react-icons/im'
 import { MdLibraryBooks, MdSchedule } from 'react-icons/md'
+import { useRecoilValue } from 'recoil'
 import Auth from '../layouts/Auth'
+import { userDataAtom } from '../recoil/atom/userAtom'
 
 export default function Dashboard() {
-  const [error, setError] = useState(null)
+  const userData = useRecoilValue(userDataAtom);
+  const [error, setError] = useState(null);
   const [status, setStatus] = useState({
     mapel: '...',
     penilai: '...',
@@ -32,48 +35,52 @@ export default function Dashboard() {
   return (
     <Auth title='Beranda' error={error}>
       <div class="grid grid-flow-row md:grid-cols-4 gap-3">
-        <div>
-          <div class="inline-flex mb-4 overflow-hidden bg-white rounded-lg shadow-md w-full">
-            <div className="flex items-center justify-center w-20 bg-green-500">
-              <ImBooks className='w-16 h-16 fill-white' />
-            </div>
+        {userData.role === 'OPERATOR' &&
+          <>
+            <div>
+              <div class="inline-flex mb-4 overflow-hidden bg-white rounded-lg shadow-md w-full">
+                <div className="flex items-center justify-center w-20 bg-green-500">
+                  <ImBooks className='w-16 h-16 fill-white' />
+                </div>
 
-            <div class="p-4 -mx-3">
-              <div class="mx-3">
-                <span className="font-semibold text-gray-700 text-4xl">{status.mapel}</span>
-                <p class="text-gray-700 text-md">MATA PELAJARAN</p>
+                <div class="p-4 -mx-3">
+                  <div class="mx-3">
+                    <span className="font-semibold text-gray-700 text-4xl">{status.mapel}</span>
+                    <p class="text-gray-700 text-md">MATA PELAJARAN</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div>
-          <div class="inline-flex mb-4 overflow-hidden bg-white rounded-lg shadow-md w-full">
-            <div className="flex items-center justify-center w-20 bg-purple-500">
-              <GiGraduateCap className='w-16 h-16 fill-white' />
-            </div>
+            <div>
+              <div class="inline-flex mb-4 overflow-hidden bg-white rounded-lg shadow-md w-full">
+                <div className="flex items-center justify-center w-20 bg-purple-500">
+                  <GiGraduateCap className='w-16 h-16 fill-white' />
+                </div>
 
-            <div class="p-4 -mx-3">
-              <div class="mx-3">
-                <span className="font-semibold text-gray-700 text-4xl">{status.penilai}</span>
-                <p class="text-gray-700 text-md">PENILAI</p>
+                <div class="p-4 -mx-3">
+                  <div class="mx-3">
+                    <span className="font-semibold text-gray-700 text-4xl">{status.penilai}</span>
+                    <p class="text-gray-700 text-md">PENILAI</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div>
-          <div class="inline-flex mb-4 overflow-hidden bg-white rounded-lg shadow-md w-full">
-            <div className="flex items-center justify-center w-20 bg-amber-500">
-              <HiUserGroup className='w-16 h-16 fill-white' />
-            </div>
+            <div>
+              <div class="inline-flex mb-4 overflow-hidden bg-white rounded-lg shadow-md w-full">
+                <div className="flex items-center justify-center w-20 bg-amber-500">
+                  <HiUserGroup className='w-16 h-16 fill-white' />
+                </div>
 
-            <div class="p-4 -mx-3">
-              <div class="mx-3">
-                <span className="font-semibold text-gray-700 text-4xl">{status.peserta}</span>
-                <p class="text-gray-700 text-md">PESERTA UJIAN</p>
+                <div class="p-4 -mx-3">
+                  <div class="mx-3">
+                    <span className="font-semibold text-gray-700 text-4xl">{status.peserta}</span>
+                    <p class="text-gray-700 text-md">PESERTA UJIAN</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </>
+        }
         <div>
           <div class="inline-flex mb-4 overflow-hidden bg-white rounded-lg shadow-md w-full">
             <div className="flex items-center justify-center w-20 bg-fuchsia-500">
