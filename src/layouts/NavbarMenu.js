@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Avatar, Dropdown, Navbar } from 'flowbite-react'
+import { Dropdown, Navbar } from 'flowbite-react'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -9,6 +9,7 @@ import { userDataAtom } from '../recoil/atom/userAtom'
 import Timer from '../components/Timer'
 import { StopUjian } from '../recoil/atom/StopUjian'
 import logo from '../assets/logo512.png'
+import { MdOutlineSettings } from 'react-icons/md'
 
 export default function NavbarMenu() {
   const [userData, setUserData] = useRecoilState(userDataAtom);
@@ -38,7 +39,7 @@ export default function NavbarMenu() {
       style={{ boxShadow: '0 2px 4px -4px gray' }}
       className='fixed z-40 w-full'
     >
-      <Navbar.Brand href="https://flowbite.com/">
+      <Navbar.Brand href="/">
         <img
           src={logo}
           className="mr-3 h-6 sm:h-9"
@@ -59,7 +60,7 @@ export default function NavbarMenu() {
         <Dropdown
           arrowIcon={false}
           inline={true}
-          label={<Avatar alt="User settings" rounded={true} size='sm' />}
+          label={<MdOutlineSettings className='w-7 h-7 fill-gray-600 hover:fill-sky-600 transition-all duration-200 hover:rotate-90' />}
         >
           <Dropdown.Header>
             <span className="block text-sm">
