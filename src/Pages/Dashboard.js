@@ -29,6 +29,9 @@ export default function Dashboard() {
       setStatus({ ...res.data });
     } catch (error) {
       setError(error.response?.data.message ?? 'Tidak dapat memuat status');
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
     }
   }
 
