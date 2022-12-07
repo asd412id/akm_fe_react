@@ -10,6 +10,7 @@ import { BsStopCircle } from 'react-icons/bs';
 import { useRecoilState } from 'recoil';
 import { MonitoringInterval } from '../../recoil/atom/MonitoringInterval';
 import MonitorConfirm from './MonitorConfirm';
+import { AiOutlineLogout } from 'react-icons/ai';
 
 export default function Monitor() {
   const { jid, id } = useParams();
@@ -185,31 +186,45 @@ export default function Monitor() {
                     </Table.Cell>
                     <Table.Cell>
                       <div className="flex justify-end whitespace-nowrap">
-                        {v?.peserta_logins.length > 0 &&
+                        {(v?.peserta_logins.length > 0 || v.token) &&
                           <Dropdown
                             label={<HiCog className='w-4 h-4' />}
                             size='xs'
                             color={'gray'}
                             placement='bottom-end'
                           >
-                            {v?.peserta_logins[0].end === null &&
-                              <Dropdown.Item icon={BsStopCircle} onClick={() => {
-                                confirm.text = `Yakin ingin menghentikan ujian<br/><b>${v.name}</b>?`;
-                                confirm.url = `/jadwals/${jid}/${id}/stop/${v?.peserta_logins[0].id}`
+                            {v.token &&
+                              <Dropdown.Item icon={AiOutlineLogout} onClick={() => {
+                                confirm.text = `Yakin ingin mereset login<br/><b>${v.name}</b>?<br/>Peserta akan logout dari perangkat!`;
+                                confirm.url = `/pesertas/${v.id}/reset`
                                 confirm.show = true;
                                 setConfirm({ ...confirm });
                               }}>
-                                Hentikan Ujian
+                                Reset Login
                               </Dropdown.Item>
                             }
-                            <Dropdown.Item icon={BiReset} onClick={() => {
-                              confirm.text = `Yakin ingin mereset ujian<br/><b>${v.name}</b>?<br/>Ujian yang telah dikerjakan pada jadwal ini akan dihapus!`;
-                              confirm.url = `/jadwals/${jid}/${id}/reset/${v?.peserta_logins[0].id}`
-                              confirm.show = true;
-                              setConfirm({ ...confirm });
-                            }}>
-                              Reset Ujian
-                            </Dropdown.Item>
+                            {v?.peserta_logins.length > 0 &&
+                              <>
+                                {v?.peserta_logins[0].end === null &&
+                                  <Dropdown.Item icon={BsStopCircle} onClick={() => {
+                                    confirm.text = `Yakin ingin menghentikan ujian<br/><b>${v.name}</b>?`;
+                                    confirm.url = `/jadwals/${jid}/${id}/stop/${v?.peserta_logins[0].id}`
+                                    confirm.show = true;
+                                    setConfirm({ ...confirm });
+                                  }}>
+                                    Hentikan Ujian
+                                  </Dropdown.Item>
+                                }
+                                <Dropdown.Item icon={BiReset} onClick={() => {
+                                  confirm.text = `Yakin ingin mereset ujian<br/><b>${v.name}</b>?<br/>Ujian yang telah dikerjakan pada jadwal ini akan dihapus!`;
+                                  confirm.url = `/jadwals/${jid}/${id}/reset/${v?.peserta_logins[0].id}`
+                                  confirm.show = true;
+                                  setConfirm({ ...confirm });
+                                }}>
+                                  Reset Ujian
+                                </Dropdown.Item>
+                              </>
+                            }
                           </Dropdown>
                         }
                       </div>
