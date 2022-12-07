@@ -8,7 +8,7 @@ import DeleteModal from '../../components/DeleteModal';
 import Auth from '../../layouts/Auth';
 import Form from './Form';
 import Excel from 'exceljs';
-import { BsFileSpreadsheet } from 'react-icons/bs';
+import { BsFileSpreadsheet, BsTrash2 } from 'react-icons/bs';
 import { DropdownItem } from 'flowbite-react/lib/esm/components/Dropdown/DropdownItem';
 import KartuPeserta from './KartuPeserta';
 
@@ -214,7 +214,15 @@ export default function Index() {
                 setForm({ ...form });
               }} disabled={!status.loaded}>Tambah Data</Button>
             {datas?.datas?.length > 0 &&
-              <Button type='button' size={`sm`} color='purple' onClick={() => downloadKartu()} disabled={!status.loaded}><FaIdCard className='w-4 h-4 mr-1' /> Download Kartu</Button>
+              <>
+                <Button type='button' size={`sm`} color='purple' onClick={() => downloadKartu()} disabled={!status.loaded}><FaIdCard className='w-4 h-4 mr-1' /> Download Kartu</Button>
+                <Button type='button' size={`sm`} color='failure' onClick={() => {
+                  destroy.link = `/pesertas/all`;
+                  destroy.title = 'Semua Peserta';
+                  destroy.show = true;
+                  setDestroy({ ...destroy });
+                }} disabled={!status.loaded}><BsTrash2 className='w-4 h-4 mr-1' /> Hapus Semua</Button>
+              </>
             }
             <Dropdown
               size={'sm'}
