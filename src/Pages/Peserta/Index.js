@@ -213,7 +213,7 @@ export default function Index() {
                 form.show = true;
                 setForm({ ...form });
               }} disabled={!status.loaded}>Tambah Data</Button>
-            {datas?.datas?.length &&
+            {datas?.datas?.length > 0 &&
               <Button type='button' size={`sm`} color='purple' onClick={() => downloadKartu()} disabled={!status.loaded}><FaIdCard className='w-4 h-4 mr-1' /> Download Kartu</Button>
             }
             <Dropdown

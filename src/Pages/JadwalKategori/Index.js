@@ -198,7 +198,7 @@ export default function Index() {
                         </div>
                       </Table.Cell>
                       <Table.Cell>
-                        {v.jadwals[0]?.count}
+                        {v.jadwals.length}
                       </Table.Cell>
                       <Table.Cell>
                         <div className="flex justify-end gap-1 whitespace-nowrap">

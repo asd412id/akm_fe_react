@@ -8,6 +8,7 @@ import { expandSidebar } from '../recoil/atom/navigation'
 import { userDataAtom } from '../recoil/atom/userAtom'
 import Timer from '../components/Timer'
 import { StopUjian } from '../recoil/atom/StopUjian'
+import logo from '../assets/logo512.png'
 
 export default function NavbarMenu() {
   const [userData, setUserData] = useRecoilState(userDataAtom);
@@ -39,11 +40,11 @@ export default function NavbarMenu() {
     >
       <Navbar.Brand href="https://flowbite.com/">
         <img
-          src="https://flowbite.com/docs/images/logo.svg"
+          src={logo}
           className="mr-3 h-6 sm:h-9"
           alt="Flowbite Logo"
         />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+        <span className="self-center whitespace-nowrap text-xl font-bold dark:text-sky-100 text-sky-600">
           {process.env.REACT_APP_APPNAME}
         </span>
       </Navbar.Brand>
