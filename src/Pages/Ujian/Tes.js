@@ -211,7 +211,7 @@ export default function Tes() {
                               };
                               setJawaban({ ...jawaban, ...jawab });
                             }} />
-                            <span>{alphabetRange(i)}.</span>
+                            <span>{alphabetRange('A', 'Z')[i]}.</span>
                             <div dangerouslySetInnerHTML={{ __html: v.text }}></div>
                           </label>
                         })}
