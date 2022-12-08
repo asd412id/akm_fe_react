@@ -21,6 +21,7 @@ export default function SoalNumber() {
         onSubmit={() => {
           setStopUjian(true);
         }}
+        onError={() => window.location.reload()}
       >
         <h5 className="text-lg font-semibold text-center mb-7" style={{ lineHeight: '1em' }}>Anda yakin ingin menghentikan ujian?</h5>
       </TestConfirmationModal>

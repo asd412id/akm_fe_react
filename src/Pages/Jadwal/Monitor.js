@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil';
 import { MonitoringInterval } from '../../recoil/atom/MonitoringInterval';
 import MonitorConfirm from './MonitorConfirm';
 import { AiOutlineLogout } from 'react-icons/ai';
+import Timer from '../../components/Timer';
 
 export default function Monitor() {
   const { jid, id } = useParams();
@@ -176,8 +177,16 @@ export default function Monitor() {
                     <Table.Cell>
                       {v?.peserta_logins.length ?
                         <div className="flex gap-1 flex-wrap">
-                          {v?.peserta_logins[0].start && <Badge className='whitespace-nowrap' color={`success`}>{dateFormat(v.peserta_logins[0].start, 'dd-mmm-yyyy HH:MM')}</Badge>}
-                          {v?.peserta_logins[0].end && <Badge className='whitespace-nowrap' color={`failure`}>{dateFormat(v.peserta_logins[0].end, 'dd-mmm-yyyy HH:MM')}</Badge>}
+                          {
+                            v?.peserta_logins[0].end !== null ?
+                              <>
+                                {v?.peserta_logins[0].start && <Badge className='whitespace-nowrap' color={`success`}>{dateFormat(v.peserta_logins[0].start, 'dd-mmm-yyyy HH:MM')}</Badge>}
+                                {v?.peserta_logins[0].end && <Badge className='whitespace-nowrap' color={`failure`}>{dateFormat(v.peserta_logins[0].end, 'dd-mmm-yyyy HH:MM')}</Badge>}
+                              </> :
+                              <div className="text-emerald-700 font-semibold">
+                                <Timer key={v.id} end={new Date((new Date(v.peserta_logins[0].start)).getTime() + (v.jadwals[0]?.duration * 60 * 1000))} />
+                              </div>
+                          }
                         </div>
                         : <div className='flex'><Badge className='whitespace-nowrap' color={`purple`}>Standby</Badge></div>}
                     </Table.Cell>

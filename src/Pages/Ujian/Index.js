@@ -29,7 +29,6 @@ export default function Index() {
 
   useEffect(() => {
     getUjian();
-    console.log(tm);
   }, []);
 
   const getUjian = async () => {
@@ -42,6 +41,8 @@ export default function Index() {
         setUjians({ ...ujians });
         setIsLogin(false);
         setDataUjian(null);
+        if (tm) clearTimeout(tm);
+        setTm(setTimeout(getUjian, 60000));
       } else {
         if (tm) {
           clearTimeout(tm);
@@ -49,8 +50,6 @@ export default function Index() {
         }
         navigate('/ujian/tes');
       }
-      if (tm) clearTimeout(tm);
-      setTm(setTimeout(getUjian, 60000));
     } catch (error) {
       if (error.response.status === 401) {
         window.location.reload();

@@ -43,7 +43,7 @@ export default function NavbarMenu() {
         <img
           src={logo}
           className="mr-3 h-6 sm:h-9"
-          alt={process.env.REACT_APP_APPNAME+" Logo"}
+          alt={process.env.REACT_APP_APPNAME + " Logo"}
         />
         <span className="self-center whitespace-nowrap text-xl font-bold dark:text-sky-100 text-sky-600">
           {process.env.REACT_APP_APPNAME}

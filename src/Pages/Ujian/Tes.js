@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { Alert, Button, Card, Checkbox, Radio, Spinner, table, Textarea, TextInput, ToggleSwitch } from 'flowbite-react';
+import { Button, Card, Checkbox, Radio, Textarea, TextInput, ToggleSwitch } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import AuthPeserta from '../../layouts/AuthPeserta'
-import TestConfirmationModal from './TestConfirmationModal';
 import { useNavigate } from 'react-router-dom';
 import { DataUjian } from '../../recoil/atom/DataUjian';
 import { NomorSoal } from '../../recoil/atom/nomorSoal';
@@ -18,7 +17,6 @@ import { StopUjian } from '../../recoil/atom/StopUjian';
 
 export default function Tes() {
   const [error, setError] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [dataUjian, setDataUjian] = useRecoilState(DataUjian);
   const [number, setNumber] = useRecoilState(NomorSoal);
@@ -97,10 +95,8 @@ export default function Tes() {
       }
     } catch (error) {
       if (error.response.status === 401) {
-        setStopUjian(true);
         window.location.reload();
       } else if (error.response.status === 406) {
-        setStopUjian(true);
         navigate('/ujian');
       } else {
         console.log(error.message);
@@ -143,9 +139,10 @@ export default function Tes() {
       updateAnswer();
       axios.patch('/ujian/' + dataUjian.id)
         .then(() => {
+          setStopUjian(false);
           navigate('/ujian');
         }).catch(err => {
-          setError('Gagal mgenhentikan ujian');
+          setError('Gagal menghentikan ujian');
         })
     }
   }, [stopUjian]);
@@ -161,21 +158,6 @@ export default function Tes() {
   if (isLogin) {
     return (
       <AuthPeserta title={'Mengerjakan Soal: ' + (dataUjian ? dataUjian?.jadwal?.name : '...')} error={error}>
-        <TestConfirmationModal
-          open={openDialog}
-          onClose={() => setOpenDialog(false)}
-          onError={(e) => {
-            setError(e);
-            setTimeout(() => {
-              setError(null);
-            }, 3000);
-          }}
-          onSubmit={() => {
-            navigate('/ujian/tes');
-          }}
-        >
-        </TestConfirmationModal>
-
         <div className="flex-w-full flex-col gap-3">
           <Card>
             <div className="flex flex-col items-start">
