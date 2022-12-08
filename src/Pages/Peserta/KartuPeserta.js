@@ -115,23 +115,23 @@ export default function KartuPeserta({ open, onClose }) {
                               <tr>
                                 <td colSpan={3} className="border-t-2 border-black pb-2"></td>
                               </tr>
-                              <tr className="text-sm">
-                                <td>ID PESERTA</td>
+                              <tr className="text-sm" valign="top">
+                                <td className='w-4/12'>ID PESERTA</td>
                                 <td>:</td>
                                 <td className='font-semibold'>{v?.username}</td>
                               </tr>
-                              <tr className="text-sm">
-                                <td>NAMA</td>
+                              <tr className="text-sm" valign="top">
+                                <td className='w-4/12'>NAMA</td>
                                 <td>:</td>
                                 <td className='font-semibold'>{v?.name?.toUpperCase()}</td>
                               </tr>
-                              <tr className="text-sm">
-                                <td>KELAS/RUANG</td>
+                              <tr className="text-sm" valign="top">
+                                <td className='w-4/12'>KELAS/RUANG</td>
                                 <td>:</td>
                                 <td className='font-semibold'>{v?.ruang?.toUpperCase()}</td>
                               </tr>
-                              <tr className='text-sm'>
-                                <td>PASSWORD</td>
+                              <tr className='text-sm' valign="top">
+                                <td className='w-4/12'>PASSWORD</td>
                                 <td>:</td>
                                 <td className='font-semibold'>{v?.password_raw}</td>
                               </tr>
