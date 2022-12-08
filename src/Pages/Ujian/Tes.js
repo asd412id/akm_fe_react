@@ -97,7 +97,7 @@ export default function Tes() {
       if (error.response.status === 401) {
         window.location.reload();
       } else if (error.response.status === 406) {
-        navigate('/ujian');
+        setStopUjian(true);
       } else {
         console.log(error.message);
         setAutoSave(setTimeout(updateAnswer, 15000));
