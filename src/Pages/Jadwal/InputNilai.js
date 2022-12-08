@@ -225,7 +225,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                         </Table.Body>
                                       </Table>
                                       <Xwrapper>
-                                        {Object.keys(v.soal_item.corrects).map(k => {
+                                        {v.soal_item?.corrects !== null && Object.keys(v.soal_item.corrects).map(k => {
                                           return v.soal_item.corrects[k] !== null && <Xarrow key={k + lineId} startAnchor='right' endAnchor='left' start={`jopt-${v.id}-${k}`} end={`jrel-${v.id}-${v.soal_item.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
                                         })}
                                       </Xwrapper>
@@ -317,7 +317,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                         </Table.Body>
                                       </Table>
                                       <Xwrapper>
-                                        {Object.keys(v.jawaban?.corrects).map(k => {
+                                        {v.jawaban !== null && Object.keys(v.jawaban?.corrects).map(k => {
                                           return v.jawaban?.corrects[k] !== null && <Xarrow key={k + lineId} startAnchor='right' endAnchor='left' start={`popt-${v.id}-${k}`} end={`prel-${v.id}-${v.jawaban?.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
                                         })}
                                       </Xwrapper>
