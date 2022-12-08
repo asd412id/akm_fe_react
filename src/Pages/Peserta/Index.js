@@ -160,7 +160,9 @@ export default function Index() {
 
   const saveImported = async (data) => {
     try {
-      const res = await axios.post('/pesertas/import', data);
+      const res = await axios.post('/pesertas/import', data, {
+        timeout: 180000
+      });
       status.loaded = true;
       setStatus({ ...status });
       successResponse(res);
