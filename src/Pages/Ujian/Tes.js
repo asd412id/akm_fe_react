@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Button, Card, Checkbox, Radio, Textarea, TextInput, ToggleSwitch } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
+import { alphabetRange } from '../../utils/Helpers';
 import { useRecoilState } from 'recoil'
 import AuthPeserta from '../../layouts/AuthPeserta'
 import { useNavigate } from 'react-router-dom';
@@ -192,8 +193,8 @@ export default function Tes() {
                     }} />
                     : soal.type === 'PG' ?
                       <div className="flex flex-col gap-1">
-                        {soal.options.map(v => {
-                          return <label key={v.key} className={`flex gap-2 items-start`}>
+                        {soal.options.map((v, i) => {
+                          return <label key={i} className={`flex gap-2 items-start`}>
                             <Radio name='jawaban' className='mt-1' checked={jawaban[soal.id].jawaban?.corrects[v.key]} onChange={e => {
                               const jawab = {};
                               const crts = {};
@@ -210,7 +211,7 @@ export default function Tes() {
                               };
                               setJawaban({ ...jawaban, ...jawab });
                             }} />
-                            <span>{v.key}.</span>
+                            <span>{alphabetRange(i)}.</span>
                             <div dangerouslySetInnerHTML={{ __html: v.text }}></div>
                           </label>
                         })}
