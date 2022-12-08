@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Button, Card, Checkbox, Radio, Textarea, TextInput, ToggleSwitch } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
-import { alphabetRange } from '../../utils/Helpers';
 import { useRecoilState } from 'recoil'
 import AuthPeserta from '../../layouts/AuthPeserta'
 import { useNavigate } from 'react-router-dom';
