@@ -17,8 +17,10 @@ export default function DeleteModal({ open = false, text = '', url = null, onClo
   }, [open, text, url])
 
   const submit = async () => {
+    setDisabled(true);
     try {
       const res = await axios.delete(link);
+      setDisabled(false);
       onSubmit(res);
     } catch (error) {
       onError(error);
