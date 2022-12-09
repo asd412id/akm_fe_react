@@ -32,7 +32,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col gap-5 w-full min-h-screen justify-center items-center bg-gray-100">
+    <div className="flex flex-col gap-5 w-full min-h-screen justify-center items-center bg-gray-100 p-5 md:p-0">
       <div className="flex justify-center text-center flex-col gap-2">
         <div className="flex items-center gap-2 justify-center">
           <img src={logo} className='w-16' alt={(process.env.REACT_APP_APPNAME || 'UjianQ')} />
@@ -42,7 +42,7 @@ export default function Login() {
           <p className='text-sky-600 text-lg font-semibold italic'>{process.env.REACT_APP_APPDESC || "Aplikasi Ujian dengan Model Soal AKM"}</p>
         }
       </div>
-      <form onSubmit={submit} className="flex flex-col gap-4 w-full max-w-md bg-white rounded-md shadow p-5">
+      <form onSubmit={submit} className="flex flex-col gap-4 w-full max-w-md bg-white rounded-md shadow drop-shadow-lg p-5">
         {error && <Alert color={`failure`}>{error}</Alert>}
         <div>
           <div className="mb-2 block">

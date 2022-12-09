@@ -52,62 +52,64 @@ export default function NavbarMenu() {
       {dataUjian !== null &&
         <div className="flex">
           <div className="font-bold bg-emerald-50 text-emerald-600 border border-emerald-100 rounded shadow px-3 text-lg">
-            <Timer end={new Date((new Date(dataUjian.start)).getTime() + (dataUjian.jadwal.duration * 60 * 1000))} onComplete={setEndUjian} />
+            <Timer now={new Date(dataUjian.start)} end={new Date((new Date(dataUjian.start)).getTime() + (dataUjian.jadwal.duration * 60 * 1000))} onComplete={setEndUjian} />
           </div>
         </div>
       }
       <div className="flex md:order-2 gap-2 items-center">
-        <Dropdown
-          arrowIcon={false}
-          inline={true}
-          label={<MdOutlineSettings className='w-7 h-7 fill-gray-600 hover:fill-sky-600 transition-all duration-200 hover:rotate-90' />}
-        >
-          <Dropdown.Header>
-            <span className="block text-sm">
-              {userData.name}
-            </span>
-            {userData.role !== undefined ?
-              <>
-                <span className="block truncate text-sm font-bold">
-                  {userData.sekolah.name}
-                </span>
-                <span className="block truncate text-sm font-medium">
-                  {userData.email}
-                </span>
-              </> : <>
-                <span className="block truncate text-sm">
-                  ID PESERTA: {userData.username}
-                </span>
-                <span className="block truncate text-sm font-bold">
-                  {userData.sekolah.name}
-                </span>
-              </>
-            }
-          </Dropdown.Header>
-          {userData.role !== undefined &&
-            <>
-              {userData.role === 'OPERATOR' &&
+        {dataUjian === null &&
+          <Dropdown
+            arrowIcon={false}
+            inline={true}
+            label={<MdOutlineSettings className='w-7 h-7 fill-gray-600 hover:fill-sky-600 transition-all duration-200 hover:rotate-90' />}
+          >
+            <Dropdown.Header>
+              <span className="block text-sm">
+                {userData.name}
+              </span>
+              {userData.role !== undefined ?
                 <>
-                  <Link to={`/sekolah`}>
-                    <Dropdown.Item>
-                      Pengaturan Sekolah
-                    </Dropdown.Item>
-                  </Link>
-                  <Dropdown.Divider />
+                  <span className="block truncate text-sm font-bold">
+                    {userData.sekolah.name}
+                  </span>
+                  <span className="block truncate text-sm font-medium">
+                    {userData.email}
+                  </span>
+                </> : <>
+                  <span className="block truncate text-sm">
+                    ID PESERTA: {userData.username}
+                  </span>
+                  <span className="block truncate text-sm font-bold">
+                    {userData.sekolah.name}
+                  </span>
                 </>
               }
-              <Link to={`/akun`}>
-                <Dropdown.Item>
-                  Pengaturan Akun
-                </Dropdown.Item>
-              </Link>
-              <Dropdown.Divider />
-            </>
-          }
-          <Dropdown.Item onClick={logout}>
-            Keluar
-          </Dropdown.Item>
-        </Dropdown>
+            </Dropdown.Header>
+            {userData.role !== undefined &&
+              <>
+                {userData.role === 'OPERATOR' &&
+                  <>
+                    <Link to={`/sekolah`}>
+                      <Dropdown.Item>
+                        Pengaturan Sekolah
+                      </Dropdown.Item>
+                    </Link>
+                    <Dropdown.Divider />
+                  </>
+                }
+                <Link to={`/akun`}>
+                  <Dropdown.Item>
+                    Pengaturan Akun
+                  </Dropdown.Item>
+                </Link>
+                <Dropdown.Divider />
+              </>
+            }
+            <Dropdown.Item onClick={logout}>
+              Keluar
+            </Dropdown.Item>
+          </Dropdown>
+        }
         <Navbar.Toggle onClick={() => {
           setSidebarToggle(!sidebarToggle);
         }} />

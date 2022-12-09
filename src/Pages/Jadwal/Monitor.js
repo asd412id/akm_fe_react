@@ -184,7 +184,7 @@ export default function Monitor() {
                                 {v?.peserta_logins[0].end && <Badge className='whitespace-nowrap' color={`failure`}>{dateFormat(v.peserta_logins[0].end, 'dd-mmm-yyyy HH:MM')}</Badge>}
                               </> :
                               <div className="text-emerald-700 font-semibold">
-                                <Timer key={v.id} end={new Date((new Date(v.peserta_logins[0].start)).getTime() + (v.jadwals[0]?.duration * 60 * 1000))} />
+                                <Timer key={v.id} now={new Date(v.peserta_logins[0].start)} end={new Date((new Date(v.peserta_logins[0].start)).getTime() + (v.jadwals[0]?.duration * 60 * 1000))} />
                               </div>
                           }
                         </div>

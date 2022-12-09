@@ -22,7 +22,6 @@ export default function TestConfirmationModal({ open = false, children, jid, onC
     try {
       const res = await axios.post('/ujian/tes', { id: id });
       setDataUjian(res.data);
-      setDisabled(false);
       onSubmit();
     } catch (error) {
       onError(error?.response?.data?.message ? error.response.data.message : 'Tidak dapat melanjutkan ujian');

@@ -7,7 +7,7 @@ import { RecoilRoot } from 'recoil';
 
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
 axios.defaults.withCredentials = true;
-axios.defaults.timeout = 30000;
+axios.defaults.timeout = 300000;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -15,6 +15,7 @@ export default function MonitorConfirm({ open = false, children, url = null, onC
   }, [open, url])
 
   const submit = async () => {
+    setDisabled(true);
     try {
       const res = await axios.patch(link);
       onSubmit(res);
