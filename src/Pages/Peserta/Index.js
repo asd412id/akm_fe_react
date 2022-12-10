@@ -11,6 +11,8 @@ import Excel from 'exceljs';
 import { BsFileSpreadsheet, BsTrash2 } from 'react-icons/bs';
 import { DropdownItem } from 'flowbite-react/lib/esm/components/Dropdown/DropdownItem';
 import KartuPeserta from './KartuPeserta';
+import { AiOutlineLogout } from 'react-icons/ai';
+import MonitorConfirm from '../Jadwal/MonitorConfirm';
 
 export default function Index() {
   const [datas, setDatas] = useState(null);
@@ -45,6 +47,11 @@ export default function Index() {
   });
   const uexcel = useRef(null);
   const [kartuPeserta, setkartuPeserta] = useState(false);
+  const [confirm, setConfirm] = useState({
+    show: false,
+    text: '',
+    url: ''
+  })
 
   useEffect(() => {
     getDatas();
@@ -133,11 +140,11 @@ export default function Index() {
             if (i > 1) {
               const row = sheet.getRow(i);
               const val = {
-                username: String(row.getCell('B').value),
-                name: String(row.getCell('C').value),
-                jk: String(row.getCell('D').value),
-                password: String(row.getCell('E').value),
-                ruang: String(row.getCell('F').value),
+                username: String(row.getCell('B').text),
+                name: String(row.getCell('C').text),
+                jk: String(row.getCell('D').text),
+                password: String(row.getCell('E').text),
+                ruang: String(row.getCell('F').text)
               };
               dp.push(val);
             }
@@ -199,6 +206,23 @@ export default function Index() {
         onError={errorResponse}
         text={destroy.title}
         url={destroy.link} />
+
+      <MonitorConfirm
+        open={confirm.show}
+        url={confirm.url}
+        onError={errorResponse}
+        onClose={() => {
+          confirm.show = false;
+          setConfirm({ ...confirm });
+        }}
+        onSubmit={(e) => {
+          confirm.show = false;
+          setConfirm({ ...confirm });
+          successResponse(e);
+        }}
+      >
+        <div dangerouslySetInnerHTML={{ __html: confirm.text }}></div>
+      </MonitorConfirm>
 
       <KartuPeserta
         open={kartuPeserta}
@@ -297,6 +321,15 @@ export default function Index() {
                       </Table.Cell>
                       <Table.Cell>
                         <div className="flex justify-end gap-1 whitespace-nowrap">
+                          {v.token !== null &&
+                            <Button className='py-1 px-0 rounded-full' size={`xs`} color='purple' title='Reset Login'
+                              onClick={() => {
+                                confirm.text = `Yakin ingin mereset login<br/><b>${v.name}</b>?<br/>Peserta akan logout dari perangkat!`;
+                                confirm.url = `/pesertas/${v.id}/reset`
+                                confirm.show = true;
+                                setConfirm({ ...confirm });
+                              }}><AiOutlineLogout className='w-3 h-3' /></Button>
+                          }
                           <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
                             onClick={() => {
                               form.data = { ...initForm, ...v };
