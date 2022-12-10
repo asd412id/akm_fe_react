@@ -255,8 +255,14 @@ export default function Index() {
                   <Table.Body className="divide-y">
                     {datas?.datas.length && datas?.datas.map((v) => {
                       return <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={v.id}>
-                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                          {v.name}
+                        <Table.Cell className="text-gray-900 dark:text-white">
+                          <div className="flex flex-col">
+                            <span className='font-medium'>{v.name}</span>
+                            {v.desc !== null &&
+                              <span className='font-sm italic'>{v.desc}</span>
+                            }
+                            <span></span>
+                          </div>
                         </Table.Cell>
                         <Table.Cell>
                           {v.pesertas.length}
@@ -279,7 +285,7 @@ export default function Index() {
                           </div>
                         </Table.Cell>
                         <Table.Cell>
-                          <div className="flex justify-end whitespace-nowrap">
+                          <div className="flex justify-end">
                             <Dropdown
                               label={<HiCog className='w-4 h-4' />}
                               size='xs'
