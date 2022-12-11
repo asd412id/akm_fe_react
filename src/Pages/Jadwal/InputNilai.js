@@ -336,7 +336,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                   })}
                   <Table.Row className='text-lg font-bold'>
                     <Table.HeadCell colSpan={6} align='right'>TOTAL NILAI</Table.HeadCell>
-                    <Table.HeadCell>{total}</Table.HeadCell>
+                    <Table.HeadCell>{total.toFixed(2)}</Table.HeadCell>
                   </Table.Row>
                 </Table.Body>
               </Table>
