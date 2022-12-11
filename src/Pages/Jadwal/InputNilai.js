@@ -249,37 +249,39 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                 }
                               </div>
                               : v.type === 'PGK' ?
-                                <div className="flex flex-col gap-1">
-                                  {
-                                    v.soal_item.options?.map(e => {
-                                      return <div key={e.key} className={`flex gap-2 ${v.jawaban?.corrects[e.key] ? 'text-green-600' : 'text-red-600'}`}>
-                                        <span className={'pt-1'}>{v.jawaban?.corrects[e.key] ? <FaCheck className='w-4 h-4' /> : <FaTimes className='w-4 h-4' />}</span>
-                                        <div dangerouslySetInnerHTML={{ __html: e.text }}></div>
-                                      </div>
-                                    })
-                                  }
-                                </div>
+                                v.jawaban !== null ?
+                                  <div className="flex flex-col gap-1">
+                                    {
+                                      v.soal_item.options?.map(e => {
+                                        return <div key={e.key} className={`flex gap-2 ${v.jawaban?.corrects[e.key] ? 'text-green-600' : 'text-red-600'}`}>
+                                          <span className={'pt-1'}>{v.jawaban?.corrects[e.key] ? <FaCheck className='w-4 h-4' /> : <FaTimes className='w-4 h-4' />}</span>
+                                          <div dangerouslySetInnerHTML={{ __html: e.text }}></div>
+                                        </div>
+                                      })
+                                    }
+                                  </div> : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                                 : v.type === 'BS' ?
-                                  <Table className='w-full'>
-                                    <Table.Head>
-                                      <Table.HeadCell>{v.soal_item.labels[0]}</Table.HeadCell>
-                                      <Table.HeadCell colSpan={2} className='text-center'>{v.soal_item.labels[1]}</Table.HeadCell>
-                                    </Table.Head>
-                                    <Table.Body>
-                                      {v.soal_item.options.map(e => {
-                                        return <Table.Row key={e.key}>
-                                          <Table.Cell className='px-1' dangerouslySetInnerHTML={{ __html: e.text }} />
-                                          <Table.Cell className='px-1'>
-                                            <div className="flex justify-center">
-                                              <Badge color={v.jawaban?.corrects[e.key] ? 'success' : 'failure'}>
-                                                {v.jawaban?.corrects[e.key] ? 'Benar' : 'Salah'}
-                                              </Badge>
-                                            </div>
-                                          </Table.Cell>
-                                        </Table.Row>
-                                      })}
-                                    </Table.Body>
-                                  </Table>
+                                  v.jawaban !== null ?
+                                    <Table className='w-full'>
+                                      <Table.Head>
+                                        <Table.HeadCell>{v.soal_item.labels[0]}</Table.HeadCell>
+                                        <Table.HeadCell colSpan={2} className='text-center'>{v.soal_item.labels[1]}</Table.HeadCell>
+                                      </Table.Head>
+                                      <Table.Body>
+                                        {v.soal_item.options.map(e => {
+                                          return <Table.Row key={e.key}>
+                                            <Table.Cell className='px-1' dangerouslySetInnerHTML={{ __html: e.text }} />
+                                            <Table.Cell className='px-1'>
+                                              <div className="flex justify-center">
+                                                <Badge color={v.jawaban?.corrects[e.key] ? 'success' : 'failure'}>
+                                                  {v.jawaban?.corrects[e.key] ? 'Benar' : 'Salah'}
+                                                </Badge>
+                                              </div>
+                                            </Table.Cell>
+                                          </Table.Row>
+                                        })}
+                                      </Table.Body>
+                                    </Table> : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                                   : v.type === 'JD' ?
                                     <>
                                       <Table className='w-full'>
