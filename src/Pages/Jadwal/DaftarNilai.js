@@ -101,7 +101,7 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
     sheet.getCell('F1').alignment = { vertical: 'middle', horizontal: 'center' };
 
     datas?.forEach((v, i) => {
-      sheet.addRow([(i + 1), v.username, v.name, v.ruang, ((v.peserta_logins.length && v.peserta_logins[0].peserta_tests.length) ? v.peserta_logins[0]?.peserta_tests[0]?.nilai : 0), '']);
+      sheet.addRow([(i + 1), v.username, v.name, v.ruang, ((v.peserta_logins.length && v.peserta_logins[0].peserta_tests.length) ? parseFloat(v.peserta_logins[0]?.peserta_tests[0]?.nilai).toFixed(2) : 0), '']);
       sheet.getCell('A' + (i + 2)).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
       sheet.getCell('B' + (i + 2)).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
       sheet.getCell('C' + (i + 2)).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
@@ -237,7 +237,7 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
                           <td className={'border border-gray-600 p-2 px-1 max-w-0 text-center ' + (process && 'border-black pt-1 pb-5')}>{i + 1}.</td>
                           <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.username}</td>
                           <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.name}</td>
-                          <td className={'border border-gray-600 p-2 text-center ' + (process && 'border-black pt-1 pb-5')}>{(v.peserta_logins.length && v.peserta_logins[0].peserta_tests.length) ? v.peserta_logins[0]?.peserta_tests[0]?.nilai : 0}</td>
+                          <td className={'border border-gray-600 p-2 text-center ' + (process && 'border-black pt-1 pb-5')}>{(v.peserta_logins.length && v.peserta_logins[0].peserta_tests.length) ? parseFloat(v.peserta_logins[0]?.peserta_tests[0]?.nilai).toFixed(2) : 0}</td>
                           <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}></td>
                         </tr>
                       })}
