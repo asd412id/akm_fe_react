@@ -145,10 +145,10 @@ export default function Monitor() {
                   Nama
                 </Table.HeadCell>
                 <Table.HeadCell>
-                  Ruang
+                  Waktu
                 </Table.HeadCell>
                 <Table.HeadCell>
-                  Waktu
+                  Status
                 </Table.HeadCell>
                 <Table.HeadCell>
                   Nilai
@@ -172,9 +172,6 @@ export default function Monitor() {
                       {v.name}
                     </Table.Cell>
                     <Table.Cell>
-                      {v.ruang}
-                    </Table.Cell>
-                    <Table.Cell>
                       {v?.peserta_logins.length ?
                         <div className="flex gap-1 flex-wrap">
                           {
@@ -189,6 +186,14 @@ export default function Monitor() {
                           }
                         </div>
                         : <div className='flex'><Badge className='whitespace-nowrap' color={`purple`}>Standby</Badge></div>}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {v?.peserta_logins.length > 0 &&
+                        <div className="flex gap-1 flex-wrap">
+                          <Badge color={'purple'}>Soal Dikerja: {v?.peserta_logins[0]?.peserta_tests[0]?.dikerja ?? 0}</Badge>
+                          <Badge color={'info'}>Total Soal: {v?.peserta_logins[0]?.peserta_tests[0]?.total_soal ?? 0}</Badge>
+                        </div>
+                      }
                     </Table.Cell>
                     <Table.Cell>
                       {v?.peserta_logins[0]?.peserta_tests[0]?.total_nilai ? parseFloat(v?.peserta_logins[0]?.peserta_tests[0]?.total_nilai).toFixed(2) : 0}
