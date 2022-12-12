@@ -234,20 +234,25 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                       </Table.Cell>
                       <Table.Cell className='px-1'>
                         {v.type === 'IS' ?
-                          <>{v.jawaban?.answer}</>
+                          v.jawaban !== null ?
+                            <>{v.jawaban?.answer}</>
+                            : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                           : v.type === 'U' ?
-                            <div dangerouslySetInnerHTML={{ __html: v.jawaban?.answer }}></div>
+                            v.jawaban !== null ?
+                              <div dangerouslySetInnerHTML={{ __html: v.jawaban?.answer }}></div>
+                              : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                             : v.type === 'PG' ?
-                              <div className="flex flex-col gap-1">
-                                {
-                                  v.soal_item.options?.map(e => {
-                                    return <div key={e.key} className={`flex gap-2 ${v.jawaban?.corrects[e.key] && 'font-bold'}`}>
-                                      <span>{e.key}.</span>
-                                      <div dangerouslySetInnerHTML={{ __html: e.text }}></div>
-                                    </div>
-                                  })
-                                }
-                              </div>
+                              v.jawaban !== null ?
+                                <div className="flex flex-col gap-1">
+                                  {
+                                    v.soal_item.options?.map(e => {
+                                      return <div key={e.key} className={`flex gap-2 ${v.jawaban?.corrects[e.key] && 'font-bold'}`}>
+                                        <span>{e.key}.</span>
+                                        <div dangerouslySetInnerHTML={{ __html: e.text }}></div>
+                                      </div>
+                                    })
+                                  }
+                                </div> : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                               : v.type === 'PGK' ?
                                 v.jawaban !== null ?
                                   <div className="flex flex-col gap-1">
@@ -283,47 +288,48 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                       </Table.Body>
                                     </Table> : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                                   : v.type === 'JD' ?
-                                    <>
-                                      <Table className='w-full'>
-                                        <Table.Head>
-                                          <Table.HeadCell className='text-center'>{v.soal_item.labels[0]}</Table.HeadCell>
-                                          <Table.HeadCell className='text-center'>{v.soal_item.labels[1]}</Table.HeadCell>
-                                        </Table.Head>
-                                        <Table.Body>
-                                          <Table.Row>
-                                            <Table.Cell className='align-top w-6/12'>
-                                              <div className='flex flex-col gap-5'>
-                                                {v.soal_item.options.map(e => {
-                                                  return <div key={e.key} className="flex justify-center gap-2 items-center">
-                                                    <div className="bg-blue-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: e.text }}></div>
-                                                    <span id={`popt-${v.id}-${e.key}`}>
-                                                      <TbCircleDot className='w-7 h-7 text-blue-700' />
-                                                    </span>
-                                                  </div>
-                                                })}
-                                              </div>
-                                            </Table.Cell>
-                                            <Table.Cell className='align-top w-6/12'>
-                                              <div className='flex flex-col gap-5'>
-                                                {v.soal_item.relations.map(e => {
-                                                  return <div key={e.key} className="flex justify-center gap-2 items-center">
-                                                    <span id={`prel-${v.id}-${e.key}`}>
-                                                      <TbCircleDot className='w-7 h-7 text-red-700' />
-                                                    </span>
-                                                    <div className="flex bg-red-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: e.text }}></div>
-                                                  </div>
-                                                })}
-                                              </div>
-                                            </Table.Cell>
-                                          </Table.Row>
-                                        </Table.Body>
-                                      </Table>
-                                      <Xwrapper>
-                                        {v.jawaban !== null && Object.keys(v.jawaban?.corrects).map(k => {
-                                          return v.jawaban?.corrects[k] !== null && <Xarrow key={k + lineId} startAnchor='right' endAnchor='left' start={`popt-${v.id}-${k}`} end={`prel-${v.id}-${v.jawaban?.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
-                                        })}
-                                      </Xwrapper>
-                                    </>
+                                    v.jawaban !== null ?
+                                      <>
+                                        <Table className='w-full'>
+                                          <Table.Head>
+                                            <Table.HeadCell className='text-center'>{v.soal_item.labels[0]}</Table.HeadCell>
+                                            <Table.HeadCell className='text-center'>{v.soal_item.labels[1]}</Table.HeadCell>
+                                          </Table.Head>
+                                          <Table.Body>
+                                            <Table.Row>
+                                              <Table.Cell className='align-top w-6/12'>
+                                                <div className='flex flex-col gap-5'>
+                                                  {v.soal_item.options.map(e => {
+                                                    return <div key={e.key} className="flex justify-center gap-2 items-center">
+                                                      <div className="bg-blue-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: e.text }}></div>
+                                                      <span id={`popt-${v.id}-${e.key}`}>
+                                                        <TbCircleDot className='w-7 h-7 text-blue-700' />
+                                                      </span>
+                                                    </div>
+                                                  })}
+                                                </div>
+                                              </Table.Cell>
+                                              <Table.Cell className='align-top w-6/12'>
+                                                <div className='flex flex-col gap-5'>
+                                                  {v.soal_item.relations.map(e => {
+                                                    return <div key={e.key} className="flex justify-center gap-2 items-center">
+                                                      <span id={`prel-${v.id}-${e.key}`}>
+                                                        <TbCircleDot className='w-7 h-7 text-red-700' />
+                                                      </span>
+                                                      <div className="flex bg-red-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: e.text }}></div>
+                                                    </div>
+                                                  })}
+                                                </div>
+                                              </Table.Cell>
+                                            </Table.Row>
+                                          </Table.Body>
+                                        </Table>
+                                        <Xwrapper>
+                                          {v.jawaban !== null && Object.keys(v.jawaban?.corrects).map(k => {
+                                            return v.jawaban?.corrects[k] !== null && <Xarrow key={k + lineId} startAnchor='right' endAnchor='left' start={`popt-${v.id}-${k}`} end={`prel-${v.id}-${v.jawaban?.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
+                                          })}
+                                        </Xwrapper>
+                                      </> : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                                     : null}
                       </Table.Cell>
                       <Table.Cell className='px-1 text-center'>
