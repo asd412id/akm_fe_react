@@ -96,7 +96,7 @@ export default function Monitor() {
     }, 500));
   }
   return (
-    <Auth title={`Monitoring Ujian ${title}`} success={success} error={error}>
+    <Auth title={`Monitoring Ujian ${title}${ruang ? ' (' + ruang + ')' : ''}`} success={success} error={error}>
       <MonitorConfirm
         open={confirm.show}
         url={confirm.url}

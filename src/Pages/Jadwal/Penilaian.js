@@ -88,7 +88,7 @@ export default function Penilaian() {
     }, 500));
   }
   return (
-    <Auth title={`Penilaian Ujian ${title}`} success={success} error={error}>
+    <Auth title={`Penilaian Ujian ${title}${ruang ? ' (' + ruang + ')' : ''}`} success={success} error={error}>
       <InputNilai
         open={confirm.show}
         id={confirm.id}
@@ -132,10 +132,10 @@ export default function Penilaian() {
                   Nama
                 </Table.HeadCell>
                 <Table.HeadCell>
-                  Ruang
+                  Waktu
                 </Table.HeadCell>
                 <Table.HeadCell>
-                  Waktu
+                  Soal
                 </Table.HeadCell>
                 <Table.HeadCell>
                   Nilai
@@ -148,7 +148,7 @@ export default function Penilaian() {
               </Table.Head>
               <Table.Body className="divide-y">
                 {pesertas?.map((v, i) => {
-                  return <Table.Row className={"bg-white dark:border-gray-700 dark:bg-gray-800 " + ((v?.peserta_logins.length > 0 && v?.peserta_logins[0]?.checked) && '!bg-yellow-100')} key={v.id}>
+                  return <Table.Row className={"bg-white dark:border-gray-700 dark:bg-gray-800 " + ((v?.peserta_logins.length > 0 && v?.peserta_logins[0]?.checked) && '!bg-cyan-100')} key={v.id}>
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       {i + 1}.
                     </Table.Cell>
@@ -159,15 +159,19 @@ export default function Penilaian() {
                       {v.name}
                     </Table.Cell>
                     <Table.Cell>
-                      {v.ruang}
-                    </Table.Cell>
-                    <Table.Cell>
                       {v?.peserta_logins.length ?
                         <div className="flex gap-1 flex-wrap">
                           {v?.peserta_logins[0].start && <Badge className='whitespace-nowrap' color={`success`}>{dateFormat(v.peserta_logins[0].start, 'dd-mmm-yyyy HH:MM')}</Badge>}
                           {v?.peserta_logins[0].end && <Badge className='whitespace-nowrap' color={`failure`}>{dateFormat(v.peserta_logins[0].end, 'dd-mmm-yyyy HH:MM')}</Badge>}
                         </div>
                         : <div className='flex'><Badge className='whitespace-nowrap' color={`purple`}>Standby</Badge></div>}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {v?.peserta_logins.length > 0 &&
+                        <div className="flex gap-1 flex-wrap">
+                          <Badge color={(v?.peserta_logins[0]?.peserta_tests[0]?.dikerja === v?.peserta_logins[0]?.peserta_tests[0]?.total_soal) ? 'info' : 'warning'}>{v?.peserta_logins[0]?.peserta_tests[0]?.dikerja ?? 0}/{v?.peserta_logins[0]?.peserta_tests[0]?.total_soal ?? 0}</Badge>
+                        </div>
+                      }
                     </Table.Cell>
                     <Table.Cell>
                       {v?.peserta_logins[0]?.peserta_tests[0]?.total_nilai ? parseFloat(v?.peserta_logins[0]?.peserta_tests[0]?.total_nilai).toFixed(2) : 0}
