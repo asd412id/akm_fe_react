@@ -148,7 +148,7 @@ export default function Monitor() {
                   Waktu
                 </Table.HeadCell>
                 <Table.HeadCell>
-                  Status
+                  Soal
                 </Table.HeadCell>
                 <Table.HeadCell>
                   Nilai
@@ -190,8 +190,7 @@ export default function Monitor() {
                     <Table.Cell>
                       {v?.peserta_logins.length > 0 &&
                         <div className="flex gap-1 flex-wrap">
-                          <Badge color={'purple'}>Soal Dikerja: {v?.peserta_logins[0]?.peserta_tests[0]?.dikerja ?? 0}</Badge>
-                          <Badge color={'info'}>Total Soal: {v?.peserta_logins[0]?.peserta_tests[0]?.total_soal ?? 0}</Badge>
+                          <Badge color={(v?.peserta_logins[0]?.peserta_tests[0]?.dikerja === v?.peserta_logins[0]?.peserta_tests[0]?.total_soal) ? 'info' : 'warning'}>{v?.peserta_logins[0]?.peserta_tests[0]?.dikerja ?? 0}/{v?.peserta_logins[0]?.peserta_tests[0]?.total_soal ?? 0}</Badge>
                         </div>
                       }
                     </Table.Cell>
