@@ -31,6 +31,8 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
     setError(null);
     setLoaded(false);
     setDisabled(false);
+	setNSoal({});
+	setTotal(0);
   }, [open, id]);
 
   useEffect(() => {
