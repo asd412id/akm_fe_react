@@ -138,7 +138,7 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
       onClose={onClose}
     >
       <Modal.Header className='px-3 py-2'>
-        Daftar Nilai {data?.name}{ruang && ' (' + ruang + ')'}
+        Daftar Nilai {data?.name}{ruang ? ' (' + ruang + ')' : ''}
       </Modal.Header>
       <Modal.Body>
         <div className="flex flex-col gap-5">

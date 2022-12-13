@@ -67,7 +67,7 @@ export default function DaftarSoal({ data, open, onClose }) {
     setProcess(true);
     var opt = {
       margin: 10,
-      filename: (('soal ' + data?.name + (data?.desc ? ' (' + data?.desc + ')' : null)).toUpperCase()) + '.pdf',
+      filename: (('soal ' + data?.name + (data?.desc ? ' (' + data?.desc + ')' : '')).toUpperCase()) + '.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'mm', format: [215, 330], orientation: 'portrait' }
@@ -80,7 +80,7 @@ export default function DaftarSoal({ data, open, onClose }) {
   const printData = () => {
     setPrint(true);
     const opts = {
-      pageTitle: (('soal ' + data?.name + (data?.desc ? ' (' + data?.desc + ')' : null)).toUpperCase())
+      pageTitle: (('soal ' + data?.name + (data?.desc ? ' (' + data?.desc + ')' : '')).toUpperCase())
     };
     setTimeout(() => {
       printElement.printElement(pdf.current, opts);
@@ -96,7 +96,7 @@ export default function DaftarSoal({ data, open, onClose }) {
       onClose={onClose}
     >
       <Modal.Header className='px-3 py-2'>
-        Soal {data?.name + (data?.desc ? ' (' + data?.desc + ')' : null)}
+        Soal {data?.name + (data?.desc ? ' (' + data?.desc + ')' : '')}
       </Modal.Header>
       <Modal.Body>
         <div className="flex flex-col gap-5 !w-full">
@@ -137,7 +137,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                       <tr>
                         <td>SOAL</td>
                         <td className='pl-2'>:</td>
-                        <td>{data?.name + (data?.desc !== '' ? ' (' + data?.desc + ')' : null)}</td>
+                        <td>{(data?.name + (data?.desc !== '' ? ' (' + data?.desc + ')' : ''))?.toUpperCase()}</td>
                       </tr>
                       <tr>
                         <td>MATA PELAJARAN</td>
