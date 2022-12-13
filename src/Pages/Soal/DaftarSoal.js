@@ -131,24 +131,29 @@ export default function DaftarSoal({ data, open, onClose }) {
                 </td>
               </tr>
               <tr>
-                <td valign='top' className='py-3 font-bold'>
+                <td valign='top' className='pt-5 pb-3 font-bold'>
                   <table>
                     <tbody>
                       <tr>
-                        <td>Mata Pelajaran</td>
+                        <td>SOAL</td>
                         <td className='pl-2'>:</td>
-                        <td>{data?.mapel?.name}</td>
+                        <td>{data?.name + (data?.desc !== '' ? ' (' + data?.desc + ')' : null)}</td>
+                      </tr>
+                      <tr>
+                        <td>MATA PELAJARAN</td>
+                        <td className='pl-2'>:</td>
+                        <td>{data?.mapel?.name?.toUpperCase()}</td>
                       </tr>
                     </tbody>
                   </table>
                 </td>
-                <td valign='top' align="right" className='py-3 font-bold'>
+                <td valign='top' align="right" className='pt-5 pb-3 font-bold'>
                   <table>
                     <tbody>
                       <tr>
-                        <td align="left">Jumlah Soal</td>
+                        <td align="left">JUMLAH SOAL</td>
                         <td className='pl-2'>:</td>
-                        <td align="left">{soal?.soal_items.length} Nomor</td>
+                        <td align="left">{soal?.soal_items.length} NOMOR</td>
                       </tr>
                     </tbody>
                   </table>
@@ -159,7 +164,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                   {soal?.soal_items.length > 0 &&
                     <div className="flex flex-col gap-5">
                       {soal?.soal_items.map((s, i) => {
-                        return <div key={i} className="flex gap-2 items-start !break-inside-avoid" style={{ lineHeight: '1.3rem' }}>
+                        return <div key={i} className="flex gap-2 items-start !break-inside-avoid !leading-snug">
                           <span>{s.num}</span>
                           <div className='flex flex-col gap-2'>
                             <div dangerouslySetInnerHTML={{ __html: s.text }}></div>
@@ -191,7 +196,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                                       })}
                                     </div>
                                     : s.type === 'BS' ?
-                                      <Table className='w-full'>
+                                      <Table className='w-full !break-inside-avoid'>
                                         <Table.Head>
                                           <Table.HeadCell>{s.labels[0]}</Table.HeadCell>
                                           <Table.HeadCell colSpan={2} className='text-center'>{s.labels[1]}</Table.HeadCell>
@@ -202,7 +207,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                                               <Table.Cell dangerouslySetInnerHTML={{ __html: v.text }} />
                                               <Table.Cell>
                                                 <div className="flex justify-center">
-                                                  <Badge color={s.corrects[v.key] ? 'success' : 'failure'}>
+                                                  <Badge color={s.corrects[v.key] ? 'success' : 'failure'} className={process && 'pt-0 pb-4'}>
                                                     {s.corrects[v.key] ? 'Benar' : 'Salah'}
                                                   </Badge>
                                                 </div>
@@ -213,7 +218,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                                       </Table>
                                       : s.type === 'JD' ?
                                         <>
-                                          <Table className='w-full'>
+                                          <Table className='w-full !break-inside-avoid'>
                                             <Table.Head>
                                               <Table.HeadCell className='text-center'>{s.labels[0]}</Table.HeadCell>
                                               <Table.HeadCell className='text-center'>{s.labels[1]}</Table.HeadCell>
@@ -224,7 +229,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                                                   <div className='flex flex-col gap-5'>
                                                     {s.options.map(v => {
                                                       return <div key={v.key} className="flex justify-center gap-2 items-center">
-                                                        <div className="bg-blue-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: v.text }}></div>
+                                                        <div className={"bg-blue-50 p-2 rounded shadow " + (process && 'pt-0 pb-4')} dangerouslySetInnerHTML={{ __html: v.text }}></div>
                                                         <span id={`opt-${s.num}-${v.key}`}>
                                                           <TbCircleDot className='w-7 h-7 text-blue-700' />
                                                         </span>
@@ -239,7 +244,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                                                         <span id={`rel-${s.num}-${v.key}`}>
                                                           <TbCircleDot className='w-7 h-7 text-red-700' />
                                                         </span>
-                                                        <div className="flex bg-red-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: v.text }}></div>
+                                                        <div className={"flex bg-red-50 p-2 rounded shadow " + (process && 'pt-0 pb-4')} dangerouslySetInnerHTML={{ __html: v.text }}></div>
                                                       </div>
                                                     })}
                                                   </div>
@@ -266,7 +271,7 @@ export default function DaftarSoal({ data, open, onClose }) {
               </tr>
               <tr>
                 <td colSpan={2} className='pb-10'>
-                  <table className="w-full break-inside-avoid-page">
+                  <table className="w-full !break-inside-avoid">
                     <tbody>
                       <tr>
                         <td align="right">

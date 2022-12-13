@@ -57,7 +57,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
       onClose={onClose}
     >
       <Modal.Header className='px-3 py-2'>
-        Daftar Hadir {data?.name}
+        Daftar Hadir {data?.name}{ruang && ' (' + ruang + ')'}
       </Modal.Header>
       <Modal.Body>
         <div className="flex flex-col gap-5">
