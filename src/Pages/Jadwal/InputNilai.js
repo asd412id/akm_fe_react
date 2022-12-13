@@ -7,7 +7,7 @@ import { TbCircleDot } from 'react-icons/tb';
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import { useRecoilState } from 'recoil';
 import { lID, lInterval } from '../../recoil/atom/LineHelper';
-import { generateColor } from '../../utils/Helpers';
+import { generateColor, parseNumber } from '../../utils/Helpers';
 
 export default function InputNilai({ open, id, onSubmit, onClose }) {
   const [show, setShow] = useState(false);
@@ -31,8 +31,8 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
     setError(null);
     setLoaded(false);
     setDisabled(false);
-	setNSoal({});
-	setTotal(0);
+    setNSoal({});
+    setTotal(0);
   }, [open, id]);
 
   useEffect(() => {
@@ -79,7 +79,12 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
   }
 
   const handleChange = (e) => {
-    nSoal[e.target.id] = e.target.value === '' ? 0 : parseFloat(e.target.value);
+    nSoal[e.target.id] = parseNumber(e.target.value);
+    setNSoal({ ...nSoal });
+  }
+
+  const handleBlur = (e) => {
+    nSoal[e.target.id] = parseFloat(nSoal[e.target.id]);
     setNSoal({ ...nSoal });
   }
 
@@ -338,7 +343,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                         {v.bobot}
                       </Table.Cell>
                       <Table.Cell className='px-1'>
-                        <TextInput type={'number'} id={v.id} value={nSoal[v.id]} onChange={handleChange} className='w-16' />
+                        <TextInput type={'text'} onWheel={(e) => e.target.blur()} id={v.id} value={nSoal[v.id]} onChange={handleChange} onBlur={handleBlur} className='w-16' />
                       </Table.Cell>
                     </Table.Row>
                   })}
