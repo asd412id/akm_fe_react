@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { Alert, Button, Spinner, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
+import { FaCloudDownloadAlt } from 'react-icons/fa';
 import { GiNotebook } from 'react-icons/gi';
 import { HiPencil, HiTrash } from 'react-icons/hi';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link, useParams } from 'react-router-dom';
 import DeleteModal from '../../components/DeleteModal';
 import Auth from '../../layouts/Auth';
+import DaftarSoal from './DaftarSoal';
 import Form from './Form';
 
 export default function Index() {
@@ -41,6 +43,10 @@ export default function Index() {
     title: '',
     link: null
   });
+  const [daftarSoal, setDaftarSoal] = useState({
+    show: false,
+    data: null
+  })
 
   useEffect(() => {
     const kategori = async () => {
@@ -148,6 +154,16 @@ export default function Index() {
         text={destroy.title}
         url={destroy.link} />
 
+      <DaftarSoal
+        open={daftarSoal.show}
+        data={daftarSoal.data}
+        onClose={() => {
+          daftarSoal.show = false;
+          daftarSoal.data = null;
+          setDaftarSoal({ ...daftarSoal });
+        }}
+      />
+
       <div className="flex flex-col gap-1">
         <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
           <Button type='button' size={`sm`}
@@ -212,6 +228,11 @@ export default function Index() {
                           <Link to={`/soal/${katid}/${v.id}`}>
                             <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Daftar Soal'><GiNotebook className='w-3 h-3' /></Button>
                           </Link>
+                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='success' title='Download Soal' onClick={() => {
+                            daftarSoal.show = true;
+                            daftarSoal.data = v;
+                            setDaftarSoal({ ...daftarSoal });
+                          }}><FaCloudDownloadAlt className='w-3 h-3' /></Button>
                           <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
                             onClick={() => {
                               form.data = { ...initForm, ...v };
