@@ -87,7 +87,7 @@ export default function View({ open = false, data = {}, onClose }) {
                           <Table.HeadCell>{dta.labels[0]}</Table.HeadCell>
                           <Table.HeadCell colSpan={2} className='text-center'>{dta.labels[1]}</Table.HeadCell>
                         </Table.Head>
-                        <Table.Body>
+                        <Table.Body className='divide-y'>
                           {dta.options.map(v => {
                             return <Table.Row key={v.key}>
                               <Table.Cell dangerouslySetInnerHTML={{ __html: v.text }} />

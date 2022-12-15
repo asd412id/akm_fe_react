@@ -201,7 +201,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                                           <Table.HeadCell>{s.labels[0]}</Table.HeadCell>
                                           <Table.HeadCell colSpan={2} className='text-center'>{s.labels[1]}</Table.HeadCell>
                                         </Table.Head>
-                                        <Table.Body>
+                                        <Table.Body className='divide-y'>
                                           {s.options.map(v => {
                                             return <Table.Row key={v.key}>
                                               <Table.Cell dangerouslySetInnerHTML={{ __html: v.text }} />
