@@ -15,6 +15,8 @@ import { useRecoilValue } from 'recoil';
 import { userDataAtom } from '../../recoil/atom/userAtom';
 import DaftarHadir from './DaftarHadir';
 import DaftarNilai from './DaftarNilai';
+import MonitorConfirm from './MonitorConfirm';
+import { AiOutlineLogout } from 'react-icons/ai';
 
 export default function Index() {
   const userData = useRecoilValue(userDataAtom);
@@ -48,6 +50,12 @@ export default function Index() {
     active: true,
     jid: jid
   };
+  const [confirm, setConfirm] = useState({
+    show: false,
+    text: '',
+    url: ''
+  })
+
   const [form, setForm] = useState({
     show: false,
     title: 'Data Baru',
@@ -196,6 +204,23 @@ export default function Index() {
         }}
       />
 
+      <MonitorConfirm
+        open={confirm.show}
+        url={confirm.url}
+        onError={errorResponse}
+        onClose={() => {
+          confirm.show = false;
+          setConfirm({ ...confirm });
+        }}
+        onSubmit={(e) => {
+          confirm.show = false;
+          setConfirm({ ...confirm });
+          successResponse(e);
+        }}
+      >
+        <div dangerouslySetInnerHTML={{ __html: confirm.text }}></div>
+      </MonitorConfirm>
+
       <div className="flex flex-col gap-1">
         <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
           <Button type='button' size={`sm`}
@@ -322,6 +347,14 @@ export default function Index() {
                                   </Dropdown.Item>
                                 </>
                               }
+                              <Dropdown.Item icon={AiOutlineLogout} onClick={() => {
+                                confirm.text = `Yakin ingin mereset login peserta pada jadwal ini?`;
+                                confirm.url = `/jadwals/${jid}/${v.id}/resetlogin`
+                                confirm.show = true;
+                                setConfirm({ ...confirm });
+                              }}>
+                                Reset Login
+                              </Dropdown.Item>
                               <Dropdown.Item icon={HiPencil} onClick={() => {
                                 form.data = { ...initForm, ...v };
                                 form.data.start = new Date(v.start);

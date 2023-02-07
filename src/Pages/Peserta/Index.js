@@ -248,6 +248,12 @@ export default function Index() {
                   destroy.show = true;
                   setDestroy({ ...destroy });
                 }} disabled={!status.loaded}><BsTrash2 className='w-4 h-4 mr-1' /> Hapus Semua</Button>
+                <Button type='button' size={`sm`} color='success' onClick={() => {
+                  confirm.text = `Yakin ingin mereset login semua peserta?`;
+                  confirm.url = `/pesertas/reset`
+                  confirm.show = true;
+                  setConfirm({ ...confirm });
+                }} disabled={!status.loaded}><AiOutlineLogout className='w-4 h-4 mr-1' /> Reset Login</Button>
               </>
             }
             <Dropdown
