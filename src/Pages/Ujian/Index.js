@@ -73,9 +73,7 @@ export default function Index() {
   const getLogin = async () => {
     try {
       const res = await axios.get(`/ujian/selesai?page=${page}&size=20`);
-      const oldDatas = dataLogin?.datas ?? [];
       const newDatas = res.data;
-      newDatas['dataLogin'] = [...oldDatas, ...newDatas.datas];
       setDataLogin({ ...dataLogin, ...newDatas });
     } catch (err) {
       setError('Tidak dapat memuat hasil ujian');
@@ -140,7 +138,7 @@ export default function Index() {
             </div>
             {ujians.datas.length === 0 &&
               <InfiniteScroll
-                dataLength={dataLogin?.datas.length}
+                dataLength={dataLogin?.datas?.length ?? 0}
                 next={fetchMore}
                 hasMore={dataLogin?.currentPage < (dataLogin?.totalPages - 1)}
                 className='w-full grid md:grid-cols-2 gap-2 grid-flow-row pb-3'
