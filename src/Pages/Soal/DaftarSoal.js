@@ -109,7 +109,7 @@ export default function DaftarSoal({ data, open, onClose }) {
               {userData.sekolah?.opt?.kop &&
                 <tr>
                   <td colSpan={2}>
-                    <img src={userData.sekolah?.opt?.kop} alt="" />
+                    <img src={userData.sekolah?.opt?.kop} alt="" className='mx-auto' />
                   </td>
                 </tr>
               }
