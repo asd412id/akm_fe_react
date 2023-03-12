@@ -17,7 +17,7 @@ export default function Penilaian() {
   const [pesertas, setPesertas] = useState([]);
   const [search, setSearch] = useState('');
   const [tm, setTm] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchValue, setSearchValue] = useState('');
   const [confirm, setConfirm] = useState({
     show: false,
@@ -111,7 +111,7 @@ export default function Penilaian() {
         <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
           <div className="flex items-center gap-1">
             <span>Ruang/Kelas:</span>
-            <Select size={'sm'} value={ruang} onChange={e => setRuang(e.target.value)} className='w-40'>
+            <Select size={'sm'} value={ruang} disabled={loading} onChange={e => setRuang(e.target.value)} className='w-40'>
               {ruangs.map((v, i) => {
                 return <option key={i} value={v}>{v}</option>
               })}

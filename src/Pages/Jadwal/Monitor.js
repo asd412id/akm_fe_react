@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Alert, Badge, Dropdown, Select, Table, TextInput } from 'flowbite-react';
+import { Alert, Badge, Dropdown, Select, Spinner, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import Auth from '../../layouts/Auth';
@@ -22,6 +22,7 @@ export default function Monitor() {
   const [ruang, setRuang] = useState('');
   const [pesertas, setPesertas] = useState([]);
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
   const [tm, setTm] = useState(null);
   const [queryPeserta, setQueryPeserta] = useRecoilState(MonitoringInterval);
   const [searchValue, setSearchValue] = useState('');
@@ -38,7 +39,7 @@ export default function Monitor() {
 
   useEffect(() => {
     if (ruang) {
-      getPesertas();
+      getPesertas(true);
     }
   }, [ruang, searchValue]);
 
@@ -77,13 +78,17 @@ export default function Monitor() {
     }
   }
 
-  const getPesertas = async () => {
+  const getPesertas = async (indicator = false) => {
+    setLoading(indicator);
     try {
       const res = await axios.get(`/jadwals/${jid}/${id}/ruangs/${ruang}?search=${search}`);
       setPesertas(res.data);
       if (queryPeserta) clearTimeout(queryPeserta);
       setQueryPeserta(setTimeout(getPesertas, 10000));
+      setLoading(false);
     } catch (error) {
+      if (queryPeserta) clearTimeout(queryPeserta);
+      setLoading(false);
       errorResponse('Tidak dapat memuat data');
     }
   }
@@ -121,7 +126,7 @@ export default function Monitor() {
         <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
           <div className="flex items-center gap-1">
             <span>Ruang/Kelas:</span>
-            <Select size={'sm'} value={ruang} onChange={e => setRuang(e.target.value)} className='w-40'>
+            <Select size={'sm'} value={ruang} disabled={loading} onChange={e => setRuang(e.target.value)} className='w-40'>
               {ruangs.map((v, i) => {
                 return <option key={i} value={v}>{v}</option>
               })}
@@ -131,7 +136,7 @@ export default function Monitor() {
             <TextInput type='search' placeholder='Cari data ...' size={`sm`} value={search} onChange={handleSearch} />
           </div>
         </div>
-        {pesertas.length ?
+        {loading ? <div class="flex w-full justify-center py-5"><Spinner className='w-9 h-9' /></div> : pesertas.length ?
           <div className="no-v-scroll">
             <Table hoverable={true}>
               <Table.Head>

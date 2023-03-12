@@ -38,11 +38,14 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
   }, [ruang]);
 
   const getPesertas = async () => {
+    setProcess(true);
     try {
       const res = await axios.get(`/nilais/${jadwal.id}/${ruang}`);
       setDatas(res.data);
+      setProcess(false);
     } catch (error) {
       console.log(error?.response?.data?.message ?? error.message);
+      setProcess(false);
     }
   }
 
@@ -143,7 +146,7 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
       <Modal.Body>
         <div className="flex flex-col gap-5">
           <div className="flex justify-center gap-2 items-center">
-            <Select value={ruang} className='w-32' onChange={e => {
+            <Select value={ruang} className='w-32' disabled={process} onChange={e => {
               setRuang(e.target.value);
             }}>
               {ruangs?.map((v, i) => {

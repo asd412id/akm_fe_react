@@ -62,7 +62,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
       <Modal.Body>
         <div className="flex flex-col gap-5">
           <div className="flex justify-center gap-2 items-center">
-            <Select value={ruang} className='w-32' onChange={e => {
+            <Select value={ruang} className='w-32' disabled={process} onChange={e => {
               setRuang(e.target.value);
             }}>
               {ruangs?.map((v, i) => {
