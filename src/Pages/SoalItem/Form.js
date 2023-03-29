@@ -23,6 +23,8 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
   });
   const [lint, setLint] = useRecoilState(lInterval);
   const [lineID, setLineId] = useRecoilState(lID);
+  const [hideElementA, setHideElementA] = useState(true);
+  const [hideElementB, setHideElementB] = useState(true);
 
   useEffect(() => {
     status.show = open;
@@ -197,7 +199,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
               </div>
             </div>
             <div className="flex flex-col">
-              <Label>Skor Per Soal</Label>
+              <Label>Skor Soal</Label>
               <div className="flex gap-3 items-center">
                 <TextInput type={`number`} name='bobot' value={ftemp?.bobot} onChange={handleChange} disabled={status.disabled} required />
                 {(ftemp.type !== 'U' && ftemp.type !== 'IS') && <ToggleSwitch checked={ftemp?.shuffle} onChange={e => {
@@ -207,17 +209,24 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
               </div>
             </div>
           </div>
-          <div className="flex flex-col">
-            <Label>Teks Soal</Label>
-            <Editor
-              theme='snow'
-              value={ftemp?.text}
-              disabled={status.disabled}
-              onChange={e => {
-                ftemp.text = e;
-                setFtemp({ ...ftemp });
-              }}
-            />
+          <div className="flex flex-col mb-4">
+            <div className="flex gap-1 items-center justify-between mb-1">
+              <Label>Teks Soal</Label>
+              <Button size={'xs'} color='dark' pill={true} onClick={() => setHideElementA(!hideElementA)}>{hideElementA ? 'Edit' : 'Selesai'}</Button>
+            </div>
+            {hideElementA === true ?
+              <div onDoubleClick={() => setHideElementA(!hideElementA)} className='p-3 w-full border-2 border-dashed rounded border-gray-300' dangerouslySetInnerHTML={{ __html: ftemp?.text ? ftemp?.text : '<p><i>Belum ada teks soal</i></p>' }}></div>
+              :
+              <Editor
+                theme='snow'
+                value={ftemp?.text}
+                disabled={status.disabled}
+                onChange={e => {
+                  ftemp.text = e;
+                  setFtemp({ ...ftemp });
+                }}
+              />
+            }
           </div>
           {ftemp.type === 'JD' ?
             <div className="flex flex-col">
@@ -232,11 +241,18 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
             </div>
             : ftemp.type === 'U' ?
               <div className="flex flex-col">
-                <Label>Jawaban</Label>
-                <Editor value={ftemp?.answer} onChange={e => {
-                  ftemp.answer = e;
-                  setFtemp({ ...ftemp });
-                }} />
+                <div className="flex gap-1 items-center justify-between mb-1">
+                  <Label>Jawaban</Label>
+                  <Button size={'xs'} color='dark' pill={true} onClick={() => setHideElementB(!hideElementB)}>{hideElementB ? 'Edit' : 'Selesai'}</Button>
+                </div>
+                {hideElementB === true ?
+                  <div onDoubleClick={() => setHideElementB(!hideElementB)} className='p-3 w-full border-2 border-dashed rounded border-gray-300' dangerouslySetInnerHTML={{ __html: ftemp?.answer ? ftemp?.answer : '<p><i>Jawaban belum diisi</i></p>' }}></div>
+                  :
+                  <Editor value={ftemp?.answer} onChange={e => {
+                    ftemp.answer = e;
+                    setFtemp({ ...ftemp });
+                  }} />
+                }
               </div>
               : ftemp.type === 'PG' ?
                 <div className="flex flex-col">

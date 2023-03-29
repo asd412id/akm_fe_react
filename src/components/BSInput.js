@@ -6,13 +6,24 @@ import Editor from './Editor';
 export default function BSInput({ options = [], corrects = [], labels = ['Pernyataan', 'Benar/Salah'], onChange }) {
   const [opts, setOpts] = useState(options);
   const [crts, setCrts] = useState(corrects);
-  const [lbls, setLbls] = useState(labels)
+  const [lbls, setLbls] = useState(labels);
+  const [hideElement, setHideElement] = useState([]);
 
   useEffect(() => {
     setOpts(options);
     setCrts(corrects);
     setLbls(labels.length ? labels : ['Pernyataan', 'Benar/Salah']);
+    setHideElement([]);
+    options.forEach((v, i) => {
+      hideElement[i] = { hide: hideElement[i]?.hide ?? true };
+      setHideElement([...hideElement]);
+    });
   }, [JSON.stringify(options), JSON.stringify(corrects), JSON.stringify(labels)]);
+
+  const showElement = (i) => {
+    hideElement[i] = { hide: !hideElement[i]?.hide };
+    setHideElement([...hideElement]);
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -29,7 +40,7 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
           onChange(opts, crts, lbls);
         }}>Tambah Pilihan</Button>
       </div>
-      <Table>
+      <Table className='text-base'>
         <Table.Head>
           <Table.HeadCell>
             <TextInput value={lbls[0]} onChange={e => {
@@ -49,14 +60,19 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
         <Table.Body className="divide-y">
           {opts.map((v, i) => {
             return <Table.Row key={v.key} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell className="font-medium text-gray-900 dark:text-white w-6/12">
-                <Editor value={v.text} onChange={e => {
-                  opts[i].text = e;
-                  setOpts([...opts]);
-                  onChange(opts, crts, lbls);
-                }} />
+              <Table.Cell className="text-gray-900 dark:text-white w-6/12">
+                <Button size={'xs'} color='dark' pill={true} className='mb-1' onClick={() => showElement(i)}>{hideElement[i]?.hide ? 'Edit' : 'Selesai'}</Button>
+                {(hideElement.length > 0 && hideElement[i]?.hide === true) || hideElement[i] === undefined ?
+                  <div onDoubleClick={() => showElement(i)} className='p-3 w-full border-2 border-dashed rounded border-gray-300' dangerouslySetInnerHTML={{ __html: v.text ?? '<p><i>Pilihan belum diisi</i></p>' }}></div>
+                  :
+                  <Editor value={v.text} onChange={e => {
+                    opts[i].text = e;
+                    setOpts([...opts]);
+                    onChange(opts, crts, lbls);
+                  }} />
+                }
               </Table.Cell>
-              <Table.Cell className="font-medium text-gray-900 dark:text-white">
+              <Table.Cell className="text-gray-900 dark:text-white">
                 <div className="flex justify-center">
                   <ToggleSwitch label={crts[v.key] ? 'Benar' : 'Salah'} checked={crts[v.key]} onChange={e => {
                     crts[v.key] = e;
@@ -65,7 +81,7 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
                   }} />
                 </div>
               </Table.Cell>
-              <Table.Cell className="font-medium text-gray-900 dark:text-white">
+              <Table.Cell className="text-gray-900 dark:text-white">
                 <div className="flex justify-center">
                   <Button size={'xs'} color='failure' pill={true} onClick={() => {
                     opts.splice(i, 1);
@@ -74,6 +90,8 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
                       opts[i].key = alphabetRange('A', 'Z')[i];
                       crts[v.key] = false;
                     });
+                    hideElement.splice(i, 1);
+                    setHideElement([...hideElement]);
                     setOpts([...opts]);
                     setCrts({ ...crts });
                     onChange(opts, crts, lbls);
