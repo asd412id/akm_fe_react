@@ -34,6 +34,8 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     setStatus({ ...status });
     setForm(data);
     setFtemp(data);
+    setHideElementA(true);
+    setHideElementB(true);
   }, [open, title, data]);
 
   const handleChange = (e) => {
