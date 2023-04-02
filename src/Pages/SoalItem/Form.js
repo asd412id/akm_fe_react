@@ -51,6 +51,13 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     status.error = null;
     setStatus({ ...status });
 
+    if (!ftemp.type || !ftemp.num || !ftemp.text) {
+      status.error = "Data soal belum lengkap!";
+      status.disabled = false;
+      setStatus({ ...status });
+      return;
+    }
+
     form.type = ftemp.type;
     form.bobot = ftemp.bobot;
     form.corrects = ftemp.corrects;
@@ -142,7 +149,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
 
     imgs?.forEach(v => {
       if (isBase64(v, { allowMime: true })) {
-        const fileName = `/assets/${form.soalId}/${md5(Date.now())}.${base64Extension(v)}`;
+        const fileName = `/assets/${form.soalId}/${md5(v + Date.now())}.${base64Extension(v)}`;
         assets.push({
           filename: fileName,
           base64Data: getBuffer(v)
