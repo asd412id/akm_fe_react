@@ -22,7 +22,7 @@ export default function SidebarMenu() {
         className={'w-56 md:block left-0 bottom-0 fixed z-10 top-14 shadow-lg ' + (!sidebarToggle && 'hidden')}
         style={{ boxShadow: '0 2px -4px 4px gray' }}>
         <Sidebar.Items>
-          <Sidebar.ItemGroup>
+          <Sidebar.ItemGroup className='list-none ml-0'>
             {userData.role !== undefined &&
               <>
                 <Sidebar.Item
