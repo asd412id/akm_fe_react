@@ -171,7 +171,7 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
                   <table className='w-full'>
                     <tbody>
                       <tr>
-                        <td className='text-center font-bold pt-3'>DAFTAR NILAI</td>
+                        <td className='text-center font-bold pt-3'>DAFTAR NILAI PESERTA</td>
                       </tr>
                       <tr>
                         <td className='text-center font-bold uppercase'>{data?.jadwal_kategory?.name}</td>

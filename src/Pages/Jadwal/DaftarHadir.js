@@ -102,7 +102,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                   <table className='w-full'>
                     <tbody>
                       <tr>
-                        <td className='text-center font-bold pt-3'>DAFTAR HADIR</td>
+                        <td className='text-center font-bold pt-3'>DAFTAR HADIR PESERTA</td>
                       </tr>
                       <tr>
                         <td className='text-center font-bold uppercase'>{data?.jadwal_kategory?.name}</td>
@@ -202,7 +202,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                               return <table key={i} className={i > 2 ? 'mt-5' : ''}>
                                 <tbody>
                                   <tr>
-                                    <td align="left">Pengawas Ujian{countPengawas.length > 1 ? ' ' + v : ''},</td>
+                                    <td align="left">Pengawas{countPengawas.length > 1 ? ' ' + v : ' Ujian'},</td>
                                   </tr>
                                   <tr>
                                     <td height="85"></td>
