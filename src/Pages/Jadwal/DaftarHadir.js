@@ -199,10 +199,10 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                         <td align="right">
                           <div className={"flex flex-wrap gap-3 " + (countPengawas.length === 1 ? 'justify-end' : 'justify-between')}>
                             {countPengawas.map((v, i) => {
-                              return <table key={i} className={i > 2 ? 'mt-5' : ''}>
+                              return <table key={i} className={i > 2 ? 'mt-5' : 'mt-3'}>
                                 <tbody>
                                   <tr>
-                                    <td align="left">Pengawas{countPengawas.length > 1 ? ' ' + v : ' Ujian'},</td>
+                                    <td align="center">Pengawas{countPengawas.length > 1 ? ' ' + v : ' Ujian'},</td>
                                   </tr>
                                   <tr>
                                     <td height="85"></td>
