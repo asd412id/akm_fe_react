@@ -185,7 +185,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
         {status.title}
       </Modal.Header>
       <form onSubmit={submit}>
-        <Modal.Body className='flex flex-col gap-2 relative'>
+        <Modal.Body className='flex flex-col gap-2 relative ck-content'>
           {status.error && <Alert color={`failure`}>{status.error}</Alert>}
           <div className="flex gap-3">
             <div className="flex flex-col">

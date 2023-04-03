@@ -55,7 +55,7 @@ export default function SelectSearch({ url, value, labelValue = 'id', labelText 
       <div className="flex gap-1 flex-wrap">
         {val.map((v, i) => {
           return <Badge key={i}>
-            <div className="flex gap-1 whitespace-nowrap items-center">
+            <div className="flex gap-1 items-center">
               <span>{v[labelText]}</span>
               <FaTimes className='cursor-pointer' onClick={() => {
                 val.splice(i, 1);

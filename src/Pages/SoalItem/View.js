@@ -50,7 +50,7 @@ export default function View({ open = false, data = {}, onClose }) {
         Soal Nomor {dta.num}
       </Modal.Header>
       <Modal.Body>
-        <div className="flex gap-2">
+        <div className="flex gap-2 ck-content">
           <div className="flex">{dta.num}.</div>
           <div className="flex flex-col gap-3 w-full">
             <div className='relative' dangerouslySetInnerHTML={{ __html: dta.text }}></div>

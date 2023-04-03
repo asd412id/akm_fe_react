@@ -254,6 +254,9 @@ export default function Index() {
                 <Table hoverable={true}>
                   <Table.Head>
                     <Table.HeadCell>
+                      No.
+                    </Table.HeadCell>
+                    <Table.HeadCell>
                       Nama Jadwal
                     </Table.HeadCell>
                     <Table.HeadCell>
@@ -278,15 +281,17 @@ export default function Index() {
                     </Table.HeadCell>
                   </Table.Head>
                   <Table.Body className="divide-y">
-                    {datas?.datas.length && datas?.datas.map((v) => {
+                    {datas?.datas.length && datas?.datas.map((v, i) => {
                       return <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={v.id}>
+                        <Table.Cell>
+                          {i + 1}.
+                        </Table.Cell>
                         <Table.Cell className="text-gray-900 dark:text-white">
                           <div className="flex flex-col">
-                            <span className='font-medium'>{v.name}</span>
+                            <span className='font-semibold'>{v.name}</span>
                             {v.desc !== null &&
-                              <span className='font-sm italic'>{v.desc}</span>
+                              <span className='text-xs italic'>{v.desc}</span>
                             }
-                            <span></span>
                           </div>
                         </Table.Cell>
                         <Table.Cell>

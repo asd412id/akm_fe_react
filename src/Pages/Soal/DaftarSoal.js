@@ -98,7 +98,7 @@ export default function DaftarSoal({ data, open, onClose }) {
       <Modal.Header className='px-3 py-2'>
         Soal {data?.name + (data?.desc ? ' (' + data?.desc + ')' : '')}
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className='ck-content'>
         <div className="flex flex-col gap-5 !w-full">
           <div className="flex justify-center gap-2 items-center">
             <Button size='sm' onClick={() => downloadPdf()} disabled={process} className='flex items-center' color={'gray'}><BsFilePdf className='w-4 h-4 text-red-600 mr-1' /> Download PDF</Button>

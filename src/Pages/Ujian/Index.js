@@ -177,7 +177,7 @@ export default function Index() {
               </InfiniteScroll>
             }
           </div>
-          <div className="md:whitespace-nowrap w-full md:w-4/12 relative flex flex-col gap-2">
+          <div className="w-full md:w-4/12 relative flex flex-col gap-2">
             {ujians.loading ?
               <div className="flex absolute justify-center inset-0 bg-white backdrop-blur-md items-center"><Spinner size={'xl'} color={'success'} /></div>
               : ujians.datas.length ? ujians.datas.map((v, i) => {

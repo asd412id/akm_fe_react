@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Button, Card, Checkbox, Radio, Textarea, TextInput, ToggleSwitch } from 'flowbite-react';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import AuthPeserta from '../../layouts/AuthPeserta'
 import { useNavigate } from 'react-router-dom';
@@ -161,7 +161,7 @@ export default function Tes() {
         </TestConfirmationModal>
 
         <div className="flex-w-full flex-col gap-3">
-          <Card>
+          <Card className='ck-content'>
             <div className="flex flex-col items-start">
               <span className='font-bold italic'>#SOAL {number + 1}</span>
               <div className="w-full flex flex-col gap-5">

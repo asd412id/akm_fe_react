@@ -122,7 +122,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
       <Modal.Header className='px-3 py-2'>
         Periksa Nilai {title}
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className='ck-content'>
         {loaded ?
           nilais?.peserta_tests.length > 0 ?
             <div className="flex flex-col gap-3">

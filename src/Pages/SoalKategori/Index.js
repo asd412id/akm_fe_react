@@ -163,6 +163,9 @@ export default function Index() {
               <Table hoverable={true}>
                 <Table.Head>
                   <Table.HeadCell>
+                    No.
+                  </Table.HeadCell>
+                  <Table.HeadCell>
                     Kategori Soal
                   </Table.HeadCell>
                   <Table.HeadCell>
@@ -178,9 +181,12 @@ export default function Index() {
                   </Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
-                  {datas?.datas.length && datas?.datas.map((v) => {
+                  {datas?.datas.length && datas?.datas.map((v, i) => {
                     return <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={v.id}>
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      <Table.Cell className="whitespace-nowrap">
+                        {i + 1}.
+                      </Table.Cell>
+                      <Table.Cell className="whitespace-nowrap">
                         {v.name}
                       </Table.Cell>
                       <Table.Cell>

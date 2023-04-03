@@ -13,6 +13,8 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
   const [process, setProcess] = useState(false);
   const [ruangs, setRuangs] = useState([]);
   const [ruang, setRuang] = useState('');
+  const [pengawas, setPengawas] = useState(1);
+  const [countPengawas, setCountPengawas] = useState([]);
   const pdf = useRef(null);
 
   useEffect(() => {
@@ -28,6 +30,8 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
     if (r.length) {
       setRuang(r[0]);
     }
+    setPengawas(1);
+    setCountPengawas([1]);
   }, [open]);
 
   const downloadPdf = () => {
@@ -67,6 +71,18 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
             }}>
               {ruangs?.map((v, i) => {
                 return <option key={i} value={v}>{v}</option>
+              })}
+            </Select>
+            <Select value={pengawas} className='w-32' disabled={process} onChange={e => {
+              setPengawas(e.target.value);
+              let cp = [];
+              for (let i = 0; i < e.target.value; i++) {
+                cp.push(i + 1);
+              }
+              setCountPengawas(cp);
+            }}>
+              {[1, 2, 3, 4, 5, 6].map((v, i) => {
+                return <option key={i} value={v}>{`${v} Pengawas`}</option>
               })}
             </Select>
             <Button size='sm' onClick={() => downloadPdf()} disabled={process} className='flex items-center' color={'gray'}><BsFilePdf className='w-4 h-4 text-red-600 mr-1' /> Download PDF</Button>
@@ -175,17 +191,29 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                               <tr>
                                 <td className="pt-5">......................, ................................... {new Date(data?.start).getFullYear()}</td>
                               </tr>
-                              <tr>
-                                <td align="left">Pengawas Ujian,</td>
-                              </tr>
-                              <tr>
-                                <td height="100"></td>
-                              </tr>
-                              <tr>
-                                <td align="left">(........................................................)</td>
-                              </tr>
                             </tbody>
                           </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">
+                          <div className={"flex flex-wrap gap-3 " + (countPengawas.length === 1 ? 'justify-end' : 'justify-between')}>
+                            {countPengawas.map((v, i) => {
+                              return <table key={i} className={i > 2 ? 'mt-5' : ''}>
+                                <tbody>
+                                  <tr>
+                                    <td align="left">Pengawas Ujian{countPengawas.length > 1 ? ' ' + v : ''},</td>
+                                  </tr>
+                                  <tr>
+                                    <td height="85"></td>
+                                  </tr>
+                                  <tr>
+                                    <td align="left">(....................................................................)</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            })}
+                          </div>
                         </td>
                       </tr>
                     </tbody>
