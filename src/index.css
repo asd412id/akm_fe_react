@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-img {
+.ck-content img {
   display: inline-block;
+  vertical-align: text-bottom;
 }
 
 .z-99999 {
