@@ -79,9 +79,9 @@ export default function Index() {
     form.show = false;
     destroy.show = false;
     form.data = initForm;
-    setStatus({ ...status });
     setForm({ ...form });
     setDestroy({ ...destroy });
+    setStatus({ ...status });
     datas['datas'] = [];
     filters.page = 0;
     setFilters({ ...filters });
@@ -98,9 +98,9 @@ export default function Index() {
     form.show = false;
     destroy.show = false;
     form.data = initForm;
-    setStatus({ ...status });
     setForm({ ...form });
     setDestroy({ ...destroy });
+    setStatus({ ...status });
     datas['datas'] = [];
     filters.page = 0;
     setFilters({ ...filters });
