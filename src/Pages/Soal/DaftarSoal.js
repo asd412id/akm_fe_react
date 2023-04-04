@@ -98,7 +98,7 @@ export default function DaftarSoal({ data, open, onClose }) {
       <Modal.Header className='px-3 py-2'>
         Soal {data?.name + (data?.desc ? ' (' + data?.desc + ')' : '')}
       </Modal.Header>
-      <Modal.Body className='ck-content'>
+      <Modal.Body>
         <div className="flex flex-col gap-5 !w-full">
           <div className="flex justify-center gap-2 items-center">
             <Button size='sm' onClick={() => downloadPdf()} disabled={process} className='flex items-center' color={'gray'}><BsFilePdf className='w-4 h-4 text-red-600 mr-1' /> Download PDF</Button>
@@ -162,7 +162,7 @@ export default function DaftarSoal({ data, open, onClose }) {
               <tr>
                 <td colSpan={2} className={'pt-1 w-full ' + (process && 'pt-4')}>
                   {soal?.soal_items.length > 0 &&
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-5 ck-content">
                       {soal?.soal_items.map((s, i) => {
                         return <div key={i} className="flex gap-2 items-start !break-inside-avoid !leading-snug">
                           <span>{s.num}</span>

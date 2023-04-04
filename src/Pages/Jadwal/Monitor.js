@@ -83,11 +83,17 @@ export default function Monitor() {
     try {
       const res = await axios.get(`/jadwals/${jid}/${id}/ruangs/${ruang}?search=${search}`);
       setPesertas(res.data);
-      if (queryPeserta) clearTimeout(queryPeserta);
+      if (queryPeserta) {
+        clearTimeout(queryPeserta);
+        setQueryPeserta(null);
+      }
       setQueryPeserta(setTimeout(getPesertas, 10000));
       setLoading(false);
     } catch (error) {
-      if (queryPeserta) clearTimeout(queryPeserta);
+      if (queryPeserta) {
+        clearTimeout(queryPeserta);
+        setQueryPeserta(null);
+      }
       setLoading(false);
       errorResponse('Tidak dapat memuat data');
     }
