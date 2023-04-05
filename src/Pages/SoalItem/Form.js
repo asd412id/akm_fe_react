@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Alert, Button, Label, Modal, Select, TextInput, ToggleSwitch } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
+import { cloneDeep } from 'lodash';
 import Editor from '../../components/Editor';
 import { base64Extension, getBuffer, imgSrcs } from '../../utils/Helpers';
 import md5 from 'md5';
@@ -13,7 +14,6 @@ import { useRecoilState } from 'recoil';
 import { lID, lInterval } from '../../recoil/atom/LineHelper';
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
-  const [form, setForm] = useState(data);
   const [ftemp, setFtemp] = useState(data);
   const [status, setStatus] = useState({
     show: open,
@@ -32,7 +32,6 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
     status.disabled = false;
     status.error = false;
     setStatus({ ...status });
-    setForm(data);
     setFtemp(data);
     setHideElementA(true);
     setHideElementB(true);
@@ -58,13 +57,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
       return;
     }
 
-    form.type = ftemp.type;
-    form.bobot = ftemp.bobot;
-    form.corrects = ftemp.corrects;
-    form.options = ftemp.options;
-    form.relations = ftemp.relations;
-    form.labels = ftemp.labels;
-    form.num = ftemp.num;
+    const form = cloneDeep(ftemp);
     form.assets = [];
 
     const { text, assets } = handleImages(ftemp.text);
@@ -149,7 +142,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
 
     imgs?.forEach(v => {
       if (isBase64(v, { allowMime: true })) {
-        const fileName = `/assets/${form.soalId}/${md5(v + Date.now())}.${base64Extension(v)}`;
+        const fileName = `/assets/${ftemp.soalId}/${md5(v + Date.now())}.${base64Extension(v)}`;
         assets.push({
           filename: fileName,
           base64Data: getBuffer(v)
@@ -240,7 +233,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
           {ftemp.type === 'JD' ?
             <div className="flex flex-col">
               <Label>Pilihan</Label>
-              <JDInput options={ftemp.options} id={form.id} corrects={ftemp.corrects} labels={ftemp.labels} relations={ftemp.relations} onChange={(options, relations, corrects, labels) => {
+              <JDInput options={ftemp.options} corrects={ftemp.corrects} labels={ftemp.labels} relations={ftemp.relations} onChange={(options, relations, corrects, labels) => {
                 ftemp.options = options;
                 ftemp.corrects = corrects;
                 ftemp.labels = labels;

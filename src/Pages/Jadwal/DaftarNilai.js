@@ -227,21 +227,21 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
                   <table className='w-full'>
                     <thead>
                       <tr className='bg-gray-100'>
-                        <th className={'border border-gray-600 ' + (process && 'border-black pt-1 pb-5')}>NO.</th>
-                        <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>ID PESERTA</th>
-                        <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>NAMA</th>
-                        <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>NILAI</th>
-                        <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>KETERANGAN</th>
+                        <th className={'border border-black ' + (process && 'pt-1 pb-5')}>NO.</th>
+                        <th className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>ID PESERTA</th>
+                        <th className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>NAMA</th>
+                        <th className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>NILAI</th>
+                        <th className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>KETERANGAN</th>
                       </tr>
                     </thead>
                     <tbody>
                       {datas.map((v, i) => {
                         return <tr key={i} className='break-inside-avoid-page'>
-                          <td className={'border border-gray-600 p-2 px-1 max-w-0 text-center ' + (process && 'border-black pt-1 pb-5')}>{i + 1}.</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.username}</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.name}</td>
-                          <td className={'border border-gray-600 p-2 text-center ' + (process && 'border-black pt-1 pb-5')}>{(v.peserta_logins.length && v.peserta_logins[0].peserta_tests.length) ? parseFloat(v.peserta_logins[0]?.peserta_tests[0]?.nilai).toFixed(2) : 0}</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}></td>
+                          <td className={'border border-black p-2 px-1 max-w-0 text-center ' + (process && 'pt-1 pb-5')}>{i + 1}.</td>
+                          <td className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>{v.username}</td>
+                          <td className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>{v.name}</td>
+                          <td className={'border border-black p-2 text-center ' + (process && 'pt-1 pb-5')}>{(v.peserta_logins.length && v.peserta_logins[0].peserta_tests.length) ? parseFloat(v.peserta_logins[0]?.peserta_tests[0]?.nilai).toFixed(2) : 0}</td>
+                          <td className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}></td>
                         </tr>
                       })}
                     </tbody>
@@ -260,13 +260,13 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
                                 <td className="pt-5">......................, ................................... {new Date(data?.start).getFullYear()}</td>
                               </tr>
                               <tr>
-                                <td align="left">Guru Mata Pelajaran,</td>
+                                <td align="left" className='pt-3'>Guru Mata Pelajaran,</td>
                               </tr>
                               <tr>
                                 <td height="100"></td>
                               </tr>
                               <tr>
-                                <td align="left">(........................................................)</td>
+                                <td align="left">(....................................................................)</td>
                               </tr>
                             </tbody>
                           </table>

@@ -82,7 +82,7 @@ export default function View({ open = false, data = {}, onClose }) {
                       })}
                     </div>
                     : dta.type === 'BS' ?
-                      <Table className='w-full'>
+                      <Table className='w-full !text-base'>
                         <Table.Head>
                           <Table.HeadCell>{dta.labels[0]}</Table.HeadCell>
                           <Table.HeadCell colSpan={2} className='text-center'>{dta.labels[1]}</Table.HeadCell>
@@ -104,7 +104,7 @@ export default function View({ open = false, data = {}, onClose }) {
                       </Table>
                       : dta.type === 'JD' ?
                         <>
-                          <Table className='w-full'>
+                          <Table className='w-full !text-base'>
                             <Table.Head>
                               <Table.HeadCell className='text-center'>{dta.labels[0]}</Table.HeadCell>
                               <Table.HeadCell className='text-center'>{dta.labels[1]}</Table.HeadCell>

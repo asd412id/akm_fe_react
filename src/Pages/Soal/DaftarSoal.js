@@ -118,13 +118,13 @@ export default function DaftarSoal({ data, open, onClose }) {
                   <table className='w-full'>
                     <tbody>
                       <tr>
-                        <td className='text-center font-bold uppercase pt-3'>DAFTAR SOAL</td>
+                        <td className='text-center font-bold uppercase leading-none pt-3'>DAFTAR SOAL</td>
                       </tr>
                       <tr>
-                        <td className='text-center font-bold uppercase'>{(soal?.soal_kategory?.name)?.toUpperCase()}</td>
+                        <td className='text-center font-bold uppercase leading-none'>{(soal?.soal_kategory?.name)?.toUpperCase()}</td>
                       </tr>
                       <tr>
-                        <td className='text-center font-bold uppercase'>{(soal?.soal_kategory?.desc)?.toUpperCase()}</td>
+                        <td className='text-center font-bold uppercase leading-none'>{(soal?.soal_kategory?.desc)?.toUpperCase()}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -281,7 +281,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                                 <td className="pt-5">......................, ................................... {(new Date()).getFullYear()}</td>
                               </tr>
                               <tr>
-                                <td align="left">Guru Mata Pelajaran,</td>
+                                <td align="left" className='pt-3'>Guru Mata Pelajaran,</td>
                               </tr>
                               <tr>
                                 <td height="100"></td>

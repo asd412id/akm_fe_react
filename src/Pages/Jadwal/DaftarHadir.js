@@ -102,13 +102,13 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                   <table className='w-full'>
                     <tbody>
                       <tr>
-                        <td className='text-center font-bold pt-3'>DAFTAR HADIR PESERTA</td>
+                        <td className='text-center font-bold pt-3 leading-none'>DAFTAR HADIR PESERTA</td>
                       </tr>
                       <tr>
-                        <td className='text-center font-bold uppercase'>{data?.jadwal_kategory?.name}</td>
+                        <td className='text-center font-bold uppercase leading-none'>{data?.jadwal_kategory?.name}</td>
                       </tr>
                       <tr>
-                        <td className='text-center font-bold uppercase'>{data?.jadwal_kategory?.desc}</td>
+                        <td className='text-center font-bold uppercase leading-none'>{data?.jadwal_kategory?.desc}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -158,22 +158,22 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                   <table className='w-full'>
                     <thead>
                       <tr className='bg-gray-100'>
-                        <th className={'border border-gray-600 ' + (process && 'border-black pt-1 pb-5')}>NO.</th>
-                        <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>ID PESERTA</th>
-                        <th className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>NAMA</th>
-                        <th className={'border border-gray-600 p-2 w-3/12 ' + (process && 'border-black pt-1 pb-5')} colSpan={2}>TTD</th>
-                        <th className={'border border-gray-600 p-2 w-1/12 ' + (process && 'border-black pt-1 pb-5')}>KETERANGAN</th>
+                        <th className={'border border-black ' + (process && 'pt-1 pb-5')}>NO.</th>
+                        <th className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>ID PESERTA</th>
+                        <th className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>NAMA</th>
+                        <th className={'border border-black p-2 w-3/12 ' + (process && 'pt-1 pb-5')} colSpan={2}>TTD</th>
+                        <th className={'border border-black p-2 w-1/12 ' + (process && 'pt-1 pb-5')}>KETERANGAN</th>
                       </tr>
                     </thead>
                     <tbody>
                       {data?.pesertas?.filter(e => { return e.text === ruang }).map((v, i) => {
                         return <tr key={i} className='break-inside-avoid-page'>
-                          <td className={'border border-gray-600 p-2 px-1 max-w-0 text-center ' + (process && 'border-black pt-1 pb-5')}>{i + 1}.</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.username}</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{v.name}</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{(i + 1) % 2 !== 0 ? (i + 1) + '.' : ''}</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}>{(i + 1) % 2 === 0 ? (i + 1) + '.' : ''}</td>
-                          <td className={'border border-gray-600 p-2 ' + (process && 'border-black pt-1 pb-5')}></td>
+                          <td className={'border border-black p-2 px-1 max-w-0 text-center ' + (process && 'pt-1 pb-5')}>{i + 1}.</td>
+                          <td className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>{v.username}</td>
+                          <td className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>{v.name}</td>
+                          <td className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>{(i + 1) % 2 !== 0 ? (i + 1) + '.' : ''}</td>
+                          <td className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}>{(i + 1) % 2 === 0 ? (i + 1) + '.' : ''}</td>
+                          <td className={'border border-black p-2 ' + (process && 'pt-1 pb-5')}></td>
                         </tr>
                       })}
                     </tbody>
@@ -197,7 +197,7 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
                       </tr>
                       <tr>
                         <td align="right">
-                          <div className={"flex flex-wrap gap-3 " + (countPengawas.length === 1 ? 'justify-end' : 'justify-between')}>
+                          <div className={"flex flex-wrap " + (countPengawas.length === 1 ? 'justify-end' : 'justify-between')}>
                             {countPengawas.map((v, i) => {
                               return <table key={i} className={i > 2 ? 'mt-5' : 'mt-3'}>
                                 <tbody>

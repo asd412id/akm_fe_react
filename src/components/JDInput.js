@@ -57,7 +57,7 @@ export default function JDInput({ options = [], corrects = [], relations = [], l
 
   return (
     <div className="flex flex-col gap-2">
-      <Table className='text-base'>
+      <Table className='!text-base'>
         <Table.Head>
           <Table.HeadCell className='w-6/12'>
             <TextInput value={lbls[0]} onChange={e => {

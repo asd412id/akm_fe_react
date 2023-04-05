@@ -40,7 +40,7 @@ export default function BSInput({ options = [], corrects = [], labels = ['Pernya
           onChange(opts, crts, lbls);
         }}>Tambah Pilihan</Button>
       </div>
-      <Table className='text-base'>
+      <Table className='!text-base'>
         <Table.Head>
           <Table.HeadCell>
             <TextInput value={lbls[0]} onChange={e => {
