@@ -82,12 +82,12 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
     sheet.getCell('E1').font = { bold: true };
     sheet.getCell('F1').font = { bold: true };
 
-    sheet.getCell('A1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
-    sheet.getCell('B1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
-    sheet.getCell('C1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
-    sheet.getCell('D1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
-    sheet.getCell('E1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
-    sheet.getCell('F1').fill = { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('A1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('B1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('C1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('D1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('E1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCACACA' } };
+    sheet.getCell('F1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCACACA' } };
 
     sheet.getCell('A1').border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
     sheet.getCell('B1').border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };

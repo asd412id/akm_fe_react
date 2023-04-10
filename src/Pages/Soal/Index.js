@@ -31,7 +31,8 @@ export default function Index() {
     name: '',
     desc: '',
     mapelId: '',
-    katid: katid
+    katid: katid,
+    userId: ''
   };
   const [form, setForm] = useState({
     show: false,
@@ -241,6 +242,7 @@ export default function Index() {
                           }}><FaCloudDownloadAlt className='w-3 h-3' /></Button>
                           <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
                             onClick={() => {
+                              v.userId = v.userId === null ? '' : v.userId;
                               form.data = { ...initForm, ...v };
                               form.show = true;
                               form.title = `Ubah Data ${v.name}`;

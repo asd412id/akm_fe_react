@@ -1,10 +1,14 @@
 import axios from 'axios';
 import { Alert, Button, Label, Modal, Select, TextInput } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
+import { useRecoilValue } from 'recoil';
+import { userDataAtom } from '../../recoil/atom/userAtom';
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
+  const dataUser = useRecoilValue(userDataAtom);
   const [form, setForm] = useState(data);
   const [mapels, setMapels] = useState([]);
+  const [penilais, setPenilais] = useState([]);
   const [status, setStatus] = useState({
     show: open,
     title: title,
@@ -22,6 +26,18 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
       }
     }
     getMapels();
+
+    const getPenilais = async () => {
+      try {
+        const res = await axios.get(`/penilais?search=&page=0&size=1000`);
+        setPenilais(res.data.datas);
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
+    }
+    if (dataUser?.role === 'OPERATOR') {
+      getPenilais();
+    }
   }, [open]);
 
   useEffect(() => {
@@ -88,6 +104,17 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
             <Label>Deskripsi</Label>
             <TextInput name='desc' value={form?.desc} onChange={handleChange} disabled={status.disabled} />
           </div>
+          {dataUser.role === 'OPERATOR' &&
+            <div className="flex flex-col">
+              <Label htmlFor='ruangs'>Penilai</Label>
+              <Select name='userId' value={form?.userId} onChange={handleChange} disabled={status.disabled}>
+                <option value="">Pilih Penilai</option>
+                {penilais.map(v => {
+                  return <option key={v.id} value={v.id}>{v.name}</option>
+                })}
+              </Select>
+            </div>
+          }
         </Modal.Body>
         <Modal.Footer className='flex justify-end px-3 py-2'>
           <Button
