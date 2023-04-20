@@ -127,7 +127,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
           nilais?.peserta_tests.length > 0 ?
             <div className="flex flex-col gap-3">
               {error !== null &&
-                <div class="flex justify-center">
+                <div className="flex justify-center">
                   <Alert color={'failure'}>{error}</Alert>
                 </div>
               }
@@ -208,7 +208,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                               <div className='flex flex-col gap-5'>
                                                 {v.soal_item.options.map(e => {
                                                   return <div key={e.key} className="flex justify-center gap-2 items-center">
-                                                    <div className="bg-blue-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: e.text }}></div>
+                                                    <div className="bg-blue-50 p-2 rounded shadow"><div dangerouslySetInnerHTML={{ __html: e.text }}></div></div>
                                                     <span id={`jopt-${v.id}-${e.key}`}>
                                                       <TbCircleDot className='w-7 h-7 text-blue-700' />
                                                     </span>
@@ -223,7 +223,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                                     <span id={`jrel-${v.id}-${e.key}`}>
                                                       <TbCircleDot className='w-7 h-7 text-red-700' />
                                                     </span>
-                                                    <div className="flex bg-red-50 p-2 rounded shadow" dangerouslySetInnerHTML={{ __html: e.text }}></div>
+                                                    <div className="flex bg-red-50 p-2 rounded shadow"><div dangerouslySetInnerHTML={{ __html: e.text }}></div></div>
                                                   </div>
                                                 })}
                                               </div>
@@ -243,11 +243,11 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                         {v.type === 'IS' ?
                           v.jawaban !== null ?
                             <>{v.jawaban?.answer}</>
-                            : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
+                            : <div className="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                           : v.type === 'U' ?
                             v.jawaban !== null ?
                               <div dangerouslySetInnerHTML={{ __html: v.jawaban?.answer }}></div>
-                              : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
+                              : <div className="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                             : v.type === 'PG' ?
                               v.jawaban !== null ?
                                 <div className="flex flex-col gap-1">
@@ -259,7 +259,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                       </div>
                                     })
                                   }
-                                </div> : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
+                                </div> : <div className="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                               : v.type === 'PGK' ?
                                 v.jawaban !== null ?
                                   <div className="flex flex-col gap-1">
@@ -271,7 +271,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                         </div>
                                       })
                                     }
-                                  </div> : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
+                                  </div> : <div className="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                                 : v.type === 'BS' ?
                                   v.jawaban !== null ?
                                     <Table className='w-full'>
@@ -293,7 +293,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                           </Table.Row>
                                         })}
                                       </Table.Body>
-                                    </Table> : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
+                                    </Table> : <div className="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                                   : v.type === 'JD' ?
                                     v.jawaban !== null ?
                                       <>
@@ -336,7 +336,7 @@ export default function InputNilai({ open, id, onSubmit, onClose }) {
                                             return v.jawaban?.corrects[k] !== null && <Xarrow key={k + lineId} startAnchor='right' endAnchor='left' start={`popt-${v.id}-${k}`} end={`prel-${v.id}-${v.jawaban?.corrects[k]}`} headShape='arrow1' headSize={3} showTail={true} tailShape='circle' tailSize={2} color={generateColor(`${md5('7' + k)}}`)} />
                                           })}
                                         </Xwrapper>
-                                      </> : <div class="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
+                                      </> : <div className="flex"><Badge color={'failure'}>SOAL TIDAK DIJAWAB</Badge></div>
                                     : null}
                       </Table.Cell>
                       <Table.Cell className='px-1 text-center'>

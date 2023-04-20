@@ -13,6 +13,7 @@ import { DropdownItem } from 'flowbite-react/lib/esm/components/Dropdown/Dropdow
 import KartuPeserta from './KartuPeserta';
 import { AiOutlineLogout } from 'react-icons/ai';
 import MonitorConfirm from '../Jadwal/MonitorConfirm';
+import { handleDownload } from '../../utils/Helpers';
 
 export default function Index() {
   const [datas, setDatas] = useState(null);
@@ -261,11 +262,9 @@ export default function Index() {
               color='gray'
               label={<div className='flex items-center text-green-600'><BsFileSpreadsheet className='w-4 h-4 mr-1' /> Excel</div>}
             >
-              <a href="/assets/template_peserta.xlsx">
-                <DropdownItem icon={HiCloudDownload}>
-                  Download Template Excel
-                </DropdownItem>
-              </a>
+              <DropdownItem icon={HiCloudDownload} onClick={e => handleDownload('/assets/template_peserta.xlsx', 'DATA PESERTA UJIAN.xlsx')}>
+                Download Template Excel
+              </DropdownItem>
               <DropdownItem icon={HiCloudUpload}
                 onClick={() => {
                   uexcel.current.click();

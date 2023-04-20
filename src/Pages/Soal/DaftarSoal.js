@@ -229,7 +229,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                                                   <div className='flex flex-col gap-5'>
                                                     {s.options.map(v => {
                                                       return <div key={v.key} className="flex justify-center gap-2 items-center">
-                                                        <div className={"bg-blue-50 p-2 rounded shadow " + (process && 'pt-0 pb-4')} dangerouslySetInnerHTML={{ __html: v.text }}></div>
+                                                        <div className={"bg-blue-50 p-2 rounded shadow " + (process && 'pt-0 pb-4')}><div dangerouslySetInnerHTML={{ __html: v.text }}></div></div>
                                                         <span id={`opt-${s.num}-${v.key}`}>
                                                           <TbCircleDot className='w-7 h-7 text-blue-700' />
                                                         </span>
@@ -244,7 +244,7 @@ export default function DaftarSoal({ data, open, onClose }) {
                                                         <span id={`rel-${s.num}-${v.key}`}>
                                                           <TbCircleDot className='w-7 h-7 text-red-700' />
                                                         </span>
-                                                        <div className={"flex bg-red-50 p-2 rounded shadow " + (process && 'pt-0 pb-4')} dangerouslySetInnerHTML={{ __html: v.text }}></div>
+                                                        <div className={"flex bg-red-50 p-2 rounded shadow " + (process && 'pt-0 pb-4')}><div dangerouslySetInnerHTML={{ __html: v.text }}></div></div>
                                                       </div>
                                                     })}
                                                   </div>

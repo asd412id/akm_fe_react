@@ -142,7 +142,7 @@ export default function Monitor() {
             <TextInput type='search' placeholder='Cari data ...' size={`sm`} value={search} onChange={handleSearch} />
           </div>
         </div>
-        {loading ? <div class="flex w-full justify-center py-5"><Spinner className='w-9 h-9' /></div> : pesertas.length ?
+        {loading ? <div className="flex w-full justify-center py-5"><Spinner className='w-9 h-9' /></div> : pesertas.length ?
           <div className="no-v-scroll">
             <Table hoverable={true}>
               <Table.Head>
