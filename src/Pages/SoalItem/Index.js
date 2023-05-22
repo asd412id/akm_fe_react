@@ -193,7 +193,7 @@ export default function Index() {
             const shuffle = row.getCell(5).text.trim().toLocaleLowerCase() === 'ya' ? true : false;
 
             let soal = row.getCell(2);
-            const richText = soal.value.richText;
+            const richText = soal.value?.richText;
             if (richText) {
               soal = excelRichTexttoHtml(richText);
             } else {
@@ -256,11 +256,7 @@ export default function Index() {
 
               let val = row.getCell(k);
 
-              if (!val.text) {
-                continue;
-              }
-
-              const richText = val.value.richText;
+              const richText = val.value?.richText;
               if (richText) {
                 val = excelRichTexttoHtml(richText);
               } else {
