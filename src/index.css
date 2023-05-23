@@ -11,8 +11,8 @@
   z-index: 99999;
 }
 
-html:has([role='dialog']),
-body:has([role='dialog']) {
+html:has([role='dialog'][aria-hidden='false']),
+body:has([role='dialog'][aria-hidden='false']) {
   overflow: hidden;
 }
 
