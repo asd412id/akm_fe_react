@@ -488,19 +488,19 @@ export default function Index() {
                       </Table.Cell>
                       <Table.Cell>
                         <div className="flex justify-end gap-1 whitespace-nowrap">
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Tampilkan Soal' onClick={() => {
+                          <Button className='py-1 px-0' pill={true} size={`xs`} color='info' title='Tampilkan Soal' onClick={() => {
                             view.show = true;
                             view.data = v;
                             setView({ ...view });
                           }}><FcViewDetails className='w-3 h-3' /></Button>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
+                          <Button className='py-1 px-0' pill={true} size={`xs`} color='warning' title='Edit'
                             onClick={() => {
                               form.data = { ...v };
                               form.show = true;
                               form.title = `Ubah Data Soal Nomor ${v.num}`;
                               setForm({ ...form });
                             }}><HiPencil className='w-3 h-3' /></Button>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='failure' title='Hapus'
+                          <Button className='py-1 px-0' pill={true} size={`xs`} color='failure' title='Hapus'
                             onClick={() => {
                               destroy.link = `/soal-items/${soalid}/${v.id}`;
                               destroy.title = `Soal Nomor ${v.num}`;

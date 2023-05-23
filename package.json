@@ -32,7 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "bundle": "cross-env REACT_APP_APPDESC=\"Aplikasi Ujian dengan Model Soal AKM\" REACT_APP_URL=\"/\" REACT_APP_BACKEND_URL=\"/api/v1\" react-scripts build",
+    "bundle": "cross-env REACT_APP_APPDESC=\"Aplikasi Ujian dengan Model Soal AKM\" REACT_APP_URL=\"/\" REACT_APP_BACKEND_URL=\"/api/v1\" GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

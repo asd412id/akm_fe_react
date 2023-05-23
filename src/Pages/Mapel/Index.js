@@ -184,14 +184,14 @@ export default function Index() {
                       </Table.Cell>
                       <Table.Cell>
                         <div className="flex justify-end gap-1 whitespace-nowrap">
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
+                          <Button className='py-1 px-0' pill={true} size={`xs`} color='warning' title='Edit'
                             onClick={() => {
                               form.data = { ...initForm, ...v };
                               form.show = true;
                               form.title = `Ubah Data ${v.name}`;
                               setForm({ ...form });
                             }}><HiPencil className='w-3 h-3' /></Button>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='failure' title='Hapus'
+                          <Button className='py-1 px-0' pill={true} size={`xs`} color='failure' title='Hapus'
                             onClick={() => {
                               destroy.link = `/mapels/${v.id}`;
                               destroy.title = v.name;

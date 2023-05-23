@@ -233,14 +233,14 @@ export default function Index() {
                       <Table.Cell>
                         <div className="flex justify-end gap-1 whitespace-nowrap">
                           <Link to={`/soal/${katid}/${v.id}`}>
-                            <Button className='py-1 px-0 rounded-full' size={`xs`} color='info' title='Daftar Soal'><GiNotebook className='w-3 h-3' /></Button>
+                            <Button className='py-1 px-0' pill={true} size={`xs`} color='info' title='Daftar Soal'><GiNotebook className='w-3 h-3' /></Button>
                           </Link>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='success' title='Download Soal' onClick={() => {
+                          <Button className='py-1 px-0' pill={true} size={`xs`} color='success' title='Download Soal' onClick={() => {
                             daftarSoal.show = true;
                             daftarSoal.data = v;
                             setDaftarSoal({ ...daftarSoal });
                           }}><FaCloudDownloadAlt className='w-3 h-3' /></Button>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='warning' title='Edit'
+                          <Button className='py-1 px-0' pill={true} size={`xs`} color='warning' title='Edit'
                             onClick={() => {
                               v.userId = v.userId === null ? '' : v.userId;
                               form.data = { ...initForm, ...v };
@@ -248,7 +248,7 @@ export default function Index() {
                               form.title = `Ubah Data ${v.name}`;
                               setForm({ ...form });
                             }}><HiPencil className='w-3 h-3' /></Button>
-                          <Button className='py-1 px-0 rounded-full' size={`xs`} color='failure' title='Hapus'
+                          <Button className='py-1 px-0' pill={true} size={`xs`} color='failure' title='Hapus'
                             onClick={() => {
                               destroy.link = `/soals/${katid}/${v.id}`;
                               destroy.title = v.name;
