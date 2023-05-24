@@ -286,7 +286,7 @@ export default function Index() {
                         val = '';
                         for (let m = 0; m < _break.length; m++) {
                           val += _break[m];
-                          if (!inserted.includes(k)) {
+                          if (!inserted.includes(l)) {
                             inserted.push(l);
                             val += src;
                           } else {
