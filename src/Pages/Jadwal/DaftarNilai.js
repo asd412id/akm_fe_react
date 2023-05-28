@@ -35,7 +35,7 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
 
   useEffect(() => {
     if (ruang !== '' && jadwal?.id) getPesertas();
-  }, [ruang]);
+  }, [jadwal?.id, ruang]);
 
   const getPesertas = async () => {
     setProcess(true);
