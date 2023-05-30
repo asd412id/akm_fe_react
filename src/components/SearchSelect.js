@@ -12,7 +12,6 @@ const SearchSelect = ({ options = [], url = null, value, multiple, labelValue = 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [dataOptions, setDataOptions] = useState(options);
-  const [isDropdownUp, setIsDropdownUp] = useState(false);
   const wrapperRef = useRef(null);
   const searchInput = useRef(null);
 
@@ -63,25 +62,6 @@ const SearchSelect = ({ options = [], url = null, value, multiple, labelValue = 
   useEffect(() => {
     setDataOptions(options);
   }, [isOpen, JSON.stringify(options)]);
-
-  useEffect(() => {
-    if (isOpen) {
-      updateDropdownPosition();
-    }
-  }, [isOpen, dataOptions])
-
-  const updateDropdownPosition = () => {
-    const dropdownHeight = wrapperRef.current.querySelector('.options-list').offsetHeight;
-    const windowScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const windowScrollBottom = windowScrollTop + window.innerHeight;
-    const wrapperRect = wrapperRef.current.getBoundingClientRect();
-
-    if (wrapperRect.bottom + dropdownHeight > windowScrollBottom) {
-      setIsDropdownUp(true);
-    } else {
-      setIsDropdownUp(false);
-    }
-  };
 
   const toggleOptions = () => {
     if (isOpen) {
@@ -189,8 +169,7 @@ const SearchSelect = ({ options = [], url = null, value, multiple, labelValue = 
           : <span className="text-sm flex flex-wrap">{placeholder}</span>}
       </button>
       {isOpen && (
-        <div className={`absolute z-10 w-full my-2 bg-white border rounded-md shadow-lg text-sm ${isDropdownUp ? 'bottom-full' : 'top-full'
-          }`}>
+        <div className={`absolute z-10 w-full my-2 bg-white border rounded-md shadow-lg text-sm top-full`}>
           <div className="options-list">
             {multiple &&
               <div className="flex justify-between px-4 pt-3 pb-2">
