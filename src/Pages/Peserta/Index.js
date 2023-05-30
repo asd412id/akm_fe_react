@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Alert, Button, Dropdown, Spinner, Table, TextInput } from 'flowbite-react';
+import { Alert, Button, Dropdown, Select, Spinner, Table, TextInput } from 'flowbite-react';
 import React, { useEffect, useRef, useState } from 'react'
-import { HiCloudDownload, HiCloudUpload, HiPencil, HiTrash } from 'react-icons/hi';
+import { HiCloudDownload, HiCloudUpload, HiOutlineQuestionMarkCircle, HiPencil, HiTrash } from 'react-icons/hi';
 import { FaIdCard } from 'react-icons/fa';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import DeleteModal from '../../components/DeleteModal';
@@ -14,6 +14,7 @@ import KartuPeserta from './KartuPeserta';
 import { AiOutlineLogout } from 'react-icons/ai';
 import MonitorConfirm from '../Jadwal/MonitorConfirm';
 import { handleDownload } from '../../utils/Helpers';
+import ConfirmModal from '../../components/ConfirmModal';
 
 export default function Index() {
   const [datas, setDatas] = useState(null);
@@ -28,6 +29,7 @@ export default function Index() {
     page: 0,
     size: 20
   })
+  const [ruangs, setRuangs] = useState([]);
   const initForm = {
     id: null,
     name: '',
@@ -44,8 +46,12 @@ export default function Index() {
   const [destroy, setDestroy] = useState({
     show: false,
     title: '',
-    link: null
+    link: ''
   });
+  const [destroyBatch, setDestroyBatch] = useState({
+    show: false,
+    ruang: '',
+  })
   const uexcel = useRef(null);
   const [kartuPeserta, setkartuPeserta] = useState(false);
   const [confirm, setConfirm] = useState({
@@ -58,6 +64,19 @@ export default function Index() {
     getDatas();
   }, [filters.page, filters.search]);
 
+  useEffect(() => {
+    getRuangs();
+  }, [])
+
+  const getRuangs = async () => {
+    try {
+      const res = await axios('/pesertas/ruangs');
+      setRuangs(res.data);
+    } catch (error) {
+      errorResponse(error);
+    }
+  }
+
   const errorResponse = (err) => {
     status.error = err.response.data.message;
     form.show = false;
@@ -65,6 +84,8 @@ export default function Index() {
     setStatus({ ...status });
     setForm({ ...form });
     setDestroy({ ...destroy });
+    setDestroyBatch({ ...destroyBatch.show = false });
+    getRuangs();
     setTimeout(() => {
       status.error = null;
       setStatus({ ...status });
@@ -78,11 +99,13 @@ export default function Index() {
     setStatus({ ...status });
     setForm({ ...form });
     setDestroy({ ...destroy });
+    setDestroyBatch({ ...destroyBatch.show = false });
     datas['datas'] = [];
     filters.page = 0;
     setFilters({ ...filters });
     setDatas({ ...datas });
     getDatas();
+    getRuangs();
     setTimeout(() => {
       status.success = null;
       setStatus({ ...status });
@@ -185,6 +208,15 @@ export default function Index() {
     setkartuPeserta(true);
   }
 
+  const destroyAll = async () => {
+    try {
+      const res = await axios.delete(`/pesertas/all?ruang=${destroyBatch.ruang}`);
+      successResponse(res);
+    } catch (error) {
+      errorResponse(error);
+    }
+  }
+
   return (
     <Auth title={`Daftar Peserta`} success={status.success} error={status.error}>
       <Form
@@ -207,6 +239,35 @@ export default function Index() {
         onError={errorResponse}
         text={destroy.title}
         url={destroy.link} />
+
+      <ConfirmModal
+        open={destroyBatch.show}
+        accept='Ya, Saya Yakin'
+        reject='Tidak'
+        onClose={() => {
+          destroyBatch.show = false;
+          destroyBatch.ruang = '';
+          setDestroyBatch({ ...destroyBatch });
+        }}
+        onSubmit={destroyAll}>
+        <div className="mb-5">
+          <HiOutlineQuestionMarkCircle className="mx-auto mb-4 h-14 w-14 text-red-600 dark:text-red-200" />
+          <h3 className="mb-3 text-lg font-normal text-gray-500 dark:text-gray-400">
+            Anda yakin ingin menghapus data peserta pada ruangan ini?
+          </h3>
+          <div className="flex justify-center">
+            <Select value={destroyBatch?.ruang} className='w-auto' onChange={(e) => {
+              destroyBatch.ruang = e.target.value;
+              setDestroyBatch({ ...destroyBatch });
+            }}>
+              <option value="">Semua Ruang</option>
+              {ruangs.map(v => {
+                return <option value={v}>{v}</option>
+              })}
+            </Select>
+          </div>
+        </div>
+      </ConfirmModal>
 
       <MonitorConfirm
         open={confirm.show}
@@ -244,10 +305,9 @@ export default function Index() {
               <>
                 <Button type='button' size={`sm`} color='purple' onClick={() => downloadKartu()} disabled={!status.loaded}><FaIdCard className='w-4 h-4 mr-1' /> Download Kartu</Button>
                 <Button type='button' size={`sm`} color='failure' onClick={() => {
-                  destroy.link = `/pesertas/all`;
-                  destroy.title = 'Semua Peserta';
-                  destroy.show = true;
-                  setDestroy({ ...destroy });
+                  destroyBatch.show = true;
+                  destroyBatch.ruang = '';
+                  setDestroyBatch({ ...destroyBatch });
                 }} disabled={!status.loaded}><BsTrash2 className='w-4 h-4 mr-1' /> Hapus Semua</Button>
                 <Button type='button' size={`sm`} color='success' onClick={() => {
                   confirm.text = `Yakin ingin mereset login semua peserta?`;

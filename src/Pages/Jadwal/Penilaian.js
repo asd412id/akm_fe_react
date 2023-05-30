@@ -33,6 +33,8 @@ export default function Penilaian() {
   useEffect(() => {
     if (ruang) {
       getPesertas();
+    } else {
+      setLoading(false);
     }
   }, [ruang, searchValue]);
 
@@ -108,15 +110,17 @@ export default function Penilaian() {
       />
 
       <div className="flex flex-col gap-1">
-        <div className="flex gap-1 flex-wrap md:justify-between justify-center items-center">
-          <div className="flex items-center gap-1">
-            <span>Ruang/Kelas:</span>
-            <Select size={'sm'} value={ruang} disabled={loading} onChange={e => setRuang(e.target.value)} className='w-40'>
-              {ruangs.map((v, i) => {
-                return <option key={i} value={v}>{v}</option>
-              })}
-            </Select>
-          </div>
+        <div className={"flex gap-1 flex-wrap justify-center items-center " + (ruang ? 'md:justify-between' : 'md:justify-end')}>
+          {ruang &&
+            <div className="flex items-center gap-1">
+              <span>Ruang/Kelas:</span>
+              <Select size={'sm'} value={ruang} disabled={loading} onChange={e => setRuang(e.target.value)} className='w-40'>
+                {ruangs.map((v, i) => {
+                  return <option key={i} value={v}>{v}</option>
+                })}
+              </Select>
+            </div>
+          }
           <div className="flex gap-1">
             <TextInput type='search' placeholder='Cari data ...' size={`sm`} value={search} onChange={handleSearch} />
           </div>
