@@ -76,7 +76,7 @@ const SearchSelect = ({ options = [], url = null, value, multiple, labelValue = 
     const windowScrollBottom = windowScrollTop + window.innerHeight;
     const wrapperRect = wrapperRef.current.getBoundingClientRect();
 
-    if (wrapperRect.bottom + dropdownHeight > windowScrollBottom - 100) {
+    if (wrapperRect.bottom + dropdownHeight > windowScrollBottom) {
       setIsDropdownUp(true);
     } else {
       setIsDropdownUp(false);
