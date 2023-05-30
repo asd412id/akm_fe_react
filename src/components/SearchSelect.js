@@ -169,7 +169,7 @@ const SearchSelect = ({ options = [], url = null, value, multiple, labelValue = 
           : <span className="text-sm flex flex-wrap">{placeholder}</span>}
       </button>
       {isOpen && (
-        <div className={`absolute z-10 w-full my-2 bg-white border rounded-md shadow-lg text-sm top-full`}>
+        <div className={`absolute z-10 w-full my-1 bg-white border rounded-md shadow-lg text-sm top-full`}>
           <div className="options-list">
             {multiple &&
               <div className="flex justify-between px-4 pt-3 pb-2">
