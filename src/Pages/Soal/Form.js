@@ -3,6 +3,7 @@ import { Alert, Button, Label, Modal, Select, TextInput } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil';
 import { userDataAtom } from '../../recoil/atom/userAtom';
+import SearchSelect from '../../components/SearchSelect';
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
   const dataUser = useRecoilValue(userDataAtom);
@@ -89,12 +90,10 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
           {status.error && <Alert color={`failure`}>{status.error}</Alert>}
           <div className="flex flex-col">
             <Label>Mata Pelajaran</Label>
-            <Select name='mapelId' value={form?.mapelId} onChange={handleChange} disabled={status.disabled} required>
-              <option value="">Pilih Mata Pelajaran</option>
-              {mapels.map(v => {
-                return <option key={v.id} value={v.id}>{v.name}</option>
-              })}
-            </Select>
+            <SearchSelect value={form?.mapelId ? { id: form?.mapelId, name: mapels.filter(v => v.id === form?.mapelId).map(v => v.name) } : null} labelText='name' options={mapels} labelValue='id' placeholder='Pilih Mata Pelajaran' onChange={e => {
+              form.mapelId = e.id;
+              setForm({ ...form });
+            }} />
           </div>
           <div className="flex flex-col">
             <Label>Nama Soal</Label>
@@ -107,12 +106,10 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
           {dataUser.role === 'OPERATOR' &&
             <div className="flex flex-col">
               <Label htmlFor='ruangs'>Penilai</Label>
-              <Select name='userId' value={form?.userId} onChange={handleChange} disabled={status.disabled}>
-                <option value="">Pilih Penilai</option>
-                {penilais.map(v => {
-                  return <option key={v.id} value={v.id}>{v.name}</option>
-                })}
-              </Select>
+              <SearchSelect value={form?.userId ? { id: form?.userId, name: penilais.filter(v => v.id === form?.userId).map(v => v.name) } : null} labelText='name' options={penilais} labelValue='id' placeholder='Pilih Penilai' onChange={e => {
+                form.userId = e.id;
+                setForm({ ...form });
+              }} />
             </div>
           }
         </Modal.Body>

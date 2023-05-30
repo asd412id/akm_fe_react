@@ -15,6 +15,7 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import MonitorConfirm from '../Jadwal/MonitorConfirm';
 import { handleDownload } from '../../utils/Helpers';
 import ConfirmModal from '../../components/ConfirmModal';
+import SearchSelect from '../../components/SearchSelect';
 
 export default function Index() {
   const [datas, setDatas] = useState(null);
@@ -256,15 +257,12 @@ export default function Index() {
             Anda yakin ingin menghapus data peserta pada ruangan ini?
           </h3>
           <div className="flex justify-center">
-            <Select value={destroyBatch?.ruang} className='w-auto' onChange={(e) => {
-              destroyBatch.ruang = e.target.value;
-              setDestroyBatch({ ...destroyBatch });
-            }}>
-              <option value="">Semua Ruang</option>
-              {ruangs.map(v => {
-                return <option value={v}>{v}</option>
-              })}
-            </Select>
+            <div className="w-48 text-left">
+              <SearchSelect value={destroyBatch?.ruang ? { id: destroyBatch?.ruang, text: destroyBatch?.ruang } : { id: '', text: 'Semua Ruang' }} options={[{ id: '', text: 'Semua Ruang' }, ...ruangs.map(v => { return { id: v, text: v } })]} placeholder='Pilih Ruang' onChange={e => {
+                destroyBatch.ruang = e.id;
+                setDestroyBatch({ ...destroyBatch });
+              }} />
+            </div>
           </div>
         </div>
       </ConfirmModal>

@@ -3,8 +3,8 @@ import { Alert, Button, Label, Modal, Textarea, TextInput, ToggleSwitch } from '
 import React, { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil';
 import DateTimePicker from '../../components/DateTimePicker';
-import SelectSearch from '../../components/SelectSearch';
 import { userDataAtom } from '../../recoil/atom/userAtom';
+import SearchSelect from '../../components/SearchSelect';
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
   const dataUser = useRecoilValue(userDataAtom);
@@ -116,10 +116,10 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
             <div className="flex w-full flex-col gap-2">
               <div className="flex flex-col">
                 <Label htmlFor='soals'>Pilih Soal</Label>
-                <SelectSearch value={form.soals} onSelect={e => {
+                <SearchSelect url={'/search/soal/' + form.jid} placeholder='Pilih Soal' multiple value={form.soals} onChange={e => {
                   form.soals = e;
                   setForm({ ...form });
-                }} url={'/search/soal/' + form.jid} />
+                }} />
               </div>
               <div className="flex flex-col">
                 <Label htmlFor='soal_count'>Jumlah Soal</Label>
@@ -127,7 +127,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
               </div>
               <div className="flex flex-col">
                 <Label htmlFor='ruangs'>Pilih Ruang</Label>
-                <SelectSearch value={form.ruangs} onSelect={e => {
+                <SearchSelect value={form.ruangs} multiple placeholder='Pilih Ruang' onChange={e => {
                   form.ruangs = e;
                   setForm({ ...form });
                 }} url='/search/ruang' />
@@ -135,7 +135,7 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
               {dataUser.role === 'OPERATOR' &&
                 <div className="flex flex-col">
                   <Label htmlFor='ruangs'>Pilih Penilai</Label>
-                  <SelectSearch value={form.penilais} onSelect={e => {
+                  <SearchSelect multiple value={form.penilais} placeholder='Pilih Penilai' onChange={e => {
                     form.penilais = e;
                     setForm({ ...form });
                   }} url='/search/penilai' />

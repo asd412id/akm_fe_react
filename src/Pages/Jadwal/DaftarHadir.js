@@ -5,6 +5,7 @@ import { userDataAtom } from '../../recoil/atom/userAtom';
 import html2pdf from 'html2pdf.js';
 import printElement from 'print-html-element';
 import { BsFilePdf, BsPrinter } from 'react-icons/bs';
+import SearchSelect from '../../components/SearchSelect';
 
 export default function DaftarHadir({ jadwal, open, onClose }) {
   const [show, setShow] = useState(false);
@@ -66,13 +67,11 @@ export default function DaftarHadir({ jadwal, open, onClose }) {
       <Modal.Body>
         <div className="flex flex-col gap-5">
           <div className="flex justify-center gap-2 items-center">
-            <Select value={ruang} className='w-32' disabled={process} onChange={e => {
-              setRuang(e.target.value);
-            }}>
-              {ruangs?.map((v, i) => {
-                return <option key={i} value={v}>{v}</option>
-              })}
-            </Select>
+            <div className="w-48">
+              <SearchSelect value={ruang ? { id: ruang, text: ruang } : null} options={ruangs.map(v => { return { id: v, text: v } })} placeholder='Pilih Ruang' onChange={e => {
+                setRuang(e.id);
+              }} />
+            </div>
             <Select value={pengawas} className='w-32' disabled={process} onChange={e => {
               setPengawas(e.target.value);
               let cp = [];

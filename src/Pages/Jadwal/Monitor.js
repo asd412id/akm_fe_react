@@ -12,6 +12,7 @@ import { MonitoringInterval } from '../../recoil/atom/MonitoringInterval';
 import MonitorConfirm from './MonitorConfirm';
 import { AiOutlineLogout } from 'react-icons/ai';
 import Timer from '../../components/Timer';
+import SearchSelect from '../../components/SearchSelect';
 
 export default function Monitor() {
   const { jid, id } = useParams();
@@ -135,11 +136,11 @@ export default function Monitor() {
           {ruang &&
             <div className="flex items-center gap-1">
               <span>Ruang/Kelas:</span>
-              <Select size={'sm'} value={ruang} disabled={loading} onChange={e => setRuang(e.target.value)} className='w-40'>
-                {ruangs.map((v, i) => {
-                  return <option key={i} value={v}>{v}</option>
-                })}
-              </Select>
+              <div className="w-48">
+                <SearchSelect value={ruang ? { id: ruang, text: ruang } : null} options={ruangs.map(v => { return { id: v, text: v } })} placeholder='Pilih Ruang' onChange={e => {
+                  setRuang(e.id);
+                }} />
+              </div>
             </div>
           }
           <div className="flex gap-1">

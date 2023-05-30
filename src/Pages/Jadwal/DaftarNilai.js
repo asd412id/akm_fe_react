@@ -7,6 +7,7 @@ import printElement from 'print-html-element';
 import excel from 'exceljs';
 import { BsFileExcel, BsFilePdf, BsPrinter } from 'react-icons/bs';
 import axios from 'axios';
+import SearchSelect from '../../components/SearchSelect';
 
 export default function DaftarNilai({ jadwal, open, onClose }) {
   const [show, setShow] = useState(false);
@@ -146,13 +147,11 @@ export default function DaftarNilai({ jadwal, open, onClose }) {
       <Modal.Body>
         <div className="flex flex-col gap-5">
           <div className="flex justify-center gap-2 items-center">
-            <Select value={ruang} className='w-32' disabled={process} onChange={e => {
-              setRuang(e.target.value);
-            }}>
-              {ruangs?.map((v, i) => {
-                return <option key={i} value={v}>{v}</option>
-              })}
-            </Select>
+            <div className="w-48">
+              <SearchSelect value={ruang ? { id: ruang, text: ruang } : null} options={ruangs.map(v => { return { id: v, text: v } })} placeholder='Pilih Ruang' onChange={e => {
+                setRuang(e.id);
+              }} />
+            </div>
             <Button size='sm' onClick={() => downloadPdf()} disabled={process} className='flex items-center' color={'gray'}><BsFilePdf className='w-4 h-4 text-red-600 mr-1' /> Download PDF</Button>
             <Button size='sm' onClick={() => downloadExcel()} disabled={process} className='flex items-center' color={'gray'}><BsFileExcel className='w-4 h-4 text-green-600 mr-1' /> Download Excel</Button>
             <Button size='sm' onClick={() => printData()} disabled={process} className='flex items-center' color={'gray'}><BsPrinter className='w-4 h-4 text-purple-600 mr-1' /> Print</Button>

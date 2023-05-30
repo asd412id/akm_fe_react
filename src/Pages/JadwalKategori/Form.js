@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Alert, Button, Label, Modal, TextInput } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
-import SelectSearch from '../../components/SelectSearch';
+import SearchSelect from '../../components/SearchSelect';
 
 export default function Form({ open = false, data = {}, title = 'Data Baru', onSubmit, onClose }) {
   const [form, setForm] = useState(data);
@@ -68,11 +68,11 @@ export default function Form({ open = false, data = {}, title = 'Data Baru', onS
             <TextInput name='desc' value={form?.desc} onChange={handleChange} disabled={status.disabled} />
           </div>
           <div className="flex flex-col">
-            <Label>Pilih Kategori Soal</Label>
-            <SelectSearch value={form.soal_kategories} labelText='name' labelValue='id' onSelect={e => {
+            <Label>Kategori Soal</Label>
+            <SearchSelect value={form.soal_kategories} placeholder='Pilih Kategori Soal' onChange={e => {
               form.soal_kategories = e;
               setForm({ ...form });
-            }} url='/search/soal-kategori' />
+            }} url='/search/soal-kategori' labelText='name' multiple />
           </div>
         </Modal.Body>
         <Modal.Footer className='flex justify-end px-3 py-2'>
