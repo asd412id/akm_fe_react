@@ -225,7 +225,7 @@ export default function Index() {
                         {v.desc}
                       </Table.Cell>
                       <Table.Cell>
-                        {v.mapel.name}
+                        {v.mapel?.name}
                       </Table.Cell>
                       <Table.Cell>
                         {v.soal_count}
