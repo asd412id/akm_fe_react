@@ -249,9 +249,10 @@ export default function Index() {
             const color2 = [];
             let answer = null;
             const labels = row.getCell(4).text.split(";").map(v => { return v.trim() });
+            const totalOpsi = opsi_count.reduce((a, b) => parseInt(a) + parseInt(b), 0);
 
             let ij = 0;
-            for (let j = 0; j < opsi_count.reduce((a, b) => a + b, 0); j++) {
+            for (let j = 0; j < totalOpsi; j++) {
               const k = j + 8;
 
               let val = row.getCell(k);
