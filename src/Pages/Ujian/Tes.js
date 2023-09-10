@@ -99,7 +99,7 @@ export default function Tes() {
           navigate('/ujian');
         } else {
           console.log(error.message);
-          setTimeout(updateAnswer, 15000);
+          setTimeout(updateAnswer, 3000);
         }
       }
     }
@@ -196,7 +196,7 @@ export default function Tes() {
                       <div className="flex flex-col gap-1">
                         {soal.options.map((v, i) => {
                           return <label key={i} className={`flex gap-2 items-start`}>
-                            <Radio name='jawaban' className='mt-1' checked={jawaban[soal.id].jawaban?.corrects[v.key]} onChange={e => {
+                            <Radio name='jawaban' className='mt-1' checked={jawaban[soal.id]?.jawaban?.corrects[v.key] === true} onChange={e => {
                               const jawab = {};
                               const crts = {};
                               soal.options.forEach(vv => {
@@ -219,7 +219,7 @@ export default function Tes() {
                         <div className="flex flex-col gap-1">
                           {soal.options.map(v => {
                             return <label key={v.key} className={`flex gap-2 items-start`}>
-                              <Checkbox className='mt-1' checked={jawaban[soal.id].jawaban?.corrects[v.key]} onChange={e => {
+                              <Checkbox className='mt-1' checked={jawaban[soal.id]?.jawaban?.corrects[v.key] === true} onChange={e => {
                                 const jawab = {};
                                 crts[v.key] = e.target.checked;
                                 setCrts({ ...crts });
@@ -251,7 +251,7 @@ export default function Tes() {
                                     <td className='p-2 border border-gray-400' dangerouslySetInnerHTML={{ __html: v.text }} />
                                     <td className='p-2 border border-gray-400'>
                                       <div className="flex justify-center">
-                                        <ToggleSwitch label={jawaban[soal.id].jawaban?.corrects[v.key] ? 'Benar' : 'Salah'} checked={jawaban[soal.id].jawaban?.corrects[v.key]} onChange={e => {
+                                        <ToggleSwitch label={jawaban[soal.id].jawaban?.corrects[v.key] ? 'Benar' : 'Salah'} checked={jawaban[soal.id]?.jawaban?.corrects[v.key] === true} onChange={e => {
                                           const jawab = {};
                                           crts[v.key] = e;
                                           setCrts({ ...crts });

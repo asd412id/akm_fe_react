@@ -9,7 +9,7 @@ export default function TestConfirmationModal({ open = false, children, jid, onC
   const [show, setShow] = useState(open);
   const [id, setId] = useState(jid)
   const [disabled, setDisabled] = useState(false);
-  const [dataUjian, setDataUjian] = useRecoilState(DataUjian);
+  const [_dataUjian, setDataUjian] = useRecoilState(DataUjian);
 
   useEffect(() => {
     setShow(open);

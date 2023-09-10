@@ -23,7 +23,7 @@ export default function Index() {
     datas: []
   });
   const [isLogin, setIsLogin] = useState(true);
-  const [dataUjian, setDataUjian] = useRecoilState(DataUjian);
+  const [_dataUjian, setDataUjian] = useRecoilState(DataUjian);
   const [tm, setTm] = useRecoilState(MonitoringInterval);
   const navigate = useNavigate();
 

@@ -12,7 +12,7 @@ export default function SoalNumber() {
   const [number, setNumber] = useRecoilState(NomorSoal);
   const jawaban = useRecoilValue(Jawaban);
   const [openDialog, setOpenDialog] = useState(false)
-  const [stopUjian, setStopUjian] = useRecoilState(StopUjian);
+  const [_stopUjian, setStopUjian] = useRecoilState(StopUjian);
   return (
     <>
       <TestConfirmationModal
