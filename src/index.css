@@ -568,3 +568,9 @@ body:has([role='dialog'][aria-hidden='false']) {
 .ck-content ol {
   margin-left: 1.15rem;
 }
+
+@media print {
+  @page {
+    size: 215mm 330mm !important;
+  }
+}

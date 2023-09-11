@@ -104,7 +104,7 @@ export default function DaftarSoal({ data, open, onClose }) {
             <Button size='sm' onClick={() => downloadPdf()} disabled={process} className='flex items-center' color={'gray'}><BsFilePdf className='w-4 h-4 text-red-600 mr-1' /> Download PDF</Button>
             <Button size='sm' onClick={() => printData()} disabled={process} className='flex items-center' color={'gray'}><BsPrinter className='w-4 h-4 text-purple-600 mr-1' /> Print</Button>
           </div>
-          <table ref={pdf} className='!w-12/12' style={{ lineHeight: '0.95em' }}>
+          <table ref={pdf} className='!w-full' style={{ lineHeight: '0.95em' }}>
             <tbody>
               {userData.sekolah?.opt?.kop &&
                 <tr>
